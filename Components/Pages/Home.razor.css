@@ -1,0 +1,532 @@
+﻿/* =========================================================
+   RBI MALAYSIA - LIGHT DASHBOARD
+   ========================================================= */
+
+.dashboard-page {
+    min-height: 100vh;
+    padding: 25px;
+    background: #f5f7fa;
+    color: #172b4d;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard-header {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+    .dashboard-header h3 {
+        margin: 0 0 5px 0;
+        font-size: 22px;
+        font-weight: 600;
+        color: #172b4d;
+    }
+
+    .dashboard-header p {
+        margin: 0;
+        font-size: 13px;
+        color: #718096;
+    }
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.add-equipment-btn {
+    border-radius: 8px;
+    padding: 9px 18px;
+    background: #0d7fb0;
+    border-color: #0d7fb0;
+}
+
+    .add-equipment-btn:hover {
+        background: #09698f;
+        border-color: #09698f;
+    }
+
+
+/* =========================================================
+   COMMON CARD
+   ========================================================= */
+
+.dashboard-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    transition: all 0.2s ease;
+}
+
+    .dashboard-card:hover {
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+    }
+
+
+/* =========================================================
+   KPI CARD
+   ========================================================= */
+
+.kpi-card {
+    min-height: 145px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kpi-title {
+    color: #718096;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.kpi-value {
+    font-size: 30px;
+    font-weight: 700;
+    color: #172b4d;
+}
+
+    .kpi-value.danger {
+        color: #dc3545;
+    }
+
+    .kpi-value.warning {
+        color: #d97706;
+    }
+
+    .kpi-value.success {
+        color: #198754;
+    }
+
+
+/* =========================================================
+   KPI ICON
+   ========================================================= */
+
+.kpi-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+
+    .kpi-icon.primary {
+        background: #e8f3fb;
+        color: #0876a8;
+    }
+
+    .kpi-icon.danger-bg {
+        background: #fdecec;
+        color: #dc3545;
+    }
+
+    .kpi-icon.warning-bg {
+        background: #fff5df;
+        color: #d97706;
+    }
+
+    .kpi-icon.success-bg {
+        background: #e8f7ef;
+        color: #198754;
+    }
+
+
+/* =========================================================
+   CHART CARD
+   ========================================================= */
+
+.chart-card {
+    padding: 25px;
+    min-height: 340px;
+}
+
+    .chart-card h5,
+    .section-title,
+    .equipment-card h5 {
+        margin: 0 0 25px 0;
+        font-size: 17px;
+        font-weight: 600;
+        color: #172b4d;
+    }
+
+
+/* =========================================================
+   RISK BAR CHART
+   ========================================================= */
+
+.risk-chart {
+    padding-top: 15px;
+}
+
+.chart-row {
+    margin-bottom: 25px;
+}
+
+.chart-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+    .chart-label strong {
+        color: #172b4d;
+    }
+
+.chart-bar-container {
+    width: 100%;
+    height: 18px;
+    background: #eef2f6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chart-bar {
+    height: 100%;
+    border-radius: 10px;
+    min-width: 8px;
+}
+
+.high-bar {
+    background: #dc3545;
+}
+
+.medium-bar {
+    background: #f59e0b;
+}
+
+.low-bar {
+    background: #198754;
+}
+
+
+/* =========================================================
+   INSPECTION DONUT
+   ========================================================= */
+
+.inspection-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 20px;
+}
+
+.donut {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: conic-gradient( #198754 0deg 259deg, #3b82f6 259deg 324deg, #dc3545 324deg 360deg );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .donut::before {
+        content: "";
+        position: absolute;
+    }
+
+.donut-center {
+    width: 125px;
+    height: 125px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .donut-center strong {
+        font-size: 27px;
+        color: #172b4d;
+    }
+
+    .donut-center span {
+        font-size: 12px;
+        color: #718096;
+    }
+
+
+/* =========================================================
+   INSPECTION LEGEND
+   ========================================================= */
+
+.inspection-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .inspection-legend > div {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .inspection-legend strong {
+        margin-left: auto;
+        color: #172b4d;
+    }
+
+.legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+    .legend-dot.completed {
+        background: #198754;
+    }
+
+    .legend-dot.pending {
+        background: #3b82f6;
+    }
+
+    .legend-dot.overdue {
+        background: #dc3545;
+    }
+
+
+/* =========================================================
+   RISK MATRIX
+   ========================================================= */
+
+.risk-box {
+    height: 75px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+    .risk-box i {
+        font-size: 19px;
+    }
+
+.low-risk {
+    background: #e8f7ef;
+    color: #198754;
+    border: 1px solid #c9ebd8;
+}
+
+.medium-risk {
+    background: #fff5df;
+    color: #b77900;
+    border: 1px solid #f5dfac;
+}
+
+.high-risk {
+    background: #fdecec;
+    color: #dc3545;
+    border: 1px solid #f3c8cc;
+}
+
+
+/* =========================================================
+   EQUIPMENT TABLE
+   ========================================================= */
+
+.equipment-card {
+    padding: 25px;
+}
+
+.equipment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+    .equipment-header h5 {
+        margin: 0;
+    }
+
+.equipment-table {
+    margin-bottom: 0;
+}
+
+    .equipment-table thead th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e5e7eb;
+        white-space: nowrap;
+    }
+
+    .equipment-table tbody td {
+        color: #475569;
+        font-size: 13px;
+        border-color: #edf0f3;
+        padding: 15px 10px;
+    }
+
+    .equipment-table tbody tr:hover {
+        background: #f8fafc;
+    }
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge {
+    font-weight: 500;
+    padding: 6px 9px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .dashboard-page {
+        padding: 15px;
+    }
+
+    .dashboard-header {
+        padding: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+        .dashboard-header h3 {
+            font-size: 19px;
+        }
+
+        .dashboard-header p {
+            font-size: 12px;
+        }
+
+    .add-equipment-btn {
+        width: 100%;
+    }
+
+    .kpi-card {
+        min-height: 125px;
+        padding: 20px;
+    }
+
+    .kpi-value {
+        font-size: 26px;
+    }
+
+    .kpi-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .chart-card {
+        padding: 20px;
+    }
+
+    .risk-box {
+        height: 65px;
+    }
+
+    .equipment-card {
+        padding: 18px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+    .dashboard-page {
+        padding: 10px;
+    }
+
+    .dashboard-header {
+        border-radius: 10px;
+    }
+
+    .dashboard-card {
+        border-radius: 10px;
+    }
+
+    .kpi-card {
+        padding: 18px;
+    }
+
+    .kpi-title {
+        font-size: 13px;
+    }
+
+    .kpi-value {
+        font-size: 24px;
+    }
+
+    .chart-card h5,
+    .section-title,
+    .equipment-card h5 {
+        font-size: 16px;
+    }
+
+    .donut {
+        width: 150px;
+        height: 150px;
+    }
+
+    .donut-center {
+        width: 105px;
+        height: 105px;
+    }
+
+        .donut-center strong {
+            font-size: 23px;
+        }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .dashboard-page {
+        padding: 8px;
+    }
+
+    .kpi-card {
+        min-height: 110px;
+        padding: 15px;
+    }
+
+    .kpi-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 18px;
+    }
+}

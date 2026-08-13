@@ -1,0 +1,434 @@
+﻿@page "/home"
+
+<PageTitle>RBI Malaysia - Dashboard</PageTitle>
+
+<div class="dashboard-page">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+
+        <div>
+            <h3>Risk Based Inspection Dashboard</h3>
+            <p>API 581 Quantitative Monitoring System</p>
+        </div>
+
+        <button class="btn btn-primary add-equipment-btn">
+            <i class="bi bi-plus-circle me-2"></i>
+            Add Equipment
+        </button>
+
+    </div>
+
+
+    <!-- KPI CARDS -->
+    <div class="row g-4 mb-4">
+
+        <!-- Total Equipment -->
+        <div class="col-12 col-sm-6 col-xl-3">
+
+            <div class="dashboard-card kpi-card">
+
+                <div>
+                    <div class="kpi-title">
+                        Total Equipment
+                    </div>
+
+                    <div class="kpi-value">
+                        1,248
+                    </div>
+                </div>
+
+                <div class="kpi-icon primary">
+                    <i class="bi bi-hdd-stack"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- High Risk -->
+        <div class="col-12 col-sm-6 col-xl-3">
+
+            <div class="dashboard-card kpi-card">
+
+                <div>
+                    <div class="kpi-title">
+                        High Risk Assets
+                    </div>
+
+                    <div class="kpi-value danger">
+                        42
+                    </div>
+                </div>
+
+                <div class="kpi-icon danger-bg">
+                    <i class="bi bi-exclamation-octagon"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Medium Risk -->
+        <div class="col-12 col-sm-6 col-xl-3">
+
+            <div class="dashboard-card kpi-card">
+
+                <div>
+                    <div class="kpi-title">
+                        Medium Risk
+                    </div>
+
+                    <div class="kpi-value warning">
+                        118
+                    </div>
+                </div>
+
+                <div class="kpi-icon warning-bg">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Low Risk -->
+        <div class="col-12 col-sm-6 col-xl-3">
+
+            <div class="dashboard-card kpi-card">
+
+                <div>
+                    <div class="kpi-title">
+                        Low Risk
+                    </div>
+
+                    <div class="kpi-value success">
+                        1088
+                    </div>
+                </div>
+
+                <div class="kpi-icon success-bg">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHARTS -->
+    <div class="row g-4 mb-4">
+
+        <!-- Risk Distribution -->
+        <div class="col-12 col-lg-8">
+
+            <div class="dashboard-card chart-card">
+
+                <h5>Risk Distribution</h5>
+
+                <div class="risk-chart">
+
+                    <div class="chart-row">
+
+                        <div class="chart-label">
+                            <span>High</span>
+                            <strong>42</strong>
+                        </div>
+
+                        <div class="chart-bar-container">
+                            <div class="chart-bar high-bar"
+                                 style="width: 4%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-row">
+
+                        <div class="chart-label">
+                            <span>Medium</span>
+                            <strong>118</strong>
+                        </div>
+
+                        <div class="chart-bar-container">
+                            <div class="chart-bar medium-bar"
+                                 style="width: 11%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-row">
+
+                        <div class="chart-label">
+                            <span>Low</span>
+                            <strong>1088</strong>
+                        </div>
+
+                        <div class="chart-bar-container">
+                            <div class="chart-bar low-bar"
+                                 style="width: 100%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Inspection Status -->
+        <div class="col-12 col-lg-4">
+
+            <div class="dashboard-card chart-card">
+
+                <h5>Inspection Status</h5>
+
+                <div class="inspection-chart">
+
+                    <div class="donut">
+
+                        <div class="donut-center">
+                            <strong>72%</strong>
+                            <span>Completed</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="inspection-legend">
+
+                    <div>
+                        <span class="legend-dot completed"></span>
+                        Completed
+                        <strong>72%</strong>
+                    </div>
+
+                    <div>
+                        <span class="legend-dot pending"></span>
+                        Pending
+                        <strong>18%</strong>
+                    </div>
+
+                    <div>
+                        <span class="legend-dot overdue"></span>
+                        Overdue
+                        <strong>10%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RISK MATRIX -->
+    <div class="dashboard-card p-4 mb-4">
+
+        <h5 class="section-title">
+            API 581 Risk Matrix
+        </h5>
+
+        <div class="row g-3">
+
+            <div class="col-12 col-md-4">
+
+                <div class="risk-box low-risk">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    <span>Low Risk</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-4">
+
+                <div class="risk-box medium-risk">
+
+                    <i class="bi bi-exclamation-triangle"></i>
+
+                    <span>Medium Risk</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-4">
+
+                <div class="risk-box high-risk">
+
+                    <i class="bi bi-exclamation-octagon"></i>
+
+                    <span>High Risk</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CRITICAL EQUIPMENT -->
+    <div class="dashboard-card equipment-card">
+
+        <div class="equipment-header">
+
+            <h5>
+                Critical Equipment
+            </h5>
+
+            <button class="btn btn-outline-primary btn-sm">
+                View All
+            </button>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table equipment-table align-middle">
+
+                <thead>
+
+                    <tr>
+                        <th>Tag No</th>
+                        <th>Equipment</th>
+                        <th>Risk</th>
+                        <th>Remaining Life</th>
+                        <th>Inspection</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td data-label="Tag No">
+                            <strong>V-101</strong>
+                        </td>
+
+                        <td data-label="Equipment">
+                            Separator Vessel
+                        </td>
+
+                        <td data-label="Risk">
+                            <span class="badge bg-danger">
+                                High
+                            </span>
+                        </td>
+
+                        <td data-label="Remaining Life">
+                            1.8 Years
+                        </td>
+
+                        <td data-label="Inspection">
+                            12-Jun-2026
+                        </td>
+
+                        <td data-label="Status">
+                            <span class="badge bg-warning text-dark">
+                                Action Required
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td data-label="Tag No">
+                            <strong>P-220</strong>
+                        </td>
+
+                        <td data-label="Equipment">
+                            Process Piping
+                        </td>
+
+                        <td data-label="Risk">
+                            <span class="badge bg-warning text-dark">
+                                Medium
+                            </span>
+                        </td>
+
+                        <td data-label="Remaining Life">
+                            4.2 Years
+                        </td>
+
+                        <td data-label="Inspection">
+                            28-Jul-2026
+                        </td>
+
+                        <td data-label="Status">
+                            <span class="badge bg-info">
+                                Monitoring
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td data-label="Tag No">
+                            <strong>E-330</strong>
+                        </td>
+
+                        <td data-label="Equipment">
+                            Heat Exchanger
+                        </td>
+
+                        <td data-label="Risk">
+                            <span class="badge bg-success">
+                                Low
+                            </span>
+                        </td>
+
+                        <td data-label="Remaining Life">
+                            9.5 Years
+                        </td>
+
+                        <td data-label="Inspection">
+                            15-Oct-2026
+                        </td>
+
+                        <td data-label="Status">
+                            <span class="badge bg-success">
+                                Healthy
+                            </span>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

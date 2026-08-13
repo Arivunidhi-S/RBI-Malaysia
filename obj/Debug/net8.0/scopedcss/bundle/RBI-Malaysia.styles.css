@@ -1,0 +1,634 @@
+/* _content/RBI-Malaysia/Components/Layout/LoginLayout.razor.rz.scp.css */
+.login-layout[b-ugu9konj5c] {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+/* _content/RBI-Malaysia/Components/Layout/MainLayout.razor.rz.scp.css */
+.page[b-kk3yzib0wp] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-kk3yzib0wp] {
+    flex: 1;
+}
+
+.sidebar[b-kk3yzib0wp] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-kk3yzib0wp] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-kk3yzib0wp]  a, .top-row[b-kk3yzib0wp]  .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+    .top-row[b-kk3yzib0wp]  a:hover, .top-row[b-kk3yzib0wp]  .btn-link:hover {
+        text-decoration: underline;
+    }
+
+    .top-row[b-kk3yzib0wp]  a:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row[b-kk3yzib0wp] {
+        justify-content: space-between;
+    }
+
+    .top-row[b-kk3yzib0wp]  a, .top-row[b-kk3yzib0wp]  .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-kk3yzib0wp] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-kk3yzib0wp] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-kk3yzib0wp] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row.auth[b-kk3yzib0wp]  a:first-child {
+        flex: 1;
+        text-align: right;
+        width: 0;
+    }
+
+    .top-row[b-kk3yzib0wp], article[b-kk3yzib0wp] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+#blazor-error-ui[b-kk3yzib0wp] {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss[b-kk3yzib0wp] {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+/* _content/RBI-Malaysia/Components/Layout/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-0lj57ssvwk] {
+    appearance: none;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 2.5rem;
+    color: white;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggler:checked[b-0lj57ssvwk] {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.top-row[b-0lj57ssvwk] {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand[b-0lj57ssvwk] {
+    font-size: 1.1rem;
+}
+
+.bi[b-0lj57ssvwk] {
+    display: inline-block;
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    top: -1px;
+    background-size: cover;
+}
+
+.bi-house-door-fill-nav-menu[b-0lj57ssvwk] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-house-door-fill' viewBox='0 0 16 16'%3E%3Cpath d='M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z'/%3E%3C/svg%3E");
+}
+
+.bi-plus-square-fill-nav-menu[b-0lj57ssvwk] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-plus-square-fill' viewBox='0 0 16 16'%3E%3Cpath d='M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z'/%3E%3C/svg%3E");
+}
+
+.bi-list-nested-nav-menu[b-0lj57ssvwk] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-list-nested' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5z'/%3E%3C/svg%3E");
+}
+
+.nav-item[b-0lj57ssvwk] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-0lj57ssvwk] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-0lj57ssvwk] {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item[b-0lj57ssvwk]  .nav-link {
+        color: #d7d7d7;
+        background: none;
+        border: none;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+        width: 100%;
+    }
+
+.nav-item[b-0lj57ssvwk]  a.active {
+    background-color: rgba(255,255,255,0.37);
+    color: white;
+}
+
+.nav-item[b-0lj57ssvwk]  .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.nav-scrollable[b-0lj57ssvwk] {
+    display: none;
+}
+
+.navbar-toggler:checked ~ .nav-scrollable[b-0lj57ssvwk] {
+    display: block;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler[b-0lj57ssvwk] {
+        display: none;
+    }
+
+    .nav-scrollable[b-0lj57ssvwk] {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+
+        /* Allow sidebar to scroll for tall menus */
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+}
+/* _content/RBI-Malaysia/Components/Pages/Login.razor.rz.scp.css */
+/* =========================================================
+   RBI MALAYSIA - LOGIN PAGE
+   ========================================================= */
+.login-layout[b-yw6q8ujrwp] {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.login-page[b-yw6q8ujrwp] {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient( 135deg, #071b2f 0%, #0b3152 45%, #0e4b6f 100% );
+}
+
+
+
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.login-background[b-yw6q8ujrwp] {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.bg-circle[b-yw6q8ujrwp] {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.12;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.circle-one[b-yw6q8ujrwp] {
+    width: 520px;
+    height: 520px;
+    top: -260px;
+    right: -150px;
+}
+
+.circle-two[b-yw6q8ujrwp] {
+    width: 420px;
+    height: 420px;
+    bottom: -240px;
+    left: -120px;
+}
+
+.bg-grid[b-yw6q8ujrwp] {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient( rgba(255,255,255,0.025) 1px, transparent 1px ), linear-gradient( 90deg, rgba(255,255,255,0.025) 1px, transparent 1px );
+    background-size: 40px 40px;
+}
+
+
+/* =========================================================
+   LOGIN CONTAINER
+   ========================================================= */
+
+.login-container[b-yw6q8ujrwp] {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+   ========================================================= */
+
+.login-card[b-yw6q8ujrwp] {
+    width: 100%;
+    padding: 42px 40px 30px;
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 18px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.login-header[b-yw6q8ujrwp] {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.logo-box[b-yw6q8ujrwp] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 90px;
+    height: 70px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    background: linear-gradient( 135deg, #0a527c, #0876a8 );
+    color: white;
+    box-shadow: 0 10px 25px rgba(8, 118, 168, 0.30);
+}
+
+.logo-main[b-yw6q8ujrwp] {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 25px;
+    letter-spacing: 1px;
+}
+
+.logo-sub[b-yw6q8ujrwp] {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-top: 4px;
+}
+
+.login-header h1[b-yw6q8ujrwp] {
+    margin: 0;
+    color: #15283c;
+    font-size: 27px;
+    font-weight: 700;
+}
+
+.login-header p[b-yw6q8ujrwp] {
+    margin: 8px 0 0;
+    color: #718096;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-group[b-yw6q8ujrwp] {
+    margin-bottom: 21px;
+}
+
+    .form-group label[b-yw6q8ujrwp] {
+        display: block;
+        margin-bottom: 8px;
+        color: #34495e;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+.input-wrapper[b-yw6q8ujrwp] {
+    position: relative;
+    width: 100%;
+}
+
+.login-input[b-yw6q8ujrwp] {
+    height: 48px;
+    padding-left: 45px;
+    padding-right: 45px;
+    border: 1px solid #d9e1e8;
+    border-radius: 9px;
+    color: #26384a;
+    background-color: #f8fafc;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+    .login-input:focus[b-yw6q8ujrwp] {
+        background-color: #fff;
+        border-color: #0b79aa;
+        box-shadow: 0 0 0 3px rgba(11, 121, 170, 0.12);
+        outline: none;
+    }
+
+    .login-input[b-yw6q8ujrwp]::placeholder {
+        color: #a0aec0;
+    }
+
+.input-icon[b-yw6q8ujrwp] {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    color: #8192a5;
+    font-size: 17px;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   PASSWORD
+   ========================================================= */
+
+.password-toggle[b-yw6q8ujrwp] {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: #8192a5;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+    .password-toggle:hover[b-yw6q8ujrwp] {
+        background-color: #edf3f7;
+        color: #0b6f9d;
+    }
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.validation-message[b-yw6q8ujrwp] {
+    display: block;
+    margin-top: 5px;
+    color: #dc3545;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.login-error[b-yw6q8ujrwp] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 11px 13px;
+    border-radius: 8px;
+    color: #842029;
+    background-color: #f8d7da;
+    border: 1px solid #f1aeb5;
+    font-size: 13px;
+}
+
+.error-icon[b-yw6q8ujrwp] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21px;
+    height: 21px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: #dc3545;
+    color: white;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   OPTIONS
+   ========================================================= */
+
+.login-options[b-yw6q8ujrwp] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0 24px;
+    font-size: 12px;
+}
+
+.remember-me[b-yw6q8ujrwp] {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #657585;
+    cursor: pointer;
+}
+
+    .remember-me input[b-yw6q8ujrwp] {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+    }
+
+.forgot-password[b-yw6q8ujrwp] {
+    color: #0876a8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+    .forgot-password:hover[b-yw6q8ujrwp] {
+        text-decoration: underline;
+    }
+
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+.login-button[b-yw6q8ujrwp] {
+    width: 100%;
+    height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    border-radius: 9px;
+    color: white;
+    background: linear-gradient( 135deg, #075f89, #0783b8 );
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(7, 131, 184, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .login-button:hover:not(:disabled)[b-yw6q8ujrwp] {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 25px rgba(7, 131, 184, 0.35);
+    }
+
+    .login-button:active:not(:disabled)[b-yw6q8ujrwp] {
+        transform: translateY(0);
+    }
+
+    .login-button:disabled[b-yw6q8ujrwp] {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.login-footer[b-yw6q8ujrwp] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 30px;
+    color: #a0aec0;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.footer-line[b-yw6q8ujrwp] {
+    height: 1px;
+    flex: 1;
+    background: #e5e9ed;
+}
+
+.copyright[b-yw6q8ujrwp] {
+    margin-top: 12px;
+    text-align: center;
+    color: #a0aec0;
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .login-container[b-yw6q8ujrwp] {
+        padding: 18px;
+    }
+
+    .login-card[b-yw6q8ujrwp] {
+        padding: 32px 25px 25px;
+        border-radius: 14px;
+    }
+
+    .login-header h1[b-yw6q8ujrwp] {
+        font-size: 24px;
+    }
+
+    .login-header p[b-yw6q8ujrwp] {
+        font-size: 12px;
+    }
+
+    .login-options[b-yw6q8ujrwp] {
+        font-size: 11px;
+    }
+}
+
+
+@media (max-height: 650px) {
+
+    .login-card[b-yw6q8ujrwp] {
+        padding-top: 25px;
+        padding-bottom: 20px;
+    }
+
+    .login-header[b-yw6q8ujrwp] {
+        margin-bottom: 20px;
+    }
+
+    .logo-box[b-yw6q8ujrwp] {
+        margin-bottom: 10px;
+    }
+
+    .form-group[b-yw6q8ujrwp] {
+        margin-bottom: 14px;
+    }
+
+    .login-footer[b-yw6q8ujrwp] {
+        margin-top: 20px;
+    }
+}
+
+```[b-yw6q8ujrwp]

@@ -1,0 +1,336 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid text align-content-center">
+        <a class="navbar-brand" href="" >
+            <i class="bi bi-shield-check"></i> RBI SYSTEM
+        </a>
+    </div>
+</div>
+
+<input type="checkbox"  title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable">
+    <nav class="flex-column">
+
+        <!-- Dashboard -->
+        <div class="nav-item px-3">           
+            <NavLink class="nav-link" href="home" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span>
+                Dashboard
+            </NavLink>
+        </div>
+
+        <!-- ADMIN MASTER -->
+        <div class="nav-group">
+
+            <button type="button"  class="nav-group-title"  @onclick="ToggleAdminMaster">
+                <i class="bi bi-person-bounding-box"></i>
+                <span>Admin Master</span>
+                <span class="arrow @(adminMasterOpen ? "rotate" : "")"> › </span>
+            </button>
+
+            @if (adminMasterOpen)
+            {
+                <div class="submenu">
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="company">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Company
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="staffdetails">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Staff Details
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="user">
+                            <span class="arrow">›</span>&nbsp;&nbsp;User
+                        </NavLink>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- MASTER -->
+        <div class="nav-group">
+
+            <button type="button"
+                    class="nav-group-title"
+                    @onclick="ToggleMaster">
+                <i class="bi bi-book"></i>
+                <span>Master</span>
+
+                <span class="arrow @(masterOpen ? "rotate" : "")">
+                    ›
+                </span>
+
+            </button>
+
+            @if (masterOpen)
+            {
+                <div class="submenu">
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="processarea">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Process Area
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="equipment">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Equipment
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="component">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Component
+                        </NavLink>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- INSPECTION -->
+        <div class="nav-group">
+
+            <button type="button"
+                    class="nav-group-title"
+                    @onclick="ToggleInspection">
+                <i class="bi bi-tools"></i>
+                <span>Inspection</span>
+                <span class="arrow @(inspectionOpen ? "rotate" : "")">
+                    ›
+                </span>
+
+            </button>
+
+            @if (inspectionOpen)
+            {
+                <div class="submenu">
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="inspectiondetails">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Inspection Details
+                        </NavLink>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- POF -->
+        <div class="nav-group">
+
+            <button type="button"
+                    class="nav-group-title"
+                    @onclick="TogglePof">
+                <i class="bi bi-building-gear"></i>
+                <span>POF</span>
+
+                <span class="arrow @(pofOpen ? "rotate" : "")">
+                    ›
+                </span>
+
+            </button>
+
+            @if (pofOpen)
+            {
+                <div class="submenu">
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="thinning">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Thinning
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="componentlining">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Component Lining
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="externaldamage">
+                            <span class="arrow">›</span>&nbsp;&nbsp;External Damage
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="stresscorrosion">
+
+
+                            <span class="arrow">›</span>&nbsp;&nbsp;Stress Corrosion
+
+                        </NavLink>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- COF -->
+        <div class="nav-group">
+
+            <button type="button"
+                    class="nav-group-title"
+                    @onclick="ToggleCof">
+                <i class="bi bi-fire"></i>
+                <span>COF</span>
+
+                <span class="arrow @(cofOpen ? "rotate" : "")">
+                    ›
+                </span>
+
+            </button>
+
+            @if (cofOpen)
+            {
+                <div class="submenu">
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="flammable">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Flammable
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="nonflammable">
+                            <span class="arrow">›</span>&nbsp;&nbsp;Non Flammable
+                        </NavLink>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- REPORTS -->
+        <div class="nav-group">
+
+            <button type="button"
+                    class="nav-group-title"
+                    @onclick="ToggleReports">
+                <i class="bi bi-file-earmark-text"></i>
+                <span>Reports</span>
+
+                <span class="arrow @(reportsOpen ? "rotate" : "")">
+                    ›
+                </span>
+
+            </button>
+
+            @if (reportsOpen)
+            {
+                <div class="submenu">
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="reports/cofflammable">
+                            <span class="arrow">›</span>&nbsp;&nbsp;<span>COF Flammable</span>
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="reports/cofnonflammable">
+                            <span class="arrow">›</span>&nbsp;&nbsp;<span>COF Non Flammable</span>
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link"
+                                 href="reports/inspection">
+                            <span class="arrow">›</span>&nbsp;&nbsp;<span> Inspection Details</span>
+                        </NavLink>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- Logout -->
+
+@* <div class="nav-item px-3 logout-menu">
+
+    <NavLink class="nav-link" href="logout">
+
+        <h5><i class="bi bi-file-lock2"></i></h5>
+
+        Logout
+
+    </NavLink>
+
+</div> *@
+</nav>
+</div>
+
+
+@code {
+
+    private bool adminMasterOpen;
+    private bool masterOpen;
+    private bool inspectionOpen;
+    private bool pofOpen;
+    private bool cofOpen;
+    private bool reportsOpen;
+
+
+    private void ToggleAdminMaster()
+    {
+        adminMasterOpen = !adminMasterOpen;
+    }
+
+    private void ToggleMaster()
+    {
+        masterOpen = !masterOpen;
+    }
+
+    private void ToggleInspection()
+    {
+        inspectionOpen = !inspectionOpen;
+    }
+
+    private void TogglePof()
+    {
+        pofOpen = !pofOpen;
+    }
+
+    private void ToggleCof()
+    {
+        cofOpen = !cofOpen;
+    }
+
+    private void ToggleReports()
+    {
+        reportsOpen = !reportsOpen;
+    }
+}

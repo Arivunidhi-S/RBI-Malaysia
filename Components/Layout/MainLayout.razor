@@ -1,0 +1,28 @@
+﻿@inherits LayoutComponentBase
+@inject UserSession UserSession
+<div class="page">
+
+    <div class="sidebar">
+
+        <NavMenu />
+
+    </div>
+
+    <main>
+
+        @* <div class="top-row px-4"> *@
+        <div class="top-bar">
+
+            <span class="d-none d-lg-inline-block"><b>Hi, @UserSession.UserName</b></span>&nbsp;&nbsp;<a href="login" class="mb-1 btn btn-warning"><i class="arrow bi bi-lock-fill"></i>Logout</a>
+
+        </div>
+
+        <article class="content">
+
+            @Body
+
+        </article>
+
+    </main>
+
+</div>

@@ -1,0 +1,532 @@
+/* =========================================================
+   RBI MALAYSIA - LIGHT DASHBOARD
+   ========================================================= */
+
+.dashboard-page[b-nrdpd1m3ky] {
+    min-height: 100vh;
+    padding: 25px;
+    background: #f5f7fa;
+    color: #172b4d;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard-header[b-nrdpd1m3ky] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+    .dashboard-header h3[b-nrdpd1m3ky] {
+        margin: 0 0 5px 0;
+        font-size: 22px;
+        font-weight: 600;
+        color: #172b4d;
+    }
+
+    .dashboard-header p[b-nrdpd1m3ky] {
+        margin: 0;
+        font-size: 13px;
+        color: #718096;
+    }
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.add-equipment-btn[b-nrdpd1m3ky] {
+    border-radius: 8px;
+    padding: 9px 18px;
+    background: #0d7fb0;
+    border-color: #0d7fb0;
+}
+
+    .add-equipment-btn:hover[b-nrdpd1m3ky] {
+        background: #09698f;
+        border-color: #09698f;
+    }
+
+
+/* =========================================================
+   COMMON CARD
+   ========================================================= */
+
+.dashboard-card[b-nrdpd1m3ky] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    transition: all 0.2s ease;
+}
+
+    .dashboard-card:hover[b-nrdpd1m3ky] {
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+    }
+
+
+/* =========================================================
+   KPI CARD
+   ========================================================= */
+
+.kpi-card[b-nrdpd1m3ky] {
+    min-height: 145px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kpi-title[b-nrdpd1m3ky] {
+    color: #718096;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.kpi-value[b-nrdpd1m3ky] {
+    font-size: 30px;
+    font-weight: 700;
+    color: #172b4d;
+}
+
+    .kpi-value.danger[b-nrdpd1m3ky] {
+        color: #dc3545;
+    }
+
+    .kpi-value.warning[b-nrdpd1m3ky] {
+        color: #d97706;
+    }
+
+    .kpi-value.success[b-nrdpd1m3ky] {
+        color: #198754;
+    }
+
+
+/* =========================================================
+   KPI ICON
+   ========================================================= */
+
+.kpi-icon[b-nrdpd1m3ky] {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+
+    .kpi-icon.primary[b-nrdpd1m3ky] {
+        background: #e8f3fb;
+        color: #0876a8;
+    }
+
+    .kpi-icon.danger-bg[b-nrdpd1m3ky] {
+        background: #fdecec;
+        color: #dc3545;
+    }
+
+    .kpi-icon.warning-bg[b-nrdpd1m3ky] {
+        background: #fff5df;
+        color: #d97706;
+    }
+
+    .kpi-icon.success-bg[b-nrdpd1m3ky] {
+        background: #e8f7ef;
+        color: #198754;
+    }
+
+
+/* =========================================================
+   CHART CARD
+   ========================================================= */
+
+.chart-card[b-nrdpd1m3ky] {
+    padding: 25px;
+    min-height: 340px;
+}
+
+    .chart-card h5[b-nrdpd1m3ky],
+    .section-title[b-nrdpd1m3ky],
+    .equipment-card h5[b-nrdpd1m3ky] {
+        margin: 0 0 25px 0;
+        font-size: 17px;
+        font-weight: 600;
+        color: #172b4d;
+    }
+
+
+/* =========================================================
+   RISK BAR CHART
+   ========================================================= */
+
+.risk-chart[b-nrdpd1m3ky] {
+    padding-top: 15px;
+}
+
+.chart-row[b-nrdpd1m3ky] {
+    margin-bottom: 25px;
+}
+
+.chart-label[b-nrdpd1m3ky] {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+    .chart-label strong[b-nrdpd1m3ky] {
+        color: #172b4d;
+    }
+
+.chart-bar-container[b-nrdpd1m3ky] {
+    width: 100%;
+    height: 18px;
+    background: #eef2f6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chart-bar[b-nrdpd1m3ky] {
+    height: 100%;
+    border-radius: 10px;
+    min-width: 8px;
+}
+
+.high-bar[b-nrdpd1m3ky] {
+    background: #dc3545;
+}
+
+.medium-bar[b-nrdpd1m3ky] {
+    background: #f59e0b;
+}
+
+.low-bar[b-nrdpd1m3ky] {
+    background: #198754;
+}
+
+
+/* =========================================================
+   INSPECTION DONUT
+   ========================================================= */
+
+.inspection-chart[b-nrdpd1m3ky] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 20px;
+}
+
+.donut[b-nrdpd1m3ky] {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: conic-gradient( #198754 0deg 259deg, #3b82f6 259deg 324deg, #dc3545 324deg 360deg );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .donut[b-nrdpd1m3ky]::before {
+        content: "";
+        position: absolute;
+    }
+
+.donut-center[b-nrdpd1m3ky] {
+    width: 125px;
+    height: 125px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .donut-center strong[b-nrdpd1m3ky] {
+        font-size: 27px;
+        color: #172b4d;
+    }
+
+    .donut-center span[b-nrdpd1m3ky] {
+        font-size: 12px;
+        color: #718096;
+    }
+
+
+/* =========================================================
+   INSPECTION LEGEND
+   ========================================================= */
+
+.inspection-legend[b-nrdpd1m3ky] {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .inspection-legend > div[b-nrdpd1m3ky] {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .inspection-legend strong[b-nrdpd1m3ky] {
+        margin-left: auto;
+        color: #172b4d;
+    }
+
+.legend-dot[b-nrdpd1m3ky] {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+    .legend-dot.completed[b-nrdpd1m3ky] {
+        background: #198754;
+    }
+
+    .legend-dot.pending[b-nrdpd1m3ky] {
+        background: #3b82f6;
+    }
+
+    .legend-dot.overdue[b-nrdpd1m3ky] {
+        background: #dc3545;
+    }
+
+
+/* =========================================================
+   RISK MATRIX
+   ========================================================= */
+
+.risk-box[b-nrdpd1m3ky] {
+    height: 75px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+    .risk-box i[b-nrdpd1m3ky] {
+        font-size: 19px;
+    }
+
+.low-risk[b-nrdpd1m3ky] {
+    background: #e8f7ef;
+    color: #198754;
+    border: 1px solid #c9ebd8;
+}
+
+.medium-risk[b-nrdpd1m3ky] {
+    background: #fff5df;
+    color: #b77900;
+    border: 1px solid #f5dfac;
+}
+
+.high-risk[b-nrdpd1m3ky] {
+    background: #fdecec;
+    color: #dc3545;
+    border: 1px solid #f3c8cc;
+}
+
+
+/* =========================================================
+   EQUIPMENT TABLE
+   ========================================================= */
+
+.equipment-card[b-nrdpd1m3ky] {
+    padding: 25px;
+}
+
+.equipment-header[b-nrdpd1m3ky] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+    .equipment-header h5[b-nrdpd1m3ky] {
+        margin: 0;
+    }
+
+.equipment-table[b-nrdpd1m3ky] {
+    margin-bottom: 0;
+}
+
+    .equipment-table thead th[b-nrdpd1m3ky] {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e5e7eb;
+        white-space: nowrap;
+    }
+
+    .equipment-table tbody td[b-nrdpd1m3ky] {
+        color: #475569;
+        font-size: 13px;
+        border-color: #edf0f3;
+        padding: 15px 10px;
+    }
+
+    .equipment-table tbody tr:hover[b-nrdpd1m3ky] {
+        background: #f8fafc;
+    }
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge[b-nrdpd1m3ky] {
+    font-weight: 500;
+    padding: 6px 9px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .dashboard-page[b-nrdpd1m3ky] {
+        padding: 15px;
+    }
+
+    .dashboard-header[b-nrdpd1m3ky] {
+        padding: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+        .dashboard-header h3[b-nrdpd1m3ky] {
+            font-size: 19px;
+        }
+
+        .dashboard-header p[b-nrdpd1m3ky] {
+            font-size: 12px;
+        }
+
+    .add-equipment-btn[b-nrdpd1m3ky] {
+        width: 100%;
+    }
+
+    .kpi-card[b-nrdpd1m3ky] {
+        min-height: 125px;
+        padding: 20px;
+    }
+
+    .kpi-value[b-nrdpd1m3ky] {
+        font-size: 26px;
+    }
+
+    .kpi-icon[b-nrdpd1m3ky] {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .chart-card[b-nrdpd1m3ky] {
+        padding: 20px;
+    }
+
+    .risk-box[b-nrdpd1m3ky] {
+        height: 65px;
+    }
+
+    .equipment-card[b-nrdpd1m3ky] {
+        padding: 18px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+    .dashboard-page[b-nrdpd1m3ky] {
+        padding: 10px;
+    }
+
+    .dashboard-header[b-nrdpd1m3ky] {
+        border-radius: 10px;
+    }
+
+    .dashboard-card[b-nrdpd1m3ky] {
+        border-radius: 10px;
+    }
+
+    .kpi-card[b-nrdpd1m3ky] {
+        padding: 18px;
+    }
+
+    .kpi-title[b-nrdpd1m3ky] {
+        font-size: 13px;
+    }
+
+    .kpi-value[b-nrdpd1m3ky] {
+        font-size: 24px;
+    }
+
+    .chart-card h5[b-nrdpd1m3ky],
+    .section-title[b-nrdpd1m3ky],
+    .equipment-card h5[b-nrdpd1m3ky] {
+        font-size: 16px;
+    }
+
+    .donut[b-nrdpd1m3ky] {
+        width: 150px;
+        height: 150px;
+    }
+
+    .donut-center[b-nrdpd1m3ky] {
+        width: 105px;
+        height: 105px;
+    }
+
+        .donut-center strong[b-nrdpd1m3ky] {
+            font-size: 23px;
+        }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .dashboard-page[b-nrdpd1m3ky] {
+        padding: 8px;
+    }
+
+    .kpi-card[b-nrdpd1m3ky] {
+        min-height: 110px;
+        padding: 15px;
+    }
+
+    .kpi-icon[b-nrdpd1m3ky] {
+        width: 43px;
+        height: 43px;
+        font-size: 18px;
+    }
+}

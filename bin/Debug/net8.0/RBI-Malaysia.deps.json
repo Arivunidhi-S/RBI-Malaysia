@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "RBI-Malaysia/1.0.0": {
+        "runtime": {
+          "RBI-Malaysia.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "RBI-Malaysia/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

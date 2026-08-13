@@ -1,0 +1,1241 @@
+/* _content/RBI_Malaysia/Components/Layout/LoginLayout.razor.rz.scp.css */
+:host[b-uuyehggvon] {
+    display: block;
+}
+/* _content/RBI_Malaysia/Components/Layout/MainLayout.razor.rz.scp.css */
+.page[b-k0zhljh4ke] {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #f5f6f8;
+}
+
+/* =========================
+   SIDEBAR
+   ========================= */
+
+.sidebar[b-k0zhljh4ke] {
+    width: 230px;
+    min-width: 230px;
+    height: 100vh;
+    background-color: #1b283d;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+}
+
+
+/* =========================
+   MAIN
+   ========================= */
+
+main[b-k0zhljh4ke] {
+    flex: 1;
+    min-width: 0;
+    background-color: #f5f6f8;
+}
+
+
+/* =========================
+   TOP BAR
+   ========================= */
+
+.top-bar[b-k0zhljh4ke] {
+    height: 3.5rem;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+}
+
+
+    .top-bar a[b-k0zhljh4ke] {
+        color: #1e293b;
+        text-decoration: none;
+        font-size: 1rem;        
+    }
+    .top-bar a i[b-k0zhljh4ke]{       
+        font-size: 0.75rem;
+       
+    }
+
+/* =========================
+   CONTENT
+   ========================= */
+
+.content[b-k0zhljh4ke] {
+    padding: 30px;
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 640px) {
+
+    .page[b-k0zhljh4ke] {
+        display: block;
+    }
+
+
+    .sidebar[b-k0zhljh4ke] {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        position: relative;
+        overflow: visible;
+    }
+
+
+    main[b-k0zhljh4ke] {
+        width: 100%;
+    }
+
+
+    .top-bar[b-k0zhljh4ke] {
+        height: 3rem;
+    }
+
+
+    .content[b-k0zhljh4ke] {
+        padding: 15px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Layout/NavMenu.razor.rz.scp.css */
+/* =========================================
+   NAVBAR / SIDEBAR HEADER
+   ========================================= */
+
+.top-row[b-dw3fgj7ytv] {
+    height: 3.5rem;
+    background-color: #111827;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.navbar-brand[b-dw3fgj7ytv] {
+    font-size: 22px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 35px;
+}
+
+
+/* =========================================
+   MOBILE TOGGLE
+   ========================================= */
+
+.navbar-toggler[b-dw3fgj7ytv] {
+    appearance: none;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 2.5rem;
+    color: white;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 5px;
+    background-color: rgba(255,255,255,0.08);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1.75rem;
+}
+
+    .navbar-toggler:checked[b-dw3fgj7ytv] {
+        background-color: rgba(255,255,255,0.20);
+    }
+
+
+/* =========================================
+   ICON
+   ========================================= */
+
+.bi[b-dw3fgj7ytv] {
+    display: inline-block;
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    margin-left: 0.25rem;
+    top: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.nav-group-title .bi[b-dw3fgj7ytv] {
+    margin-left: 0.25rem;
+    margin-right: 0.75rem;
+}
+
+/* =========================================
+   NAV ITEM
+   ========================================= */
+
+.nav-item[b-dw3fgj7ytv] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-dw3fgj7ytv] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-dw3fgj7ytv] {
+        padding-bottom: 1rem;
+    }
+
+
+    /* =========================================
+   NAV LINK
+   ========================================= */
+
+    .nav-item[b-dw3fgj7ytv]  .nav-link {
+        color: #d7d7d7 !important;
+        background: transparent !important;
+        border: none;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+        width: 100%;
+        text-decoration: none;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+
+        /* Hover */
+
+        .nav-item[b-dw3fgj7ytv]  .nav-link:hover {
+            background-color: rgba(255,255,255,0.10) !important;
+            color: white !important;
+        }
+
+
+        /* Active */
+
+        .nav-item[b-dw3fgj7ytv]  .nav-link.active {
+            background-color: #68758a !important;
+            color: white !important;
+        }
+
+
+/* =========================================
+   NAV GROUP
+   ========================================= */
+
+.nav-group[b-dw3fgj7ytv] {
+    width: 100%;
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+}
+
+    .nav-group:first-of-type[b-dw3fgj7ytv] {
+        margin-top: 0.5rem;
+    }
+
+/* =========================================
+   GROUP TITLE
+   ========================================= */
+
+.nav-group-title[b-dw3fgj7ytv] {
+    width: 100%;
+    height: 2.5rem;
+    border: none;
+    background: transparent;
+    color: #d7d7d7;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: left;
+    padding: 0 0.95rem 0 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    letter-spacing: normal;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+    .nav-group-title:hover[b-dw3fgj7ytv] {
+        color: white;
+        background-color: rgba(255,255,255,0.05);
+    }
+
+
+/* =========================================
+   ARROW
+   ========================================= */
+
+.arrow[b-dw3fgj7ytv] {
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+}
+
+    .arrow.rotate[b-dw3fgj7ytv] {
+        transform: rotate(90deg);
+    }
+
+.nav-group-title .arrow[b-dw3fgj7ytv] {
+    margin-left: auto;
+    font-size: 0.75rem;
+}
+/* =========================================
+   SUB MENU
+   ========================================= */
+
+.submenu[b-dw3fgj7ytv] {
+    width: 100%;
+    padding-left: 0.25rem;
+}
+
+    .submenu[b-dw3fgj7ytv]  .nav-link {
+        padding-left: 1.25rem !important;
+        font-size: 0.88rem;
+        font-weight: 400;
+        height: 2.75rem;
+    }
+
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
+
+.nav-scrollable[b-dw3fgj7ytv] {
+    display: block;
+    height: calc(100vh - 3.5rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #0C2366;
+    background: linear-gradient(180deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
+}
+
+
+    /* =========================================
+   SCROLLBAR
+   ========================================= */
+
+    .nav-scrollable[b-dw3fgj7ytv]::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .nav-scrollable[b-dw3fgj7ytv]::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .nav-scrollable[b-dw3fgj7ytv]::-webkit-scrollbar-thumb {
+        background-color: rgba(255,255,255,0.25);
+        border-radius: 10px;
+    }
+
+
+/* =========================================
+   LOGIN
+   ========================================= */
+
+.login-menu[b-dw3fgj7ytv] {
+    margin-top: 10px;
+}
+
+
+/* =========================================
+   DESKTOP
+   ========================================= */
+
+@media (min-width: 641px) {
+
+    .navbar-toggler[b-dw3fgj7ytv] {
+        display: none;
+    }
+
+    .nav-scrollable[b-dw3fgj7ytv] {
+        display: block;
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 640px) {
+
+    .navbar-toggler[b-dw3fgj7ytv] {
+        display: block;
+    }
+
+    .top-row[b-dw3fgj7ytv] {
+        height: 3.5rem;
+    }
+
+    .navbar-brand[b-dw3fgj7ytv] {
+        font-size: 1rem;
+    }
+
+    .nav-scrollable[b-dw3fgj7ytv] {
+        display: none;
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+        .nav-scrollable.show[b-dw3fgj7ytv] {
+            display: block;
+        }
+
+    .nav-item[b-dw3fgj7ytv] {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+        .nav-item[b-dw3fgj7ytv]  .nav-link {
+            height: 3rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+    .nav-group-title[b-dw3fgj7ytv] {
+        height: 3rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+.logout-menu[b-dw3fgj7ytv] {
+    margin-top: 0.75rem;
+}
+
+    .logout-menu[b-dw3fgj7ytv]  .nav-link {
+        display: flex;
+        align-items: center;
+        padding-left: 1rem !important;
+    }
+
+    .logout-menu[b-dw3fgj7ytv]  .bi {
+        width: 1.15rem;
+        height: 1.15rem;
+        margin-left: 0.15rem;
+        margin-right: 0.85rem;
+    }
+/* _content/RBI_Malaysia/Components/Pages/Home.razor.rz.scp.css */
+/* =========================================================
+   RBI MALAYSIA - LIGHT DASHBOARD
+   ========================================================= */
+
+.dashboard-page[b-nrdpd1m3ky] {
+    min-height: 100vh;
+    padding: 25px;
+    background: #f5f7fa;
+    color: #172b4d;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard-header[b-nrdpd1m3ky] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+    .dashboard-header h3[b-nrdpd1m3ky] {
+        margin: 0 0 5px 0;
+        font-size: 22px;
+        font-weight: 600;
+        color: #172b4d;
+    }
+
+    .dashboard-header p[b-nrdpd1m3ky] {
+        margin: 0;
+        font-size: 13px;
+        color: #718096;
+    }
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.add-equipment-btn[b-nrdpd1m3ky] {
+    border-radius: 8px;
+    padding: 9px 18px;
+    background: #0d7fb0;
+    border-color: #0d7fb0;
+}
+
+    .add-equipment-btn:hover[b-nrdpd1m3ky] {
+        background: #09698f;
+        border-color: #09698f;
+    }
+
+
+/* =========================================================
+   COMMON CARD
+   ========================================================= */
+
+.dashboard-card[b-nrdpd1m3ky] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    transition: all 0.2s ease;
+}
+
+    .dashboard-card:hover[b-nrdpd1m3ky] {
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+    }
+
+
+/* =========================================================
+   KPI CARD
+   ========================================================= */
+
+.kpi-card[b-nrdpd1m3ky] {
+    min-height: 145px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kpi-title[b-nrdpd1m3ky] {
+    color: #718096;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.kpi-value[b-nrdpd1m3ky] {
+    font-size: 30px;
+    font-weight: 700;
+    color: #172b4d;
+}
+
+    .kpi-value.danger[b-nrdpd1m3ky] {
+        color: #dc3545;
+    }
+
+    .kpi-value.warning[b-nrdpd1m3ky] {
+        color: #d97706;
+    }
+
+    .kpi-value.success[b-nrdpd1m3ky] {
+        color: #198754;
+    }
+
+
+/* =========================================================
+   KPI ICON
+   ========================================================= */
+
+.kpi-icon[b-nrdpd1m3ky] {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+
+    .kpi-icon.primary[b-nrdpd1m3ky] {
+        background: #e8f3fb;
+        color: #0876a8;
+    }
+
+    .kpi-icon.danger-bg[b-nrdpd1m3ky] {
+        background: #fdecec;
+        color: #dc3545;
+    }
+
+    .kpi-icon.warning-bg[b-nrdpd1m3ky] {
+        background: #fff5df;
+        color: #d97706;
+    }
+
+    .kpi-icon.success-bg[b-nrdpd1m3ky] {
+        background: #e8f7ef;
+        color: #198754;
+    }
+
+
+/* =========================================================
+   CHART CARD
+   ========================================================= */
+
+.chart-card[b-nrdpd1m3ky] {
+    padding: 25px;
+    min-height: 340px;
+}
+
+    .chart-card h5[b-nrdpd1m3ky],
+    .section-title[b-nrdpd1m3ky],
+    .equipment-card h5[b-nrdpd1m3ky] {
+        margin: 0 0 25px 0;
+        font-size: 17px;
+        font-weight: 600;
+        color: #172b4d;
+    }
+
+
+/* =========================================================
+   RISK BAR CHART
+   ========================================================= */
+
+.risk-chart[b-nrdpd1m3ky] {
+    padding-top: 15px;
+}
+
+.chart-row[b-nrdpd1m3ky] {
+    margin-bottom: 25px;
+}
+
+.chart-label[b-nrdpd1m3ky] {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+    .chart-label strong[b-nrdpd1m3ky] {
+        color: #172b4d;
+    }
+
+.chart-bar-container[b-nrdpd1m3ky] {
+    width: 100%;
+    height: 18px;
+    background: #eef2f6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chart-bar[b-nrdpd1m3ky] {
+    height: 100%;
+    border-radius: 10px;
+    min-width: 8px;
+}
+
+.high-bar[b-nrdpd1m3ky] {
+    background: #dc3545;
+}
+
+.medium-bar[b-nrdpd1m3ky] {
+    background: #f59e0b;
+}
+
+.low-bar[b-nrdpd1m3ky] {
+    background: #198754;
+}
+
+
+/* =========================================================
+   INSPECTION DONUT
+   ========================================================= */
+
+.inspection-chart[b-nrdpd1m3ky] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 20px;
+}
+
+.donut[b-nrdpd1m3ky] {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: conic-gradient( #198754 0deg 259deg, #3b82f6 259deg 324deg, #dc3545 324deg 360deg );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .donut[b-nrdpd1m3ky]::before {
+        content: "";
+        position: absolute;
+    }
+
+.donut-center[b-nrdpd1m3ky] {
+    width: 125px;
+    height: 125px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .donut-center strong[b-nrdpd1m3ky] {
+        font-size: 27px;
+        color: #172b4d;
+    }
+
+    .donut-center span[b-nrdpd1m3ky] {
+        font-size: 12px;
+        color: #718096;
+    }
+
+
+/* =========================================================
+   INSPECTION LEGEND
+   ========================================================= */
+
+.inspection-legend[b-nrdpd1m3ky] {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .inspection-legend > div[b-nrdpd1m3ky] {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .inspection-legend strong[b-nrdpd1m3ky] {
+        margin-left: auto;
+        color: #172b4d;
+    }
+
+.legend-dot[b-nrdpd1m3ky] {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+    .legend-dot.completed[b-nrdpd1m3ky] {
+        background: #198754;
+    }
+
+    .legend-dot.pending[b-nrdpd1m3ky] {
+        background: #3b82f6;
+    }
+
+    .legend-dot.overdue[b-nrdpd1m3ky] {
+        background: #dc3545;
+    }
+
+
+/* =========================================================
+   RISK MATRIX
+   ========================================================= */
+
+.risk-box[b-nrdpd1m3ky] {
+    height: 75px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+    .risk-box i[b-nrdpd1m3ky] {
+        font-size: 19px;
+    }
+
+.low-risk[b-nrdpd1m3ky] {
+    background: #e8f7ef;
+    color: #198754;
+    border: 1px solid #c9ebd8;
+}
+
+.medium-risk[b-nrdpd1m3ky] {
+    background: #fff5df;
+    color: #b77900;
+    border: 1px solid #f5dfac;
+}
+
+.high-risk[b-nrdpd1m3ky] {
+    background: #fdecec;
+    color: #dc3545;
+    border: 1px solid #f3c8cc;
+}
+
+
+/* =========================================================
+   EQUIPMENT TABLE
+   ========================================================= */
+
+.equipment-card[b-nrdpd1m3ky] {
+    padding: 25px;
+}
+
+.equipment-header[b-nrdpd1m3ky] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+    .equipment-header h5[b-nrdpd1m3ky] {
+        margin: 0;
+    }
+
+.equipment-table[b-nrdpd1m3ky] {
+    margin-bottom: 0;
+}
+
+    .equipment-table thead th[b-nrdpd1m3ky] {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e5e7eb;
+        white-space: nowrap;
+    }
+
+    .equipment-table tbody td[b-nrdpd1m3ky] {
+        color: #475569;
+        font-size: 13px;
+        border-color: #edf0f3;
+        padding: 15px 10px;
+    }
+
+    .equipment-table tbody tr:hover[b-nrdpd1m3ky] {
+        background: #f8fafc;
+    }
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge[b-nrdpd1m3ky] {
+    font-weight: 500;
+    padding: 6px 9px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .dashboard-page[b-nrdpd1m3ky] {
+        padding: 15px;
+    }
+
+    .dashboard-header[b-nrdpd1m3ky] {
+        padding: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+        .dashboard-header h3[b-nrdpd1m3ky] {
+            font-size: 19px;
+        }
+
+        .dashboard-header p[b-nrdpd1m3ky] {
+            font-size: 12px;
+        }
+
+    .add-equipment-btn[b-nrdpd1m3ky] {
+        width: 100%;
+    }
+
+    .kpi-card[b-nrdpd1m3ky] {
+        min-height: 125px;
+        padding: 20px;
+    }
+
+    .kpi-value[b-nrdpd1m3ky] {
+        font-size: 26px;
+    }
+
+    .kpi-icon[b-nrdpd1m3ky] {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .chart-card[b-nrdpd1m3ky] {
+        padding: 20px;
+    }
+
+    .risk-box[b-nrdpd1m3ky] {
+        height: 65px;
+    }
+
+    .equipment-card[b-nrdpd1m3ky] {
+        padding: 18px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+    .dashboard-page[b-nrdpd1m3ky] {
+        padding: 10px;
+    }
+
+    .dashboard-header[b-nrdpd1m3ky] {
+        border-radius: 10px;
+    }
+
+    .dashboard-card[b-nrdpd1m3ky] {
+        border-radius: 10px;
+    }
+
+    .kpi-card[b-nrdpd1m3ky] {
+        padding: 18px;
+    }
+
+    .kpi-title[b-nrdpd1m3ky] {
+        font-size: 13px;
+    }
+
+    .kpi-value[b-nrdpd1m3ky] {
+        font-size: 24px;
+    }
+
+    .chart-card h5[b-nrdpd1m3ky],
+    .section-title[b-nrdpd1m3ky],
+    .equipment-card h5[b-nrdpd1m3ky] {
+        font-size: 16px;
+    }
+
+    .donut[b-nrdpd1m3ky] {
+        width: 150px;
+        height: 150px;
+    }
+
+    .donut-center[b-nrdpd1m3ky] {
+        width: 105px;
+        height: 105px;
+    }
+
+        .donut-center strong[b-nrdpd1m3ky] {
+            font-size: 23px;
+        }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .dashboard-page[b-nrdpd1m3ky] {
+        padding: 8px;
+    }
+
+    .kpi-card[b-nrdpd1m3ky] {
+        min-height: 110px;
+        padding: 15px;
+    }
+
+    .kpi-icon[b-nrdpd1m3ky] {
+        width: 43px;
+        height: 43px;
+        font-size: 18px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Pages/Login.razor.rz.scp.css */
+/* =====================================================
+   LOGIN PAGE
+   ===================================================== */
+
+.login-page[b-gauanoolyw] {
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient( 135deg, #071b2f 0%, #0b3152 50%, #0e4b6f 100% );
+}
+
+
+/* =====================================================
+   LOGIN CARD
+   ===================================================== */
+
+.login-card[b-gauanoolyw] {
+    width: 100%;
+    max-width: 410px;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.30);
+}
+
+
+/* =====================================================
+   LOGO
+   ===================================================== */
+
+.logo-box[b-gauanoolyw] {
+    width: 90px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #0876a8;
+    color: white;
+    border-radius: 12px;
+}
+
+.logo-main[b-gauanoolyw] {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.logo-sub[b-gauanoolyw] {
+    margin-top: 5px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.login-title[b-gauanoolyw] {
+    margin: 0;
+    color: #172b4d;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.login-subtitle[b-gauanoolyw] {
+    margin-top: 8px;
+    margin-bottom: 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   BOOTSTRAP INPUT
+   ===================================================== */
+
+.login-card .input-group[b-gauanoolyw] {
+    width: 100%;
+}
+
+.login-card .input-group-text[b-gauanoolyw] {
+    width: 46px;
+    padding-left:22px;
+    justify-content: center;
+    border-color: #ced4da;
+    color: #64748b;
+    background-color: #ffffff;
+}
+
+    .login-card .input-group-text i[b-gauanoolyw] {
+        font-size: 16px;
+    }
+
+
+/* =====================================================
+   INPUT
+   ===================================================== */
+
+.login-card .form-control[b-gauanoolyw] {
+    height: 48px;
+    border-color: #ced4da;
+    font-size: 15px;
+    box-shadow: none;
+}
+
+    .login-card .form-control:focus[b-gauanoolyw] {
+        border-color: #0876a8;
+        box-shadow: 0 0 0 0.20rem rgba(8, 118, 168, 0.15);
+    }
+
+    .login-card .form-control[b-gauanoolyw]::placeholder {
+        color: #6c757d;
+        opacity: 1;
+    }
+
+
+/* =====================================================
+   PASSWORD BUTTON
+   ===================================================== */
+
+.password-button[b-gauanoolyw] {
+    width: 48px;
+    border-color: #ced4da !important;
+    color: #64748b;
+    background-color: #ffffff;
+}
+
+    .password-button:hover[b-gauanoolyw] {
+        color: #0876a8;
+        background-color: #ffffff;
+        border-color: #0876a8 !important;
+    }
+
+    .password-button:focus[b-gauanoolyw] {
+        box-shadow: none;
+    }
+
+
+/* =====================================================
+   LABEL
+   ===================================================== */
+
+.login-card .form-label[b-gauanoolyw] {
+    color: #334155;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   VALIDATION
+   ===================================================== */
+
+.login-card .validation-message[b-gauanoolyw] {
+    display: block;
+    margin-top: 5px;
+    color: #dc3545;
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   LOGIN BUTTON
+   ===================================================== */
+
+.login-button[b-gauanoolyw] {
+    height: 50px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background-color: #0876a8;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+    .login-button:hover[b-gauanoolyw] {
+        background-color: #075f88;
+        color: white;
+    }
+
+    .login-button:focus[b-gauanoolyw] {
+        background-color: #0876a8;
+        color: white;
+        box-shadow: 0 0 0 0.20rem rgba(8, 118, 168, 0.20);
+    }
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.login-footer[b-gauanoolyw] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.footer-line[b-gauanoolyw] {
+    flex: 1;
+    height: 1px;
+    background-color: #dee2e6;
+}
+
+.login-footer span[b-gauanoolyw] {
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   COPYRIGHT
+   ===================================================== */
+
+.copyright[b-gauanoolyw] {
+    margin-top: 12px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 576px) {
+
+    .login-page .container-fluid[b-gauanoolyw] {
+        padding: 15px;
+    }
+
+    .login-card[b-gauanoolyw] {
+        max-width: 100%;
+        padding: 32px 25px;
+    }
+
+    .login-title[b-gauanoolyw] {
+        font-size: 25px;
+    }
+
+    .login-subtitle[b-gauanoolyw] {
+        font-size: 13px;
+    }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 400px) {
+
+    .login-page .container-fluid[b-gauanoolyw] {
+        padding: 8px;
+    }
+
+    .login-card[b-gauanoolyw] {
+        padding: 28px 20px;
+        border-radius: 18px;
+    }
+
+    .logo-box[b-gauanoolyw] {
+        width: 85px;
+        height: 68px;
+    }
+
+    .login-title[b-gauanoolyw] {
+        font-size: 24px;
+    }
+
+    .login-subtitle[b-gauanoolyw] {
+        font-size: 12px;
+    }
+}

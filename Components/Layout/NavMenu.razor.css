@@ -1,0 +1,324 @@
+/* =========================================
+   NAVBAR / SIDEBAR HEADER
+   ========================================= */
+
+.top-row {
+    height: 3.5rem;
+    background-color: #111827;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.navbar-brand {
+    font-size: 22px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 35px;
+}
+
+
+/* =========================================
+   MOBILE TOGGLE
+   ========================================= */
+
+.navbar-toggler {
+    appearance: none;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 2.5rem;
+    color: white;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 5px;
+    background-color: rgba(255,255,255,0.08);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1.75rem;
+}
+
+    .navbar-toggler:checked {
+        background-color: rgba(255,255,255,0.20);
+    }
+
+
+/* =========================================
+   ICON
+   ========================================= */
+
+.bi {
+    display: inline-block;
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    margin-left: 0.25rem;
+    top: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.nav-group-title .bi {
+    margin-left: 0.25rem;
+    margin-right: 0.75rem;
+}
+
+/* =========================================
+   NAV ITEM
+   ========================================= */
+
+.nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+
+    /* =========================================
+   NAV LINK
+   ========================================= */
+
+    .nav-item ::deep .nav-link {
+        color: #d7d7d7 !important;
+        background: transparent !important;
+        border: none;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+        width: 100%;
+        text-decoration: none;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+
+        /* Hover */
+
+        .nav-item ::deep .nav-link:hover {
+            background-color: rgba(255,255,255,0.10) !important;
+            color: white !important;
+        }
+
+
+        /* Active */
+
+        .nav-item ::deep .nav-link.active {
+            background-color: #68758a !important;
+            color: white !important;
+        }
+
+
+/* =========================================
+   NAV GROUP
+   ========================================= */
+
+.nav-group {
+    width: 100%;
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+}
+
+    .nav-group:first-of-type {
+        margin-top: 0.5rem;
+    }
+
+/* =========================================
+   GROUP TITLE
+   ========================================= */
+
+.nav-group-title {
+    width: 100%;
+    height: 2.5rem;
+    border: none;
+    background: transparent;
+    color: #d7d7d7;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: left;
+    padding: 0 0.95rem 0 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    letter-spacing: normal;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+    .nav-group-title:hover {
+        color: white;
+        background-color: rgba(255,255,255,0.05);
+    }
+
+
+/* =========================================
+   ARROW
+   ========================================= */
+
+.arrow {
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+}
+
+    .arrow.rotate {
+        transform: rotate(90deg);
+    }
+
+.nav-group-title .arrow {
+    margin-left: auto;
+    font-size: 0.75rem;
+}
+/* =========================================
+   SUB MENU
+   ========================================= */
+
+.submenu {
+    width: 100%;
+    padding-left: 0.25rem;
+}
+
+    .submenu ::deep .nav-link {
+        padding-left: 1.25rem !important;
+        font-size: 0.88rem;
+        font-weight: 400;
+        height: 2.75rem;
+    }
+
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
+
+.nav-scrollable {
+    display: block;
+    height: calc(100vh - 3.5rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #0C2366;
+    background: linear-gradient(180deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
+}
+
+
+    /* =========================================
+   SCROLLBAR
+   ========================================= */
+
+    .nav-scrollable::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .nav-scrollable::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .nav-scrollable::-webkit-scrollbar-thumb {
+        background-color: rgba(255,255,255,0.25);
+        border-radius: 10px;
+    }
+
+
+/* =========================================
+   LOGIN
+   ========================================= */
+
+.login-menu {
+    margin-top: 10px;
+}
+
+
+/* =========================================
+   DESKTOP
+   ========================================= */
+
+@media (min-width: 641px) {
+
+    .navbar-toggler {
+        display: none;
+    }
+
+    .nav-scrollable {
+        display: block;
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 640px) {
+
+    .navbar-toggler {
+        display: block;
+    }
+
+    .top-row {
+        height: 3.5rem;
+    }
+
+    .navbar-brand {
+        font-size: 1rem;
+    }
+
+    .nav-scrollable {
+        display: none;
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+        .nav-scrollable.show {
+            display: block;
+        }
+
+    .nav-item {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+        .nav-item ::deep .nav-link {
+            height: 3rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+    .nav-group-title {
+        height: 3rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+.logout-menu {
+    margin-top: 0.75rem;
+}
+
+    .logout-menu ::deep .nav-link {
+        display: flex;
+        align-items: center;
+        padding-left: 1rem !important;
+    }
+
+    .logout-menu ::deep .bi {
+        width: 1.15rem;
+        height: 1.15rem;
+        margin-left: 0.15rem;
+        margin-right: 0.85rem;
+    }
