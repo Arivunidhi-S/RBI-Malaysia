@@ -1,0 +1,348 @@
+﻿@page "/staff"
+
+@using System.ComponentModel.DataAnnotations
+@using RBI_Malaysia.Services
+@using Microsoft.JSInterop
+@using RBI_Malaysia.Components.Shared
+
+@inject StaffService StaffService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<SessionGuard />
+
+<PageTitle>Staff Master</PageTitle>
+
+<div class="staff-page">
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================================== -->
+    <div class="page-header mb-3">
+        <div>
+            <h4>
+                <i class="bi bi-person-badge me-2"></i>
+                Staff Master
+            </h4>
+            <small>
+                Manage staff information
+            </small>
+        </div>
+        @*  <button type="button" class="btn btn-primary" @onclick="NewStaff">
+            <i class="bi bi-plus-lg me-1"></i>
+            New Staff
+        </button> *@
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- FORM -->
+    <!-- ===================================================== -->
+
+    <EditForm Model="@staff" OnValidSubmit="@SaveStaff" FormName="StaffForm">
+
+        <DataAnnotationsValidator />
+        
+        <div class="row g-3 mb-3" >
+
+            <!-- ================================================= -->
+            <!-- LEFT SIDE -->
+            <!-- ================================================= -->
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card staff-card">
+                    <div class="card-header staff-header">
+                        <i class="bi bi-person-plus me-2"></i>
+                        Add Staff Details
+                    </div>
+                    <div class="card-body">
+                        <!-- NAME -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Name
+                                <span class="text-danger">*</span>
+                            </label>
+                            <InputText class="form-control validate-required" @bind-Value="staff.StaffName" placeholder="Enter staff name" />
+
+                            <ValidationMessage For="@(() => staff.StaffName)" />
+                        </div>
+                        <!-- DESIGNATION -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Designation
+                            </label>
+                            <InputSelect class="form-select" @bind-Value="staff.Designation" @bind-Value:after="DesignationChanged">
+                                <option value="">Select Designation...</option>
+                                <option value="Administrator">Administrator</option>
+                                <option value="Technician">Technician</option>
+                                <option value="Engineer">Engineer</option>
+                                <option value="Inspector">Inspector</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Supervisor">Supervisor</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => staff.Designation)" />
+                        </div>
+                        <!-- MOBILE -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Mobile
+                            </label>
+                            <InputText class="form-control" @bind-Value="staff.Phone" placeholder="Enter mobile number" />
+                            <ValidationMessage For="@(() => staff.Phone)" />
+                        </div>
+                        <!-- EMAIL -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Email
+                            </label>
+                            <InputText type="email" class="form-control" @bind-Value="staff.Email" placeholder="Enter email address" />
+                            <ValidationMessage For="@(() => staff.Email)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ================================================= -->
+            <!-- RIGHT SIDE -->
+            <!-- ================================================= -->
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card staff-card">
+                    <div class="card-header staff-header">
+                        <i class="bi bi-person-vcard me-2"></i>
+                        Staff Information
+                    </div>
+                    <div class="card-body">
+                        <!-- STAFF NO -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Staff No
+                            </label>
+                            <InputText class="form-control" @bind-Value="staff.StaffNo" readonly />
+                        </div>
+                        <!-- ADDRESS -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Address
+                            </label>
+                            <InputTextArea class="form-control staff-address" rows="4" @bind-Value="staff.Address" placeholder="Enter address" />
+                        </div>
+                        <!-- BUTTONS -->
+                        <div class="staff-buttons pt-1">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i>
+                                @(staff.StaffId == 0 ? "Save" : "Update")
+                            </button>
+                            <button type="button" class="btn btn-danger" @onclick="NewStaff">
+                                <i class="bi bi-eraser me-1"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+    </EditForm>
+    <!-- ===================================================== -->
+    <!-- STAFF TABLE -->
+    <!-- ===================================================== -->
+    <div class="card staff-card staff-list-card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table staff-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width:70px">
+                                Edit
+                            </th>
+                            <th>
+                                Staff No
+                            </th>
+                            <th>
+                                Staff Name
+                            </th>
+                            <th>
+                                Designation
+                            </th>
+                            <th>
+                                Phone
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th class="text-center" style="width:80px">
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in staffs)
+                        {
+
+                            <tr>
+                                <!-- EDIT -->
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm staff-edit-btn" title="Edit" @onclick="() => EditStaff(item)">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                </td>
+                                <!-- STAFF NO -->
+                                <td>
+                                    @item.StaffNo
+                                </td>
+                                <!-- STAFF NAME -->
+                                <td>
+                                    <strong>
+                                        @item.StaffName
+                                    </strong>
+                                </td>
+                                <!-- DESIGNATION -->
+                                <td>
+                                    @item.Designation
+                                </td>
+                                <!-- PHONE -->
+                                <td>
+                                    @item.Phone
+                                </td>
+                                <!-- EMAIL -->
+                                <td>
+                                    @item.Email
+                                </td>
+                                <!-- DELETE -->
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm staff-delete-btn" title="Delete" @onclick="() => DeleteStaff(item)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        @if (!staffs.Any())
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center py-5 text-muted">
+
+                                    <i class="bi bi-person-x fs-2 d-block mb-2"></i>
+                                    No staff records found
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    // =========================================================
+    // MODEL
+    // =========================================================
+    private StaffModel staff = new();
+
+    private List<StaffModel> staffs = new();
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStaffs();
+    }
+    // =========================================================
+    // LOAD STAFF
+    // =========================================================
+    private async Task LoadStaffs()
+    {
+        staffs = await StaffService.GetStaffsAsync();
+    }
+    // =========================================================
+    // NEW / CLEAR
+    // =========================================================
+    private void NewStaff()
+    {
+        staff = new StaffModel();
+    }
+    // =========================================================
+    // EDIT
+    // =========================================================
+    private void EditStaff(StaffModel item)
+    {
+        staff = new StaffModel
+        {
+            StaffId = item.StaffId,
+            StaffNo = item.StaffNo,
+            StaffName = item.StaffName,
+            Designation = item.Designation,
+            Address = item.Address,
+            Phone = item.Phone,
+            Email = item.Email
+        };
+    }
+    // =========================================================
+    // SAVE / UPDATE
+    // =========================================================
+    private async Task SaveStaff()
+    {
+
+        try
+        {
+            string saveFlag = staff.StaffId == 0 ? "N" : "U"; bool isNew = staff.StaffId == 0;
+            await StaffService.SaveStaffAsync(staff.StaffId, staff.StaffNo, staff.StaffName, staff.Designation, staff.Address, staff.Phone, staff.Email, Convert.ToDecimal(UserSession.UserID), saveFlag);
+            await LoadStaffs();
+            NewStaff();
+            if (isNew)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "Staff details saved successfully.");
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Updated!", "Staff details updated successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+
+    // =========================================================
+    // STAFF NO GENERATION BASED ON DESIGNATION
+    // =========================================================
+    private async Task DesignationChanged()
+    {
+        if (string.IsNullOrWhiteSpace(staff.Designation))
+        {
+            staff.StaffNo = "";
+            return;
+        }
+        // Only generate Staff No for new staff
+        if (staff.StaffId == 0)
+        {
+            staff.StaffNo = await StaffService.GenerateStaffNoAsync(staff.Designation);
+        }
+    }
+
+    // =========================================================
+    // DELETE
+    // =========================================================
+
+    private async Task DeleteStaff(StaffModel item)
+    {
+        try
+        {
+            bool confirmed = await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete {item.StaffName}?"
+            );
+
+            if (!confirmed)
+            {
+                return;
+            }
+            bool result = await StaffService.DeleteStaffAsync(item.StaffId, Convert.ToDecimal(UserSession.UserID));
+            await LoadStaffs();
+            if (staff.StaffId == item.StaffId)
+            {
+                NewStaff();
+            }
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Staff details deleted successfully.");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+
+}

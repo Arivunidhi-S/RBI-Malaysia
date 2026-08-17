@@ -1,0 +1,480 @@
+﻿@page "/company"
+
+@using System.Data
+@using Microsoft.Data.SqlClient
+@using RBI_Malaysia.Services
+@using RBI_Malaysia.Components.Shared
+@using Microsoft.JSInterop
+
+@inject CompanyService CompanyService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<SessionGuard />
+
+<PageTitle>Company Master</PageTitle>
+
+<div class="company-page">
+    <!-- Page Header -->
+    <div class="page-header mb-3">
+        <div>
+            <h4>
+                <i class="bi bi-building me-2"></i>
+                Company Master
+            </h4>
+            <small>Manage company information</small>
+        </div>
+
+        @* <button class="btn btn-primary"
+                @onclick="NewCompany">
+            <i class="bi bi-plus-lg me-1"></i>
+            New Company
+        </button> *@
+    </div>
+
+    <EditForm Model="@companyModel" OnValidSubmit="@SaveCompany">
+
+        <DataAnnotationsValidator />
+        <div class="row g-3 mb-3">
+
+            <!-- ================================= -->
+            <!-- LEFT : COMPANY FORM -->
+            <!-- ================================= -->
+
+            <div class="col-xl-6 col-lg-5 col-md-12">
+                <div class="card company-card">
+                    <div class="card-header company-header">
+                        <i class="bi bi-building me-2"></i>
+                        Company Details
+                    </div>
+                    <div class="card-body">
+                        <!-- Company Name -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Company Name <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-building"></i>
+                                </span>
+                                <InputText class="form-control validate-required" @bind-Value="companyModel.CompanyName" placeholder="Enter company name" />
+                            </div>
+                            <ValidationMessage For="@(() => companyModel.CompanyName)" />
+                        </div>
+                        <!-- Address 1 -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Address 1
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-geo-alt"></i>
+                                </span>
+                                <InputText class="form-control" @bind-Value="companyModel.Address1" placeholder="Enter address" />
+                            </div>
+                        </div>
+                        <!-- Address 2 -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Address 2
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-geo-alt"></i>
+                                </span>
+                                <InputText class="form-control" @bind-Value="companyModel.Address2" placeholder="Enter address 2" />
+                            </div>
+                        </div>
+                        <!-- City / State -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    City
+                                </label>
+                                <InputText class="form-control" @bind-Value="companyModel.City" placeholder="City" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    State
+                                </label>
+                                <InputText class="form-control" @bind-Value="companyModel.State" placeholder="State" />
+                            </div>
+                        </div>
+                        <!-- Country / Postcode -->
+                        <div class="row">
+                            <div class="col-md-7 mb-3">
+                                <label class="form-label">
+                                    Country
+                                </label>
+                                <InputText class="form-control" @bind-Value="companyModel.Country" placeholder="Country" />
+                                <ValidationMessage For="@(() => companyModel.Country)" />
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label class="form-label">
+                                    Postcode
+                                </label>
+                                <InputText inputmode="numeric" class="form-control validate-number" @bind-Value="companyModel.Postcode" placeholder="Postcode" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- ================================= -->
+            <!-- RIGHT : COMPANY FORM -->
+            <!-- ================================= -->
+            <div class="col-xl-6 col-lg-5 col-md-12">
+                <div class="card company-card">
+                    <div class="card-header company-header">
+                        <i class="bi bi-building me-2"></i>
+                        Company Details
+                    </div>
+                    <div class="card-body">
+                        <!-- Phone / Fax -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Contact No
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-telephone"></i>
+                                    </span>
+                                    <InputText inputmode="numeric" class="form-control validate-mobile" @bind-Value="companyModel.Phone" placeholder="Contact number" />
+                                    <ValidationMessage For="@(() => companyModel.Phone)" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Fax No
+                                </label>
+                                <InputText inputmode="numeric" class="form-control validate-number" @bind-Value="companyModel.Fax" placeholder="Fax number" />
+                                <ValidationMessage For="@(() => companyModel.Fax)" />
+                            </div>
+                        </div>
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Email
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <InputText type="email" class="form-control validate-email" @bind-Value="companyModel.Email" placeholder="company@email.com" />
+                                <ValidationMessage For="@(() => companyModel.Email)" />
+                            </div>
+                        </div>
+                        <!-- Website -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Website
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-globe"></i>
+                                </span>
+                                <InputText class="form-control" @bind-Value="companyModel.Website" placeholder="https://example.com" />
+                            </div>
+                        </div>
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Description
+                            </label>
+                            <InputTextArea class="form-control" rows="3" @bind-Value="companyModel.Description" placeholder="Enter company description" />
+                        </div>
+                        <!-- Buttons -->
+                        <div class="d-flex gap-2 pt-2 mb-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i>
+                                @(companyModel.CompanyID == 0 ? "Save" : "Update")
+                            </button>
+                            <button type="button"
+                                    class="btn btn-danger"
+                                    @onclick="NewCompany">
+                                <i class="bi bi-x-lg me-1 "></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+    <!-- ================================= -->
+    <!--  COMPANY TABLE -->
+    <!-- ================================= -->
+    <div class="row g-3">
+        <div class="col-xl-12 col-lg-7 col-md-12">
+            <div class="card company-card">
+                <div class="card-header company-header d-flex justify-content-between align-items-center">
+                    <span>
+                        <i class="bi bi-list-ul me-2"></i>
+                        Company List
+                    </span>
+                    <span class="badge bg-primary">
+                        @companies.Count
+                    </span>
+                </div>
+
+                <div class="card-body p-0">
+                    <!-- Search -->
+                    <div class="p-3 border-bottom">
+
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Search company..." @bind="searchText" @bind:event="oninput" />
+                        </div>
+                    </div>
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width:60px">
+                                        Edit
+                                    </th>
+                                    <th>
+                                        Company
+                                    </th>
+                                    <th>
+                                        City
+                                    </th>
+                                    <th>
+                                        Contact
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th style="width:60px">
+                                        Delete
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in FilteredCompanies)
+                                {
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-primary" title="Edit" @onclick="() => EditCompany(item)">
+                                                <i class="bi bi-pencil" style="padding-top:2px;padding-left:10px"></i>
+                                            </button>
+                                        </td>
+
+                                        <td>
+                                            <div class="company-name">
+                                                <div class="company-icon">
+                                                    <i class="bi bi-building"></i>
+                                                </div>
+                                                <div>
+                                                    <strong>
+                                                        @item.CompanyName
+                                                    </strong>
+
+                                                    <small>
+                                                        @item.Country
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @item.City
+                                        </td>
+                                        <td>
+                                            @item.Phone
+                                        </td>
+                                        <td>
+                                            @item.Email
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <button class="btn btn-danger" title="Delete" @onclick="() => DeleteCompany(item)">
+                                                    <i class="bi bi-trash" style="padding-top:2px;padding-left:10px"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (!FilteredCompanies.Any())
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center py-5 text-muted">
+                                            <i class="bi bi-building fs-2 d-block mb-2"></i>
+                                            No company found.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    private CompanyModel companyModel = new();
+
+    private List<CompanyModel> companies = new();
+
+    private string searchText = string.Empty;
+
+
+    // =========================================================
+    // FILTER
+    // =========================================================
+
+    private IEnumerable<CompanyModel> FilteredCompanies =>
+        string.IsNullOrWhiteSpace(searchText) ? companies
+            : companies.Where(x =>
+                (x.CompanyName ?? "").Contains(searchText, StringComparison.OrdinalIgnoreCase)
+
+                ||
+
+                (x.City ?? "").Contains(searchText, StringComparison.OrdinalIgnoreCase)
+
+                ||
+
+                (x.Email ?? "").Contains(searchText, StringComparison.OrdinalIgnoreCase)
+            );
+
+
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCompanies();
+    }
+
+
+    // =========================================================
+    // LOAD COMPANIES
+    // =========================================================
+
+    private async Task LoadCompanies()
+    {
+        try
+        {
+            companies = await CompanyService.GetCompaniesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error loading companies: " + ex.Message);
+        }
+    }
+
+
+    // =========================================================
+    // NEW COMPANY
+    // =========================================================
+
+    private void NewCompany()
+    {
+        companyModel = new CompanyModel();
+    }
+
+
+    // =========================================================
+    // EDIT COMPANY
+    // =========================================================
+
+    private void EditCompany(CompanyModel item)
+    {
+        companyModel = new CompanyModel
+        {
+            CompanyID = item.CompanyID,
+            CompanyName = item.CompanyName,
+            Address1 = item.Address1,
+            Address2 = item.Address2,
+            City = item.City,
+            State = item.State,
+            Country = item.Country,
+            Postcode = item.Postcode,
+            Description = item.Description,
+            Phone = item.Phone,
+            Fax = item.Fax,
+            Email = item.Email,
+            Website = item.Website
+        };
+    }
+
+
+    // =========================================================
+    // SAVE / UPDATE
+    // =========================================================
+
+    private async Task SaveCompany()
+    {
+        try
+        {
+            string saveFlag = companyModel.CompanyID == 0 ? "N" : "U";
+
+            bool isNew = companyModel.CompanyID == 0;
+
+            await CompanyService.SaveCompanyAsync(companyModel, UserSession.UserID.ToString(), saveFlag);
+
+            await LoadCompanies();
+
+            NewCompany();
+
+            if (isNew)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "Company details saved successfully.");
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Updated!", "Company details updated successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+
+
+
+    // =========================================================
+    // DELETE
+    // =========================================================
+
+    private async Task DeleteCompany(CompanyModel item)
+    {
+        try
+        {
+            bool confirmed = await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete {item.CompanyName}?");
+
+            if (!confirmed)
+            {
+                return;
+            }
+
+            bool deleted = await CompanyService.DeleteCompanyAsync(item.CompanyID, UserSession.UserID.ToString());
+
+            if (deleted)
+            {
+                await LoadCompanies();
+
+                if (companyModel.CompanyID == item.CompanyID)
+                {
+                    NewCompany();
+                }
+
+                await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Company details deleted successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error deleting company: " + ex.Message);
+        }
+    }
+}

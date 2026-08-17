@@ -429,6 +429,285 @@ main[b-k0zhljh4ke] {
         margin-left: 0.15rem;
         margin-right: 0.85rem;
     }
+/* _content/RBI_Malaysia/Components/Pages/Company.razor.rz.scp.css */
+/* =========================================
+   COMPANY PAGE
+   ========================================= */
+
+.company-page[b-27pjoswe3a] {
+    padding: 10px;
+    background: #f4f6f9;
+    min-height: calc(100vh - 3.5rem);
+}
+
+
+/* =========================================
+   PAGE HEADER
+   ========================================= */
+
+.page-header[b-27pjoswe3a] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid #e1e5eb;
+    border-radius: 10px;
+    padding: 20px 20px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+    .page-header h4[b-27pjoswe3a] {
+        margin: 0;
+        color: #17365d;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .page-header small[b-27pjoswe3a] {
+        color: #7a869a;
+    }
+
+
+/* =========================================
+   CARD
+   ========================================= */
+
+.company-card[b-27pjoswe3a] {
+    border: 1px solid #e1e5eb;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+
+/* =========================================
+   CARD HEADER
+   ========================================= */
+
+.company-header[b-27pjoswe3a] {
+    background: #ffffff;
+    color: #17365d;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 15px 18px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* =========================================
+   FORM
+   ========================================= */
+
+.form-label[b-27pjoswe3a] {
+    color: #344054;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+
+[b-27pjoswe3a] .form-control,
+.form-select[b-27pjoswe3a] {
+    min-height: 40px;
+    border: 1px solid #d5dbe3;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #344054;
+}
+
+
+
+
+    [b-27pjoswe3a] .form-control::placeholder {
+        color: #888888;
+    }
+[b-27pjoswe3a] .form-control:focus,
+.form-select:focus[b-27pjoswe3a] {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.10);
+}
+
+
+.input-group-text[b-27pjoswe3a] {
+    background: #f8fafc;
+    border-color: #d5dbe3;
+    color: #667085;
+}
+
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+.btn-primary[b-27pjoswe3a] {
+    background: #0d6efd;
+    border-color: #0d6efd;
+}
+
+
+    .btn-primary:hover[b-27pjoswe3a] {
+        background: #0b5ed7;
+        border-color: #0b5ed7;
+    }
+
+
+.btn[b-27pjoswe3a] {
+    font-size: 13px;
+}
+
+
+/* =========================================
+   TABLE
+   ========================================= */
+
+.table[b-27pjoswe3a] {
+    font-size: 13px;
+    color: #344054;
+}
+
+
+    .table thead th[b-27pjoswe3a] {
+        background: #f7f9fc;
+        color: #475467;
+        font-weight: 600;
+        font-size: 12px;
+        border-bottom: 1px solid #dfe3e8;
+        white-space: nowrap;
+        padding: 12px;
+    }
+
+
+    .table tbody td[b-27pjoswe3a] {
+        padding: 12px;
+        border-bottom: 1px solid #eef0f3;
+        vertical-align: middle;
+    }
+
+
+    .table tbody tr:hover[b-27pjoswe3a] {
+        background: #f8fbff;
+    }
+
+
+/* =========================================
+   COMPANY NAME
+   ========================================= */
+
+.company-name[b-27pjoswe3a] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.company-icon[b-27pjoswe3a] {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 8px;
+    background: #eaf2ff;
+    color: #0d6efd;
+    padding-top: 10px;
+    padding-left: 11px;
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+}
+
+
+.company-name strong[b-27pjoswe3a] {
+    display: block;
+    color: #1d2939;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.company-name small[b-27pjoswe3a] {
+    display: block;
+    margin-top: 2px;
+    color: #98a2b3;
+    font-size: 11px;
+}
+
+
+/* =========================================
+   ACTION BUTTON
+   ========================================= */
+
+.table .btn[b-27pjoswe3a] {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================
+   VALIDATION
+   ========================================= */
+
+.validation-message[b-27pjoswe3a] {
+    display: block;
+    color: #dc3545;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 991px) {
+
+    .company-page[b-27pjoswe3a] {
+        padding: 15px;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .company-page[b-27pjoswe3a] {
+        padding: 10px;
+    }
+
+    .page-header[b-27pjoswe3a] {
+        padding: 13px;
+    }
+
+        .page-header h4[b-27pjoswe3a] {
+            font-size: 17px;
+        }
+
+        .page-header small[b-27pjoswe3a] {
+            display: none;
+        }
+
+        .page-header .btn[b-27pjoswe3a] {
+            font-size: 12px;
+        }
+
+    .company-card[b-27pjoswe3a] {
+        border-radius: 8px;
+    }
+
+    .company-header[b-27pjoswe3a] {
+        padding: 13px;
+    }
+
+    .company-card .card-body[b-27pjoswe3a] {
+        padding: 14px !important;
+    }
+
+    .table[b-27pjoswe3a] {
+        min-width: 750px;
+    }
+}
 /* _content/RBI_Malaysia/Components/Pages/Home.razor.rz.scp.css */
 /* =========================================================
    RBI MALAYSIA - LIGHT DASHBOARD
@@ -1237,5 +1516,274 @@ main[b-k0zhljh4ke] {
 
     .login-subtitle[b-gauanoolyw] {
         font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Pages/Staff.razor.rz.scp.css */
+/* =========================================================
+   STAFF PAGE
+   ========================================================= */
+
+.staff-page[b-9evgbndrpc] {
+    width: 100%;
+    padding: 0;
+    background: #f1f3f9;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header[b-9evgbndrpc] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .page-header h4[b-9evgbndrpc] {
+        margin: 0;
+        color: #12345b;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .page-header small[b-9evgbndrpc] {
+        color: #718096;
+    }
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.staff-card[b-9evgbndrpc] {
+    border: 1px solid #dfe3eb;
+    border-radius: 4px;
+    background: #ffffff;
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.staff-header[b-9evgbndrpc] {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-bottom: 1px solid #dfe3eb;
+    color: #173b68;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   CARD BODY
+   ========================================================= */
+
+.staff-card .card-body[b-9evgbndrpc] {
+    padding: 30px;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.staff-card .form-label[b-9evgbndrpc] {
+    color: #173b68;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.staff-card .form-control[b-9evgbndrpc],
+.staff-card .form-select[b-9evgbndrpc] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+
+    .staff-card .form-control:focus[b-9evgbndrpc],
+    .staff-card .form-select:focus[b-9evgbndrpc] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.staff-address[b-9evgbndrpc] {
+    resize: vertical;
+    min-height: 95px !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.staff-buttons[b-9evgbndrpc] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-9evgbndrpc] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+.staff-list-card[b-9evgbndrpc] {
+    margin-top: 30px;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.staff-table[b-9evgbndrpc] {
+    color: #536b89;
+    font-size: 14px;
+}
+
+
+    .staff-table thead th[b-9evgbndrpc] {
+        background: #24292d;
+        color: #ffffff;
+        border: none;
+        padding: 14px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+
+    .staff-table tbody td[b-9evgbndrpc] {
+        padding: 14px 12px;
+        border-bottom: 1px solid #e0e4ec;
+        vertical-align: middle;
+    }
+
+
+    .staff-table tbody tr:hover[b-9evgbndrpc] {
+        background-color: #f8faff;
+    }
+
+
+    /* =========================================================
+   STAFF NAME
+   ========================================================= */
+
+    .staff-table strong[b-9evgbndrpc] {
+        color: #536b89;
+        font-weight: 500;
+    }
+
+
+/* =========================================================
+   EDIT BUTTON
+   ========================================================= */
+
+.staff-edit-btn[b-9evgbndrpc] {
+    padding-top: 6px;
+    color: white;
+    width: 40px;
+    border: 1px solid;
+    background: #0798bb;
+}
+
+
+    .staff-edit-btn:hover[b-9evgbndrpc] {
+        color: #006f8d;
+        background: transparent;
+    }
+
+
+/* =========================================================
+   DELETE BUTTON
+   ========================================================= */
+
+.staff-delete-btn[b-9evgbndrpc] {
+    padding-top: 6px;
+    color: white;
+    width: 40px;
+    border: 1px solid;
+    background: #e63946;
+}
+
+
+    .staff-delete-btn:hover[b-9evgbndrpc] {
+        color: #b91c2a;
+        background: transparent;
+    }
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.validation-message[b-9evgbndrpc] {
+    display: block;
+    margin-top: 4px;
+    color: #dc3545;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .staff-page[b-9evgbndrpc] {
+        padding: 0;
+    }
+
+    .page-header[b-9evgbndrpc] {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+        .page-header .btn[b-9evgbndrpc] {
+            width: 100%;
+        }
+
+    .staff-card .card-body[b-9evgbndrpc] {
+        padding: 20px;
+    }
+
+    .staff-list-card[b-9evgbndrpc] {
+        margin-top: 20px;
+    }
+
+    .staff-table[b-9evgbndrpc] {
+        min-width: 850px;
     }
 }

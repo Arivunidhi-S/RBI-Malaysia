@@ -1,0 +1,278 @@
+/* =========================================
+   COMPANY PAGE
+   ========================================= */
+
+.company-page[b-27pjoswe3a] {
+    padding: 10px;
+    background: #f4f6f9;
+    min-height: calc(100vh - 3.5rem);
+}
+
+
+/* =========================================
+   PAGE HEADER
+   ========================================= */
+
+.page-header[b-27pjoswe3a] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid #e1e5eb;
+    border-radius: 10px;
+    padding: 20px 20px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+    .page-header h4[b-27pjoswe3a] {
+        margin: 0;
+        color: #17365d;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .page-header small[b-27pjoswe3a] {
+        color: #7a869a;
+    }
+
+
+/* =========================================
+   CARD
+   ========================================= */
+
+.company-card[b-27pjoswe3a] {
+    border: 1px solid #e1e5eb;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+
+/* =========================================
+   CARD HEADER
+   ========================================= */
+
+.company-header[b-27pjoswe3a] {
+    background: #ffffff;
+    color: #17365d;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 15px 18px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* =========================================
+   FORM
+   ========================================= */
+
+.form-label[b-27pjoswe3a] {
+    color: #344054;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+
+[b-27pjoswe3a] .form-control,
+.form-select[b-27pjoswe3a] {
+    min-height: 40px;
+    border: 1px solid #d5dbe3;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #344054;
+}
+
+
+
+
+    [b-27pjoswe3a] .form-control::placeholder {
+        color: #888888;
+    }
+[b-27pjoswe3a] .form-control:focus,
+.form-select:focus[b-27pjoswe3a] {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.10);
+}
+
+
+.input-group-text[b-27pjoswe3a] {
+    background: #f8fafc;
+    border-color: #d5dbe3;
+    color: #667085;
+}
+
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+.btn-primary[b-27pjoswe3a] {
+    background: #0d6efd;
+    border-color: #0d6efd;
+}
+
+
+    .btn-primary:hover[b-27pjoswe3a] {
+        background: #0b5ed7;
+        border-color: #0b5ed7;
+    }
+
+
+.btn[b-27pjoswe3a] {
+    font-size: 13px;
+}
+
+
+/* =========================================
+   TABLE
+   ========================================= */
+
+.table[b-27pjoswe3a] {
+    font-size: 13px;
+    color: #344054;
+}
+
+
+    .table thead th[b-27pjoswe3a] {
+        background: #f7f9fc;
+        color: #475467;
+        font-weight: 600;
+        font-size: 12px;
+        border-bottom: 1px solid #dfe3e8;
+        white-space: nowrap;
+        padding: 12px;
+    }
+
+
+    .table tbody td[b-27pjoswe3a] {
+        padding: 12px;
+        border-bottom: 1px solid #eef0f3;
+        vertical-align: middle;
+    }
+
+
+    .table tbody tr:hover[b-27pjoswe3a] {
+        background: #f8fbff;
+    }
+
+
+/* =========================================
+   COMPANY NAME
+   ========================================= */
+
+.company-name[b-27pjoswe3a] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.company-icon[b-27pjoswe3a] {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 8px;
+    background: #eaf2ff;
+    color: #0d6efd;
+    padding-top: 10px;
+    padding-left: 11px;
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+}
+
+
+.company-name strong[b-27pjoswe3a] {
+    display: block;
+    color: #1d2939;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.company-name small[b-27pjoswe3a] {
+    display: block;
+    margin-top: 2px;
+    color: #98a2b3;
+    font-size: 11px;
+}
+
+
+/* =========================================
+   ACTION BUTTON
+   ========================================= */
+
+.table .btn[b-27pjoswe3a] {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================
+   VALIDATION
+   ========================================= */
+
+.validation-message[b-27pjoswe3a] {
+    display: block;
+    color: #dc3545;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 991px) {
+
+    .company-page[b-27pjoswe3a] {
+        padding: 15px;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .company-page[b-27pjoswe3a] {
+        padding: 10px;
+    }
+
+    .page-header[b-27pjoswe3a] {
+        padding: 13px;
+    }
+
+        .page-header h4[b-27pjoswe3a] {
+            font-size: 17px;
+        }
+
+        .page-header small[b-27pjoswe3a] {
+            display: none;
+        }
+
+        .page-header .btn[b-27pjoswe3a] {
+            font-size: 12px;
+        }
+
+    .company-card[b-27pjoswe3a] {
+        border-radius: 8px;
+    }
+
+    .company-header[b-27pjoswe3a] {
+        padding: 13px;
+    }
+
+    .company-card .card-body[b-27pjoswe3a] {
+        padding: 14px !important;
+    }
+
+    .table[b-27pjoswe3a] {
+        min-width: 750px;
+    }
+}

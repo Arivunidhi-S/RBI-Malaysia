@@ -1,0 +1,26 @@
+﻿@using RBI_Malaysia.Services
+@inject UserSession UserSession
+@inject NavigationManager Navigation
+
+@code {
+
+    private bool hasChecked = false;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender || hasChecked)
+            return;
+
+        hasChecked = true;
+
+        CheckSession();
+    }
+
+    private void CheckSession()
+    {
+        if (!UserSession.IsLoggedIn)
+        {
+            Navigation.NavigateTo("/login", replace: true);
+        }
+    }
+}

@@ -5,6 +5,7 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.Asse
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.AssemblyInfo.cs
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.csproj.CoreCompileInputs.cache
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.sourcelink.json
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\bin\Debug\net8.0\appsettings.json
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\bin\Debug\net8.0\RBI_Malaysia.staticwebassets.runtime.json
@@ -60,7 +61,10 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\rjsmcshtml.dswa.c
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Layout\LoginLayout.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Company.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Home.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Login.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Staff.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\bundle\RBI_Malaysia.styles.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\projectbundle\RBI_Malaysia.bundle.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\staticwebassets.build.json
@@ -74,4 +78,3 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\refint\RBI_Malays
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.pdb
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.genruntimeconfig.cache
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\ref\RBI_Malaysia.dll
-C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Home.razor.rz.scp.css
