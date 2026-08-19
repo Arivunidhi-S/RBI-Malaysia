@@ -5,7 +5,8 @@
 .login-page[b-gauanoolyw] {
     min-height: 100vh;
     width: 100%;
-    background: linear-gradient( 135deg, #071b2f 0%, #0b3152 50%, #0e4b6f 100% );
+    /*background: linear-gradient( 135deg, #071b2f 0%, #0b3152 50%, #0e4b6f 100% );*/
+    background: linear-gradient(90deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
 }
 
 
@@ -34,7 +35,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #0876a8;
+    /*background: #0876a8;*/
+    background: linear-gradient(90deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
     color: white;
     border-radius: 12px;
 }
@@ -105,10 +107,10 @@
     box-shadow: none;
 }
 
-    .login-card .form-control:focus[b-gauanoolyw] {
-        border-color: #0876a8;
-        box-shadow: 0 0 0 0.20rem rgba(8, 118, 168, 0.15);
-    }
+[b-gauanoolyw] .login-card .form-control:focus {
+    border-color: #0876a8;
+    box-shadow: 0 0 0 0.20rem rgba(8, 118, 168, 0.15);
+}
 
     .login-card .form-control[b-gauanoolyw]::placeholder {
         color: #6c757d;
@@ -169,7 +171,8 @@
     width: 100%;
     border: none;
     border-radius: 10px;
-    background-color: #0876a8;
+    /*background-color: #0876a8;*/
+    background: linear-gradient(180deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
     color: white;
     font-size: 15px;
     font-weight: 600;

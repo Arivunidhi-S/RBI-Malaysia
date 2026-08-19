@@ -17,6 +17,8 @@ builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<UserSession>();
 builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<StaffService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ProcessAreaService>();
 
 var app = builder.Build();
 

@@ -59,7 +59,7 @@
                                 Name
                                 <span class="text-danger">*</span>
                             </label>
-                            <InputText class="form-control validate-required" @bind-Value="staff.StaffName" placeholder="Enter staff name" />
+                            <InputText class="form-control validate-required" @bind-Value="staff.StaffName" placeholder="Enter staff name" onkeypress="return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || event.charCode == 32" />
 
                             <ValidationMessage For="@(() => staff.StaffName)" />
                         </div>
@@ -84,7 +84,7 @@
                             <label class="form-label">
                                 Mobile
                             </label>
-                            <InputText class="form-control" @bind-Value="staff.Phone" placeholder="Enter mobile number" />
+                            <InputText class="form-control" @bind-Value="staff.Phone" placeholder="Enter mobile number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
                             <ValidationMessage For="@(() => staff.Phone)" />
                         </div>
                         <!-- EMAIL -->
@@ -124,7 +124,7 @@
                         </div>
                         <!-- BUTTONS -->
                         <div class="staff-buttons pt-1">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-success">
                                 <i class="bi bi-save me-1"></i>
                                 @(staff.StaffId == 0 ? "Save" : "Update")
                             </button>

@@ -1,0 +1,398 @@
+﻿@page "/user"
+
+@using RBI_Malaysia.Services
+@using Microsoft.JSInterop
+@using RBI_Malaysia.Components.Shared
+
+@inject UserService UserService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<div class="user-page">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <div>
+            <h4>
+                <i class="bi bi-person-gear"></i>
+                User
+            </h4>
+            <small>
+                User Management
+            </small>
+        </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="user-card">
+        <div class="card-title">
+            <i class="bi bi-person-fill"></i>
+            @(isEditMode ? "Edit User" : "Add User")
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <!-- STAFF -->
+                <div class="col-md-6 mb-3">
+                    <label>
+                        Staff Name
+                        <span class="required">*</span>
+                    </label>
+                    <select class="form-select" value="@user.StaffId" @onchange="StaffChanged">
+                       
+                            @if (@user.StaffName == "")
+                            {
+                            <option value="0" style="color: #888888;">                                
+                                -- Select Staff --                               
+                                </option>
+                        }
+                        else
+                        {
+                            <option value="@user.StaffId" style="color: #888888;">
+                                @user.StaffName
+                            </option>
+                             }
+
+                        
+                        @foreach (var staff in staffs)
+                        {
+                            <option value="@staff.StaffId">
+                                @staff.StaffName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <!-- USER ID -->
+                <div class="col-md-6 mb-3">
+                    <label>
+                        User ID
+                        <span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" maxlength="25" @bind="user.UserID" placeholder="Enter User ID" />
+
+                </div>
+                <!-- PASSWORD -->
+                <div class="col-md-6 mb-3">
+                    <label>
+                        Password
+                        <span class="required">*</span>
+                    </label>
+                    <input type="password" class="form-control" maxlength="25" @bind="user.Password" placeholder="Enter Password" />
+                </div>
+                <!-- COMPANY -->
+                <div class="col-md-6 mb-3">
+                    <label>
+                        Company
+                        <span class="required">*</span>
+                    </label>
+                    <select class="form-select" value="@user.Company" @onchange="CompanyChanged">
+                        <option value="0" style="color: #888888;">
+                            -- Select Company --
+                        </option>
+                        @foreach (var company in companies)
+                        {
+                            <option value="@company.CompanyID">
+                                @company.CompanyName
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <!-- BUTTONS -->
+            <div class="form-buttons">
+                <button class="btn btn-success"
+                        @onclick="SaveUser">
+                    <i class="bi bi-save"></i>
+                    @(isEditMode ? "Update" : "Save")
+                </button>
+                <button class="btn btn-danger"
+                        @onclick="NewUser">
+                    <i class="bi bi-x-lg"></i>
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- USER LIST -->
+    <div class="user-card mt-4">
+        <div class="card-title">
+            <i class="bi bi-people-fill"></i>
+            User List
+        </div>
+        <div class="table-responsive">
+            <table class="table user-table">
+                <thead>
+                    <tr>
+                        <th style="width:80px">
+                            Edit
+                        </th>
+                        
+                        <th>
+                            Staff Name
+                        </th>
+                        <th>
+                            Company
+                        </th>
+                        <th>
+                            User ID
+                        </th>
+                        <th>
+                            Password
+                        </th>
+                        <th style="width:80px">
+                            Delete
+                        </th>                       
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in users)
+                    {
+                        <tr>
+                            <td>
+                                <button class="btn btn-sm btn-edit" @onclick="() => EditUser(item)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </td>
+                           
+                            <td>
+                                @item.StaffName
+                            </td>
+                            <td>
+                                @item.CompanyName
+                            </td>
+                             <td>
+                                @item.UserID
+                            </td>
+                            <td>
+                                @item.Password
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-delete" @onclick="() => DeleteUser(item)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    @if (!users.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center no-record">
+                                No user records found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private UserModel user = new();
+    private List<UserModel> users = new();
+    private List<StaffModel> staffs = new();
+    private List<CompanyModel> companies = new();
+    private bool isEditMode = false;
+    private string message = "";
+    private string messageType = "success";
+
+    // =========================================================
+    // INITIALIZE
+    // =========================================================
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        staffs = await UserService.GetStaffsAsync();
+
+        companies = await UserService.GetCompaniesAsync();
+
+        users = await UserService.GetUsersAsync();
+    }
+
+    // =========================================================
+    // STAFF CHANGE
+    // =========================================================
+
+    private void StaffChanged(ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value?.ToString(), out decimal staffId))
+        {
+            user.StaffId = staffId;
+            var selectedStaff = staffs.FirstOrDefault(x => x.StaffId == staffId);
+            if (selectedStaff != null)
+            {
+                user.StaffName = selectedStaff.StaffName;
+            }
+            else
+            {
+                user.StaffName = "";
+            }
+        }
+    }
+
+    // =========================================================
+    // COMPANY CHANGE
+    // =========================================================
+
+    private void CompanyChanged(ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value?.ToString(), out decimal companyId))
+        {
+            user.Company = companyId;
+            var selectedCompany = companies.FirstOrDefault(x => x.CompanyID == companyId);
+            if (selectedCompany != null)
+            {
+                user.CompanyName = selectedCompany.CompanyName;
+            }
+            else
+            {
+                user.CompanyName = "";
+            }
+        }
+    }
+
+    // =========================================================
+    // NEW
+    // =========================================================
+
+    private void NewUser()
+    {
+        user = new UserModel();
+        isEditMode = false;
+    }
+
+    // =========================================================
+    // EDIT
+    // =========================================================
+
+    private void EditUser(UserModel item)
+    {
+        user = new UserModel
+        {
+            ID = item.ID,
+            UserID = item.UserID,
+            Password = item.Password,
+            StaffId = item.StaffId,
+            StaffName = item.StaffName,
+            Company = item.Company,
+            CompanyName = item.CompanyName,
+            Createdby = item.Createdby
+        };
+        isEditMode = true;
+    }
+
+    // =========================================================
+    // SAVE
+    // =========================================================
+
+    private async Task SaveUser()
+    {
+        try
+        {
+            // Staff validation
+            if (user.StaffId <= 0)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.error", "Validation Error!", "Please select Staff Name.");
+                return;
+            }
+
+            // User ID validation
+            if (string.IsNullOrWhiteSpace(user.UserID))
+            {
+                await JS.InvokeVoidAsync("sweetAlert.error", "Validation Error!", "Please enter User ID.");
+                return;
+            }
+
+            // Password validation
+            if (string.IsNullOrWhiteSpace(user.Password))
+            {
+                await JS.InvokeVoidAsync("sweetAlert.error", "Validation Error!", "Please enter Password.");
+                return;
+            }
+
+            // Company validation
+            if (user.Company <= 0)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.error", "Validation Error!", "Please select Company.");
+                return;
+            }
+
+
+            // Get Staff Name
+            var selectedStaff = staffs.FirstOrDefault(x => x.StaffId == user.StaffId);
+
+            if (selectedStaff == null)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.error", "Error!", "Selected Staff not found.");
+                return;
+            }
+            user.StaffName = selectedStaff.StaffName;
+
+            // Get Company Name
+            var selectedCompany = companies.FirstOrDefault(x => x.CompanyID == user.Company);
+
+            if (selectedCompany == null)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.error", "Error!", "Selected Company not found.");
+                return;
+            }
+            user.CompanyName = selectedCompany.CompanyName;
+            // Logged-in user
+            user.Createdby = UserSession.UserID;
+            bool isNew = !isEditMode;
+            string saveFlag = isNew ? "Insert" : "Update";
+            await UserService.SaveUserAsync(user, saveFlag);
+            await LoadData();
+
+            NewUser();
+            if (isNew)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "User details saved successfully.");
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Updated!", "User details updated successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+
+    // =========================================================
+    // DELETE
+    // =========================================================
+
+    private async Task DeleteUser(UserModel item)
+    {
+        try
+        {
+            bool confirmed = await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete {item.UserID}?");
+            if (!confirmed)
+            {
+                return;
+            }
+
+            await UserService.SaveUserAsync(item, "Delete");
+            await LoadData();
+
+            if (user.ID == item.ID)
+            {
+                NewUser();
+            }
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "User details deleted successfully.");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+
+}

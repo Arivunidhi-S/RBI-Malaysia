@@ -1,8 +1,8 @@
 ﻿/* =========================================================
-   STAFF PAGE
+   PROCESS AREA PAGE
    ========================================================= */
 
-.staff-page {
+.process-area-page {
     width: 100%;
     padding: 0;
     background: #f1f3f9;
@@ -35,7 +35,7 @@
    CARD
    ========================================================= */
 
-.staff-card {
+.process-area-card {
     border: 1px solid #dfe3eb;
     border-radius: 4px;
     background: #ffffff;
@@ -47,7 +47,7 @@
    CARD HEADER
    ========================================================= */
 
-.staff-header {
+.process-area-header {
     min-height: 58px;
     display: flex;
     align-items: center;
@@ -63,7 +63,7 @@
    CARD BODY
    ========================================================= */
 
-.staff-card .card-body {
+.process-area-card .card-body {
     padding: 30px;
 }
 
@@ -72,7 +72,7 @@
    LABEL
    ========================================================= */
 
-::deep .staff-card .form-label {
+::deep .process-area-card .form-label {
     color: #173b68;
     font-size: 14px;
     font-weight: 500;
@@ -84,8 +84,7 @@
    INPUT
    ========================================================= */
 
-::deep .staff-card .form-control,
-.staff-card .form-select {
+::deep .process-area-card .form-control {
     min-height: 35px;
     background-color: #f0f1f7;
     border: 1px solid #cfd4e1;
@@ -95,9 +94,7 @@
     box-shadow: none;
 }
 
-
-    ::deep .staff-card .form-control:focus,
-    .staff-card .form-select:focus {
+    ::deep .process-area-card .form-control:focus {
         background-color: #ffffff;
         border-color: #6979ff;
         box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
@@ -108,7 +105,7 @@
    TEXTAREA
    ========================================================= */
 
-::deep .staff-address {
+::deep .process-area-description {
     resize: vertical;
     min-height: 95px !important;
 }
@@ -118,14 +115,13 @@
    BUTTONS
    ========================================================= */
 
-.staff-buttons {
+.process-area-buttons {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-
-    .staff-buttons .btn {
+    .process-area-buttons .btn {
         min-width: 75px;
         border-radius: 3px;
         font-size: 13px;
@@ -136,7 +132,7 @@
    TABLE CARD
    ========================================================= */
 
-.staff-list-card {
+.process-area-list-card {
     margin-top: 30px;
 }
 
@@ -145,13 +141,12 @@
    TABLE
    ========================================================= */
 
-.staff-table {
+.process-area-table {
     color: #536b89;
     font-size: 14px;
 }
 
-
-    .staff-table thead th {
+    .process-area-table thead th {
         background: #24292d;
         color: #ffffff;
         border: none;
@@ -161,24 +156,22 @@
         white-space: nowrap;
     }
 
-
-    .staff-table tbody td {
+    .process-area-table tbody td {
         padding: 14px 12px;
         border-bottom: 1px solid #e0e4ec;
         vertical-align: middle;
     }
 
-
-    .staff-table tbody tr:hover {
+    .process-area-table tbody tr:hover {
         background-color: #f8faff;
     }
 
 
     /* =========================================================
-   STAFF NAME
+   PROCESS AREA NAME
    ========================================================= */
 
-    .staff-table strong {
+    .process-area-table strong {
         color: #536b89;
         font-weight: 500;
     }
@@ -188,7 +181,7 @@
    EDIT BUTTON
    ========================================================= */
 
-.staff-edit-btn {
+.process-area-edit-btn {
     padding-top: 6px;
     color: white;
     width: 40px;
@@ -196,8 +189,7 @@
     background: #165db5;
 }
 
-
-    .staff-edit-btn:hover {
+    .process-area-edit-btn:hover {
         color: #006f8d;
         background: transparent;
     }
@@ -207,7 +199,7 @@
    DELETE BUTTON
    ========================================================= */
 
-.staff-delete-btn {
+.process-area-delete-btn {
     padding-top: 6px;
     color: white;
     width: 40px;
@@ -215,8 +207,7 @@
     background: #e63946;
 }
 
-
-    .staff-delete-btn:hover {
+    .process-area-delete-btn:hover {
         color: #b91c2a;
         background: transparent;
     }
@@ -240,7 +231,7 @@
 
 @media (max-width: 767.98px) {
 
-    .staff-page {
+    .process-area-page {
         padding: 0;
     }
 
@@ -254,15 +245,15 @@
             width: 100%;
         }
 
-    .staff-card .card-body {
+    .process-area-card .card-body {
         padding: 20px;
     }
 
-    .staff-list-card {
+    .process-area-list-card {
         margin-top: 20px;
     }
 
-    .staff-table {
-        min-width: 850px;
+    .process-area-table {
+        min-width: 750px;
     }
 }

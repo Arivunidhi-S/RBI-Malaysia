@@ -107,14 +107,14 @@
                                 <label class="form-label">
                                     Country
                                 </label>
-                                <InputText class="form-control" @bind-Value="companyModel.Country" placeholder="Country" />
+                                <InputText class="form-control" @bind-Value="companyModel.Country" placeholder="Country" onkeypress="return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || event.charCode == 32" />
                                 <ValidationMessage For="@(() => companyModel.Country)" />
                             </div>
                             <div class="col-md-5 mb-3">
                                 <label class="form-label">
                                     Postcode
                                 </label>
-                                <InputText inputmode="numeric" class="form-control validate-number" @bind-Value="companyModel.Postcode" placeholder="Postcode" />
+                                <InputText inputmode="numeric" class="form-control validate-number" @bind-Value="companyModel.Postcode" placeholder="Postcode" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
                             </div>
                         </div>
                     </div>
@@ -141,17 +141,18 @@
                                     <span class="input-group-text">
                                         <i class="bi bi-telephone"></i>
                                     </span>
-                                    <InputText inputmode="numeric" class="form-control validate-mobile" @bind-Value="companyModel.Phone" placeholder="Contact number" />
-                                    <ValidationMessage For="@(() => companyModel.Phone)" />
+                                    <InputText inputmode="numeric" class="form-control validate-mobile" @bind-Value="companyModel.Phone" placeholder="Contact number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+
                                 </div>
+                                <ValidationMessage For="@(() => companyModel.Phone)" />
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">
                                     Fax No
                                 </label>
-                                <InputText inputmode="numeric" class="form-control validate-number" @bind-Value="companyModel.Fax" placeholder="Fax number" />
-                                <ValidationMessage For="@(() => companyModel.Fax)" />
+                                <InputText class="form-control validate-number" @bind-Value="companyModel.Fax" placeholder="Fax number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
                             </div>
+                            <ValidationMessage For="@(() => companyModel.Fax)" />
                         </div>
                         <!-- Email -->
                         <div class="mb-3">
@@ -163,8 +164,8 @@
                                     <i class="bi bi-envelope"></i>
                                 </span>
                                 <InputText type="email" class="form-control validate-email" @bind-Value="companyModel.Email" placeholder="company@email.com" />
-                                <ValidationMessage For="@(() => companyModel.Email)" />
                             </div>
+                            <ValidationMessage For="@(() => companyModel.Email)" />
                         </div>
                         <!-- Website -->
                         <div class="mb-3">
@@ -187,7 +188,7 @@
                         </div>
                         <!-- Buttons -->
                         <div class="d-flex gap-2 pt-2 mb-2">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-success">
                                 <i class="bi bi-save me-1"></i>
                                 @(companyModel.CompanyID == 0 ? "Save" : "Update")
                             </button>
@@ -316,21 +317,13 @@
         </div>
     </div>
 </div>
-
-
 @code {
-
     private CompanyModel companyModel = new();
-
     private List<CompanyModel> companies = new();
-
     private string searchText = string.Empty;
-
-
     // =========================================================
     // FILTER
     // =========================================================
-
     private IEnumerable<CompanyModel> FilteredCompanies =>
         string.IsNullOrWhiteSpace(searchText) ? companies
             : companies.Where(x =>
@@ -345,25 +338,24 @@
                 (x.Email ?? "").Contains(searchText, StringComparison.OrdinalIgnoreCase)
             );
 
-
     // =========================================================
     // INITIAL LOAD
     // =========================================================
-
     protected override async Task OnInitializedAsync()
     {
         await LoadCompanies();
     }
-
-
     // =========================================================
     // LOAD COMPANIES
     // =========================================================
-
     private async Task LoadCompanies()
     {
         try
         {
+           // decimal companies = !string.IsNullOrWhiteSpace(UserSession?.CompanyID) ? Convert.ToDecimal(UserSession.CompanyID) : 0m;
+
+            //processAreas = await ProcessAreaService.GetProcessAreasAsync(companyId);
+
             companies = await CompanyService.GetCompaniesAsync();
         }
         catch (Exception ex)
@@ -371,22 +363,16 @@
             Console.WriteLine("Error loading companies: " + ex.Message);
         }
     }
-
-
     // =========================================================
     // NEW COMPANY
     // =========================================================
-
     private void NewCompany()
     {
         companyModel = new CompanyModel();
     }
-
-
     // =========================================================
     // EDIT COMPANY
     // =========================================================
-
     private void EditCompany(CompanyModel item)
     {
         companyModel = new CompanyModel
@@ -406,12 +392,9 @@
             Website = item.Website
         };
     }
-
-
     // =========================================================
     // SAVE / UPDATE
     // =========================================================
-
     private async Task SaveCompany()
     {
         try
@@ -440,13 +423,9 @@
             await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
         }
     }
-
-
-
     // =========================================================
     // DELETE
     // =========================================================
-
     private async Task DeleteCompany(CompanyModel item)
     {
         try

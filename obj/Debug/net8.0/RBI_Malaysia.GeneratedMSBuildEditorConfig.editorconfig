@@ -64,6 +64,14 @@ build_metadata.AdditionalFiles.CssScope = b-nrdpd1m3ky
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-gauanoolyw
 
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/ProcessArea.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9jZXNzQXJlYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ehtneuaaes
+
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Staff.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdGFmZi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-9evgbndrpc
+
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/User.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-z823e84y30

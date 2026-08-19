@@ -72,7 +72,7 @@
    LABEL
    ========================================================= */
 
-.staff-card .form-label[b-9evgbndrpc] {
+[b-9evgbndrpc] .staff-card .form-label {
     color: #173b68;
     font-size: 14px;
     font-weight: 500;
@@ -84,7 +84,7 @@
    INPUT
    ========================================================= */
 
-.staff-card .form-control[b-9evgbndrpc],
+[b-9evgbndrpc] .staff-card .form-control,
 .staff-card .form-select[b-9evgbndrpc] {
     min-height: 35px;
     background-color: #f0f1f7;
@@ -96,7 +96,7 @@
 }
 
 
-    .staff-card .form-control:focus[b-9evgbndrpc],
+    [b-9evgbndrpc] .staff-card .form-control:focus,
     .staff-card .form-select:focus[b-9evgbndrpc] {
         background-color: #ffffff;
         border-color: #6979ff;
@@ -108,7 +108,7 @@
    TEXTAREA
    ========================================================= */
 
-.staff-address[b-9evgbndrpc] {
+[b-9evgbndrpc] .staff-address {
     resize: vertical;
     min-height: 95px !important;
 }
@@ -193,7 +193,7 @@
     color: white;
     width: 40px;
     border: 1px solid;
-    background: #0798bb;
+    background: #165db5;
 }
 
 

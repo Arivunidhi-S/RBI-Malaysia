@@ -1,0 +1,307 @@
+﻿@page "/processarea"
+
+@using System.ComponentModel.DataAnnotations
+@using RBI_Malaysia.Services
+@using RBI_Malaysia.Components.Shared
+@using Microsoft.JSInterop
+
+@inject ProcessAreaService ProcessAreaService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<SessionGuard />
+
+<PageTitle>Process Area Master</PageTitle>
+
+<div class="process-area-page">
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================================== -->
+    <div class="page-header mb-3">
+        <div>
+            <h4>
+                <i class="bi bi-diagram-3 me-2"></i>
+                Process Area Master
+            </h4>
+
+            <small>
+                Manage process area information
+            </small>
+        </div>
+    </div>
+    <!-- ===================================================== -->
+    <!-- FORM -->
+    <!-- ===================================================== -->
+    <EditForm Model="@processArea" OnValidSubmit="@SaveProcessArea" FormName="ProcessAreaForm">
+        <DataAnnotationsValidator />
+        <div class="row g-3 mb-3">
+            <!-- ================================================= -->
+            <!-- LEFT SIDE -->
+            <!-- ================================================= -->
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card process-area-card">
+                    <div class="card-header process-area-header">
+                        <i class="bi bi-diagram-3 me-2"></i>
+                        Process Area Details
+                    </div>
+                    <div class="card-body">
+                        <!-- PROCESS AREA -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Process Area
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <InputText class="form-control"
+                                       @bind-Value="processArea.ProcessArea"
+                                       placeholder="Enter process area"
+                                       maxlength="30" />
+
+                            <ValidationMessage For="@(() => processArea.ProcessArea)" />
+
+                        </div>
+                        <!-- PROCESS UNIT -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Process Unit
+                            </label>
+                            <InputText class="form-control" @bind-Value="processArea.ProcessUnit" placeholder="Enter process unit" maxlength="10" />
+                            <ValidationMessage For="@(() => processArea.ProcessUnit)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ================================================= -->
+            <!-- RIGHT SIDE -->
+            <!-- ================================================= -->
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card process-area-card">
+                    <div class="card-header process-area-header">
+                        <i class="bi bi-box-seam me-2"></i>
+                        Process Information
+                    </div>
+
+                    <div class="card-body">
+                        <!-- DESCRIPTION -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Description                                
+                                <span class="text-danger">*</span>
+                            </label>
+                            <InputTextArea class="form-control process-area-description" rows="3" @bind-Value="processArea.Description" placeholder="Enter description" maxlength="50" />
+                                                        <ValidationMessage For="@(() => processArea.Description)" />
+
+                        </div>
+                        <!-- BUTTONS -->
+                        <div class="process-area-buttons pt-1">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save me-1"></i>
+                                @(processArea.ProcessAreaID == 0 ? "Save" : "Update")
+                            </button>
+                            <button type="button" class="btn btn-danger" @onclick="NewProcessArea">
+                                <i class="bi bi-eraser me-1"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+    <!-- ===================================================== -->
+    <!-- PROCESS AREA TABLE -->
+    <!-- ===================================================== -->
+    <div class="card process-area-card process-area-list-card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table process-area-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width:70px">
+                                Edit
+                            </th>
+                            <th style="display:none;">
+                                ID
+                            </th>
+                            <th>
+                                Process Area
+                            </th>
+                            <th>
+                                Process Unit
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th class="text-center" style="width:80px">
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in processAreas)
+                        {
+                            <tr>
+                                <!-- EDIT -->
+                                <td class="text-center">
+
+                                    <button type="button" class="btn btn-sm process-area-edit-btn" title="Edit" @onclick="() => EditProcessArea(item)">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                </td>
+                                <!-- ID -->
+                                <td style="display:none;">
+                                    @item.ProcessAreaID
+                                </td>
+                                <!-- PROCESS AREA -->
+                                <td>
+                                    <strong>
+                                        @item.ProcessArea
+                                    </strong>
+                                </td>
+                                <!-- PROCESS UNIT -->
+                                <td>
+                                    @item.ProcessUnit
+                                </td>
+                                <!-- DESCRIPTION -->
+                                <td>
+                                    @item.Description
+                                </td>
+                                <!-- DELETE -->
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm process-area-delete-btn" title="Delete" @onclick="() => DeleteProcessArea(item)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        @if (!processAreas.Any())
+                        {
+                            <tr>
+                                <td colspan="5"
+                                    class="text-center py-5 text-muted">
+                                    <i class="bi bi-diagram-3 fs-2 d-block mb-2"></i>
+                                    No process area records found
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    // =========================================================
+    // MODEL
+    // =========================================================
+    private ProcessAreaModel processArea = new();
+    private List<ProcessAreaModel> processAreas = new();
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProcessAreas();
+    }
+    // =========================================================
+    // LOAD PROCESS AREAS
+    // =========================================================
+    private async Task LoadProcessAreas()
+    {
+        decimal companyId = !string.IsNullOrWhiteSpace(UserSession?.CompanyID)
+    ? Convert.ToDecimal(UserSession.CompanyID)
+    : 0m;
+
+        processAreas = await ProcessAreaService.GetProcessAreasAsync(companyId);
+
+       // processAreas = await ProcessAreaService.GetProcessAreasAsync(Convert.ToDecimal(UserSession.CompanyID));
+    }
+    // =========================================================
+    // NEW / CLEAR
+    // =========================================================
+    private void NewProcessArea()
+    {
+        processArea = new ProcessAreaModel();
+    }
+    // =========================================================
+    // EDIT
+    // =========================================================
+    private void EditProcessArea(ProcessAreaModel item)
+    {
+        processArea = new ProcessAreaModel
+        {
+            ProcessAreaID = item.ProcessAreaID,
+            ProcessArea = item.ProcessArea,
+            Description = item.Description,
+            ProcessUnit = item.ProcessUnit
+        };
+    }
+    // =========================================================
+    // SAVE / UPDATE
+    // =========================================================
+    private async Task SaveProcessArea()
+    {
+        try
+        {
+            bool isNew = processArea.ProcessAreaID == 0;
+            string saveFlag = isNew ? "N" : "U";
+            await ProcessAreaService.SaveProcessAreaAsync(
+                processArea.ProcessAreaID,
+                processArea.ProcessArea,
+                processArea.Description,
+                processArea.ProcessUnit,
+                Convert.ToDecimal(UserSession.CompanyID),
+                Convert.ToDecimal(UserSession.UserID),
+                saveFlag
+            );
+            await LoadProcessAreas();
+            NewProcessArea();
+            if (isNew)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "Process Area details saved successfully."
+                );
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Updated!", "Process Area details updated successfully."
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message
+            );
+        }
+    }
+    // =========================================================
+    // DELETE
+    // =========================================================
+    private async Task DeleteProcessArea(ProcessAreaModel item)
+    {
+        try
+        {
+            bool confirmed =
+                await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete {item.ProcessArea}?"
+                );
+            if (!confirmed)
+            {
+                return;
+            }
+            await ProcessAreaService.DeleteProcessAreaAsync(item.ProcessAreaID);
+            await LoadProcessAreas();
+            if (processArea.ProcessAreaID == item.ProcessAreaID)
+            {
+                NewProcessArea();
+            }
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Process Area details deleted successfully."
+            );
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message
+            );
+        }
+    }
+
+}
