@@ -71,7 +71,6 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\staticwebassets.b
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Mala.74B93333.Up2Date
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.dll
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\refint\RBI_Malaysia.dll
@@ -80,3 +79,6 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.genr
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\ref\RBI_Malaysia.dll
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\User.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\ProcessArea.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Equipment.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Component.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

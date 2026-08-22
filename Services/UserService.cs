@@ -1,5 +1,6 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using RBI_Malaysia.Components.Pages;
+using System.Data;
 
 namespace RBI_Malaysia.Services
 {
@@ -27,26 +28,13 @@ namespace RBI_Malaysia.Services
             using SqlConnection conn = new SqlConnection(ConnectionString);
 
             await conn.OpenAsync();
+            using SqlCommand cmd = new SqlCommand("sp_Get_tbl_Val", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            // Existing DB select SP should be used here if available.
-            // This SELECT is only for reading the User list.
-            string sql = @"
-                SELECT
-                    ID,
-                    UserID,
-                    Password,
-                    StaffId,
-                    StaffName,
-                    Company,
-                    CompanyName
-                FROM UserInfo
-                WHERE deleted = 0
-                ORDER BY UserID";
+            cmd.Parameters.AddWithValue("@id", 0);
+            cmd.Parameters.AddWithValue("@tblflg", "UsrGrid");
 
-            using SqlCommand cmd = new SqlCommand(sql, conn);
-
-            using SqlDataReader reader =
-                await cmd.ExecuteReaderAsync();
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
             {
@@ -71,7 +59,7 @@ namespace RBI_Malaysia.Services
                         reader["CompanyName"]?.ToString() ?? ""
                 });
             }
-
+            await conn.CloseAsync();
             return users;
         }
 
@@ -79,7 +67,8 @@ namespace RBI_Malaysia.Services
         // =========================================================
         // GET STAFF
         // =========================================================
-        public async Task<List<StaffModel>> GetStaffsAsync()
+        public async Task<List<StaffModel>> GetStaffsAsync(
+       decimal currentStaffId = 0)
         {
             var staffs = new List<StaffModel>();
 
@@ -87,26 +76,23 @@ namespace RBI_Malaysia.Services
 
             await conn.OpenAsync();
 
-            string sql = @"
-                 SELECT StaffId, StaffName FROM Staff WHERE Deleted=0 AND StaffId NOT IN (SELECT StaffId FROM UserInfo WHERE Deleted=0)";
+            using SqlCommand cmd = new SqlCommand("sp_Get_tbl_Val", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            using SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@id", currentStaffId);
+            cmd.Parameters.AddWithValue("@tblflg", "UsrStfSel");
 
-            using SqlDataReader reader =
-                await cmd.ExecuteReaderAsync();
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
             {
                 staffs.Add(new StaffModel
                 {
-                    StaffId =
-                        Convert.ToDecimal(reader["StaffId"]),
-
-                    StaffName =
-                        reader["StaffName"]?.ToString() ?? ""
+                    StaffId = Convert.ToDecimal(reader["StaffId"]),
+                    StaffName = reader["StaffName"]?.ToString() ?? ""
                 });
             }
-
+            await conn.CloseAsync();
             return staffs;
         }
 
@@ -122,31 +108,23 @@ namespace RBI_Malaysia.Services
 
             await conn.OpenAsync();
 
-            string sql = @"
-                SELECT
-                    CompanyId,
-                    CompanyName
-                FROM Company
-                WHERE deleted = 0
-                ORDER BY CompanyName";
+            using SqlCommand cmd = new SqlCommand("sp_Get_tbl_Val", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            using SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@id", 0);
+            cmd.Parameters.AddWithValue("@tblflg", "UsrCmySel");
 
-            using SqlDataReader reader =
-                await cmd.ExecuteReaderAsync();
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
             {
                 companies.Add(new CompanyModel
                 {
-                    CompanyID =
-                        Convert.ToInt32(reader["CompanyId"]),
-
-                    CompanyName =
-                        reader["CompanyName"]?.ToString() ?? ""
+                    CompanyID = Convert.ToInt32(reader["CompanyId"]),
+                    CompanyName = reader["CompanyName"]?.ToString() ?? ""
                 });
             }
-
+            await conn.CloseAsync();
             return companies;
         }
 
@@ -254,5 +232,5 @@ namespace RBI_Malaysia.Services
     }
 
 
-   
+
 }

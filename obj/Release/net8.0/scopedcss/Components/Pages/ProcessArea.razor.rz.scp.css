@@ -1,0 +1,259 @@
+/* =========================================================
+   PROCESS AREA PAGE
+   ========================================================= */
+
+.process-area-page[b-ehtneuaaes] {
+    width: 100%;
+    padding: 0;
+    background: #f1f3f9;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header[b-ehtneuaaes] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .page-header h4[b-ehtneuaaes] {
+        margin: 0;
+        color: #12345b;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .page-header small[b-ehtneuaaes] {
+        color: #718096;
+    }
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.process-area-card[b-ehtneuaaes] {
+    border: 1px solid #dfe3eb;
+    border-radius: 4px;
+    background: #ffffff;
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.process-area-header[b-ehtneuaaes] {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-bottom: 1px solid #dfe3eb;
+    color: #173b68;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   CARD BODY
+   ========================================================= */
+
+.process-area-card .card-body[b-ehtneuaaes] {
+    padding: 30px;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+[b-ehtneuaaes] .process-area-card .form-label {
+    color: #173b68;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+[b-ehtneuaaes] .process-area-card .form-control {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-ehtneuaaes] .process-area-card .form-control:focus {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+[b-ehtneuaaes] .process-area-description {
+    resize: vertical;
+    min-height: 95px !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.process-area-buttons[b-ehtneuaaes] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+    .process-area-buttons .btn[b-ehtneuaaes] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+.process-area-list-card[b-ehtneuaaes] {
+    margin-top: 30px;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.process-area-table[b-ehtneuaaes] {
+    color: #536b89;
+    font-size: 14px;
+}
+
+    .process-area-table thead th[b-ehtneuaaes] {
+        background: #24292d;
+        color: #ffffff;
+        border: none;
+        padding: 14px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .process-area-table tbody td[b-ehtneuaaes] {
+        padding: 14px 12px;
+        border-bottom: 1px solid #e0e4ec;
+        vertical-align: middle;
+    }
+
+    .process-area-table tbody tr:hover[b-ehtneuaaes] {
+        background-color: #f8faff;
+    }
+
+
+    /* =========================================================
+   PROCESS AREA NAME
+   ========================================================= */
+
+    .process-area-table strong[b-ehtneuaaes] {
+        color: #536b89;
+        font-weight: 500;
+    }
+
+
+/* =========================================================
+   EDIT BUTTON
+   ========================================================= */
+
+.process-area-edit-btn[b-ehtneuaaes] {
+    padding-top: 6px;
+    color: white;
+    width: 40px;
+    border: 1px solid;
+    background: #165db5;
+}
+
+    .process-area-edit-btn:hover[b-ehtneuaaes] {
+        color: #006f8d;
+        background: transparent;
+    }
+
+
+/* =========================================================
+   DELETE BUTTON
+   ========================================================= */
+
+.process-area-delete-btn[b-ehtneuaaes] {
+    padding-top: 6px;
+    color: white;
+    width: 40px;
+    border: 1px solid;
+    background: #e63946;
+}
+
+    .process-area-delete-btn:hover[b-ehtneuaaes] {
+        color: #b91c2a;
+        background: transparent;
+    }
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.validation-message[b-ehtneuaaes] {
+    display: block;
+    margin-top: 4px;
+    color: #dc3545;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .process-area-page[b-ehtneuaaes] {
+        padding: 0;
+    }
+
+    .page-header[b-ehtneuaaes] {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+        .page-header .btn[b-ehtneuaaes] {
+            width: 100%;
+        }
+
+    .process-area-card .card-body[b-ehtneuaaes] {
+        padding: 20px;
+    }
+
+    .process-area-list-card[b-ehtneuaaes] {
+        margin-top: 20px;
+    }
+
+    .process-area-table[b-ehtneuaaes] {
+        min-width: 750px;
+    }
+}

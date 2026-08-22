@@ -1,0 +1,268 @@
+﻿/* =========================================================
+   STAFF PAGE
+   ========================================================= */
+
+.staff-page {
+    width: 100%;
+    padding: 0;
+    background: #f1f3f9;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .page-header h4 {
+        margin: 0;
+        color: #12345b;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .page-header small {
+        color: #718096;
+    }
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.staff-card {
+    border: 1px solid #dfe3eb;
+    border-radius: 4px;
+    background: #ffffff;
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.staff-header {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-bottom: 1px solid #dfe3eb;
+    color: #173b68;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   CARD BODY
+   ========================================================= */
+
+.staff-card .card-body {
+    padding: 30px;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+::deep .staff-card .form-label {
+    color: #173b68;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+::deep .staff-card .form-control,
+.staff-card .form-select {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+
+    ::deep .staff-card .form-control:focus,
+    .staff-card .form-select:focus {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+::deep .staff-address {
+    resize: vertical;
+    min-height: 95px !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.staff-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+.staff-list-card {
+    margin-top: 30px;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.staff-table {
+    color: #536b89;
+    font-size: 14px;
+}
+
+
+    .staff-table thead th {
+        background: #24292d;
+        color: #ffffff;
+        border: none;
+        padding: 14px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+
+    .staff-table tbody td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #e0e4ec;
+        vertical-align: middle;
+    }
+
+
+    .staff-table tbody tr:hover {
+        background-color: #f8faff;
+    }
+
+
+    /* =========================================================
+   STAFF NAME
+   ========================================================= */
+
+    .staff-table strong {
+        color: #536b89;
+        font-weight: 500;
+    }
+
+
+/* =========================================================
+   EDIT BUTTON
+   ========================================================= */
+
+.staff-edit-btn {
+    padding-top: 6px;
+    color: white;
+    width: 40px;
+    border: 1px solid;
+    background: #165db5;
+}
+
+
+    .staff-edit-btn:hover {
+        color: #006f8d;
+        background: transparent;
+    }
+
+
+/* =========================================================
+   DELETE BUTTON
+   ========================================================= */
+
+.staff-delete-btn {
+    padding-top: 6px;
+    color: white;
+    width: 40px;
+    border: 1px solid;
+    background: #e63946;
+}
+
+
+    .staff-delete-btn:hover {
+        color: #b91c2a;
+        background: transparent;
+    }
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.validation-message {
+    display: block;
+    margin-top: 4px;
+    color: #dc3545;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .staff-page {
+        padding: 0;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+        .page-header .btn {
+            width: 100%;
+        }
+
+    .staff-card .card-body {
+        padding: 20px;
+    }
+
+    .staff-list-card {
+        margin-top: 20px;
+    }
+
+    .staff-table {
+        min-width: 850px;
+    }
+}

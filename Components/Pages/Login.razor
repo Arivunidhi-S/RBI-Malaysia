@@ -2,41 +2,25 @@
 @page "/login"
 
 @layout LoginLayout
-@rendermode InteractiveServer
-
-@using RBI_Malaysia.Services
-
-@inject LoginService LoginService
-@inject UserSession UserSession
-@inject NavigationManager Navigation
 
 <PageTitle>RBI System - Login</PageTitle>
 
 <div class="login-page">
-
     <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
-
         <div class="login-card">
-
             <!-- LOGO -->
             <div class="text-center mb-4">
-
                 <div class="logo-box mx-auto mb-3">
                     <div class="logo-main">RBI</div>
                     <div class="logo-sub">SYSTEM</div>
                 </div>
-
                 <h1 class="login-title">
                     Welcome User
                 </h1>
-
                 <p class="login-subtitle">
                     Risk Based Inspection Management System
                 </p>
-
             </div>
-
-
             <!-- ERROR -->
             @if (!string.IsNullOrWhiteSpace(errorMessage))
             {
@@ -44,177 +28,78 @@
                     @errorMessage
                 </div>
             }
-
-
             <!-- LOGIN FORM -->
-            <EditForm Model="@loginModel"
-                      OnValidSubmit="@HandleLogin"
-                      FormName="LoginForm">
-
-                <DataAnnotationsValidator />
-
-
+            <form method="post" action="/account/login">
                 <!-- USERNAME -->
                 <div class="mb-4">
-
                     <label class="form-label fw-semibold">
                         Username
                     </label>
-
                     <div class="input-group">
-
                         <span class="input-group-text bg-white">
                             <i class="bi bi-person"></i>
                         </span>
-
-                        <InputText class="form-control"
-                                   @bind-Value="loginModel.Username"
-                                   placeholder="Enter your username"
-                                   autocomplete="username" />
-
+                        <input type="text" name="Username" class="form-control" placeholder="Enter your username" autocomplete="username" required />
                     </div>
-
-                    <ValidationMessage For="@(() => loginModel.Username)" />
-
                 </div>
-
-
                 <!-- PASSWORD -->
                 <div class="mb-4">
-
                     <label class="form-label fw-semibold">
                         Password
                     </label>
-
                     <div class="input-group">
-
                         <span class="input-group-text bg-white">
                             <i class="bi bi-lock"></i>
                         </span>
-
-                        <InputText type="@passwordType"
-                                   class="form-control"
-                                   @bind-Value="loginModel.Password"
-                                   placeholder="Enter your password"
-                                   autocomplete="current-password" />
-
+                        <input type="@passwordType" name="Password" class="form-control" placeholder="Enter your password" autocomplete="current-password" required />
                         <button type="button"
                                 class="btn btn-outline-secondary password-button"
                                 @onclick="TogglePassword">
-
-                            <i class="bi @(showPassword
-                                                                                   ? "bi-eye-slash"
-                                                                                   : "bi-eye")">
-                            </i>
-
+                            <i class="bi @(showPassword ? "bi-eye-slash" : "bi-eye")"></i>
                         </button>
-
                     </div>
-
-                    <ValidationMessage For="@(() => loginModel.Password)" />
-
                 </div>
-
-
                 <!-- LOGIN BUTTON -->
                 <div class="d-grid">
-
-                    <button type="submit"
-                            class="btn login-button">
-
+                    <button type="submit" class="btn login-button">
                         Sign In
-
                     </button>
-
                 </div>
-
-            </EditForm>
-
-
+            </form>
             <!-- FOOTER -->
             <div class="login-footer mt-4">
-
                 <div class="footer-line"></div>
-
                 <span>RBI System</span>
-
                 <div class="footer-line"></div>
-
             </div>
-
-
             <div class="text-center copyright">
                 © @DateTime.Now.Year RBI System. All Rights Reserved.
             </div>
-
         </div>
-
     </div>
-
 </div>
-
-
 @code {
-
-    private string errorMessage = string.Empty;
-
-    private LoginModel loginModel = new();
+    [SupplyParameterFromQuery]
+    public string? Error { get; set; }
 
     private bool showPassword = false;
 
     private string passwordType =>
         showPassword ? "text" : "password";
 
+    private string errorMessage = string.Empty;
 
+    protected override void OnParametersSet()
+    {
+        errorMessage = Error switch
+        {
+            "required" => "Username and password are required.",
+            "invalid" => "Invalid username or password.",
+            _ => string.Empty
+        };
+    }
     private void TogglePassword()
     {
         showPassword = !showPassword;
-    }
-
-
-    private async Task HandleLogin()
-    {
-        errorMessage = string.Empty;
-
-        try
-        {
-            LoginResult? result =
-                await LoginService.ValidateLoginAsync(
-                    loginModel.Username,
-                    loginModel.Password);
-
-            if (result == null)
-            {
-                errorMessage = "Invalid username or password.";
-                return;
-            }
-
-            UserSession.UserID = result.UserID;
-            UserSession.UserName = result.UserName;
-            UserSession.CompanyID = result.CompanyID;
-            UserSession.CompanyName = result.CompanyName;
-
-            Navigation.NavigateTo("/home");
-        }
-        catch (Exception ex)
-        {
-            errorMessage = "Login failed: " + ex.Message;
-        }
-    }
-
-
-    public class LoginModel
-    {
-        [System.ComponentModel.DataAnnotations.Required(
-            ErrorMessage = "Username is required.")]
-        public string Username { get; set; } = string.Empty;
-
-
-        [System.ComponentModel.DataAnnotations.Required(
-            ErrorMessage = "Password is required.")]
-        public string Password { get; set; } = string.Empty;
-
-
-        public bool RememberMe { get; set; }
     }
 }

@@ -38,28 +38,20 @@
                         Staff Name
                         <span class="required">*</span>
                     </label>
-                    <select class="form-select" value="@user.StaffId" @onchange="StaffChanged">
-                       
-                            @if (@user.StaffName == "")
-                            {
-                            <option value="0" style="color: #888888;">                                
-                                -- Select Staff --                               
-                                </option>
-                        }
-                        else
-                        {
-                            <option value="@user.StaffId" style="color: #888888;">
-                                @user.StaffName
-                            </option>
-                             }
+                    <select class="form-select"
+                            @key="staffSelectKey"
+                            @bind="user.StaffId"
+                            @bind:after="StaffChanged">
 
-                        
+                        <option value="0">-- Select Staff --</option>
+
                         @foreach (var staff in staffs)
                         {
                             <option value="@staff.StaffId">
                                 @staff.StaffName
                             </option>
                         }
+
                     </select>
                 </div>
                 <!-- USER ID -->
@@ -77,7 +69,16 @@
                         Password
                         <span class="required">*</span>
                     </label>
-                    <input type="password" class="form-control" maxlength="25" @bind="user.Password" placeholder="Enter Password" />
+                    <div class="input-group">
+                        <input type="@passwordType" class="form-control" maxlength="25" @bind="user.Password" placeholder="Enter Password" />
+                        <button type="button"
+                                class="btn btn-outline-secondary password-button"
+                                @onclick="TogglePassword">
+                            <i class="bi @(showPassword ? "bi-eye-slash" : "bi-eye")">
+                            </i>
+
+                        </button>
+                    </div>
                 </div>
                 <!-- COMPANY -->
                 <div class="col-md-6 mb-3">
@@ -126,7 +127,7 @@
                         <th style="width:80px">
                             Edit
                         </th>
-                        
+
                         <th>
                             Staff Name
                         </th>
@@ -141,7 +142,7 @@
                         </th>
                         <th style="width:80px">
                             Delete
-                        </th>                       
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -153,14 +154,14 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
                             </td>
-                           
+
                             <td>
                                 @item.StaffName
                             </td>
                             <td>
                                 @item.CompanyName
                             </td>
-                             <td>
+                            <td>
                                 @item.UserID
                             </td>
                             <td>
@@ -197,6 +198,18 @@
     private string message = "";
     private string messageType = "success";
 
+    private int staffSelectKey = 0;
+    private int companySelectKey = 0;
+
+    private bool showPassword = false;
+
+    private string passwordType =>
+        showPassword ? "text" : "password";
+
+    private void TogglePassword()
+    {
+        showPassword = !showPassword;
+    }
     // =========================================================
     // INITIALIZE
     // =========================================================
@@ -208,7 +221,7 @@
 
     private async Task LoadData()
     {
-        staffs = await UserService.GetStaffsAsync();
+        staffs = await UserService.GetStaffsAsync(user.StaffId);
 
         companies = await UserService.GetCompaniesAsync();
 
@@ -219,20 +232,20 @@
     // STAFF CHANGE
     // =========================================================
 
-    private void StaffChanged(ChangeEventArgs e)
+    private void StaffChanged()
     {
-        if (decimal.TryParse(e.Value?.ToString(), out decimal staffId))
+        var selectedStaff =
+            staffs.FirstOrDefault(
+                x => x.StaffId == user.StaffId);
+
+        if (selectedStaff != null)
         {
-            user.StaffId = staffId;
-            var selectedStaff = staffs.FirstOrDefault(x => x.StaffId == staffId);
-            if (selectedStaff != null)
-            {
-                user.StaffName = selectedStaff.StaffName;
-            }
-            else
-            {
-                user.StaffName = "";
-            }
+            user.StaffName =
+                selectedStaff.StaffName;
+        }
+        else
+        {
+            user.StaffName = "";
         }
     }
 
@@ -261,17 +274,39 @@
     // NEW
     // =========================================================
 
-    private void NewUser()
+    private async Task NewUser()
     {
-        user = new UserModel();
         isEditMode = false;
+
+        // Clear selected values first
+        user.StaffId = 0;
+        user.StaffName = "";
+
+        user.Company = 0;
+        user.CompanyName = "";
+
+        user.UserID = "";
+        user.Password = "";
+        user.ID = "";
+
+        // Clear dropdown UI
+        staffSelectKey++;
+        companySelectKey++;
+
+        // Load only available staff
+        staffs = await UserService.GetStaffsAsync(0);
+
+        // Reload companies
+        companies = await UserService.GetCompaniesAsync();
+
+        StateHasChanged();
     }
 
     // =========================================================
     // EDIT
     // =========================================================
 
-    private void EditUser(UserModel item)
+    private async Task EditUser(UserModel item)
     {
         user = new UserModel
         {
@@ -284,7 +319,12 @@
             CompanyName = item.CompanyName,
             Createdby = item.Createdby
         };
+
         isEditMode = true;
+
+        staffs =
+            await UserService.GetStaffsAsync(
+                user.StaffId);
     }
 
     // =========================================================
@@ -350,7 +390,7 @@
             await UserService.SaveUserAsync(user, saveFlag);
             await LoadData();
 
-            NewUser();
+            await NewUser();
             if (isNew)
             {
                 await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "User details saved successfully.");
@@ -385,7 +425,7 @@
 
             if (user.ID == item.ID)
             {
-                NewUser();
+                await NewUser();
             }
             await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "User details deleted successfully.");
         }

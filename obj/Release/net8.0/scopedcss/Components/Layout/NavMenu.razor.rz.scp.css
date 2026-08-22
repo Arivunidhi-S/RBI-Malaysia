@@ -1,0 +1,324 @@
+/* =========================================
+   NAVBAR / SIDEBAR HEADER
+   ========================================= */
+
+.top-row[b-dw3fgj7ytv] {
+    height: 3.5rem;
+    background-color: #111827;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.navbar-brand[b-dw3fgj7ytv] {
+    font-size: 22px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 35px;
+}
+
+
+/* =========================================
+   MOBILE TOGGLE
+   ========================================= */
+
+.navbar-toggler[b-dw3fgj7ytv] {
+    appearance: none;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 2.5rem;
+    color: white;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 5px;
+    background-color: rgba(255,255,255,0.08);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1.75rem;
+}
+
+    .navbar-toggler:checked[b-dw3fgj7ytv] {
+        background-color: rgba(255,255,255,0.20);
+    }
+
+
+/* =========================================
+   ICON
+   ========================================= */
+
+.bi[b-dw3fgj7ytv] {
+    display: inline-block;
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    margin-left: 0.25rem;
+    top: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.nav-group-title .bi[b-dw3fgj7ytv] {
+    margin-left: 0.25rem;
+    margin-right: 0.75rem;
+}
+
+/* =========================================
+   NAV ITEM
+   ========================================= */
+
+.nav-item[b-dw3fgj7ytv] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-dw3fgj7ytv] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-dw3fgj7ytv] {
+        padding-bottom: 1rem;
+    }
+
+
+    /* =========================================
+   NAV LINK
+   ========================================= */
+
+    .nav-item[b-dw3fgj7ytv]  .nav-link {
+        color: #d7d7d7 !important;
+        background: transparent !important;
+        border: none;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+        width: 100%;
+        text-decoration: none;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+
+        /* Hover */
+
+        .nav-item[b-dw3fgj7ytv]  .nav-link:hover {
+            background-color: rgba(255,255,255,0.10) !important;
+            color: white !important;
+        }
+
+
+        /* Active */
+
+        .nav-item[b-dw3fgj7ytv]  .nav-link.active {
+            background-color: #68758a !important;
+            color: white !important;
+        }
+
+
+/* =========================================
+   NAV GROUP
+   ========================================= */
+
+.nav-group[b-dw3fgj7ytv] {
+    width: 100%;
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+}
+
+    .nav-group:first-of-type[b-dw3fgj7ytv] {
+        margin-top: 0.5rem;
+    }
+
+/* =========================================
+   GROUP TITLE
+   ========================================= */
+
+.nav-group-title[b-dw3fgj7ytv] {
+    width: 100%;
+    height: 2.5rem;
+    border: none;
+    background: transparent;
+    color: #d7d7d7;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: left;
+    padding: 0 0.95rem 0 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    letter-spacing: normal;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+    .nav-group-title:hover[b-dw3fgj7ytv] {
+        color: white;
+        background-color: rgba(255,255,255,0.05);
+    }
+
+
+/* =========================================
+   ARROW
+   ========================================= */
+
+.arrow[b-dw3fgj7ytv] {
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+}
+
+    .arrow.rotate[b-dw3fgj7ytv] {
+        transform: rotate(90deg);
+    }
+
+.nav-group-title .arrow[b-dw3fgj7ytv] {
+    margin-left: auto;
+    font-size: 0.75rem;
+}
+/* =========================================
+   SUB MENU
+   ========================================= */
+
+.submenu[b-dw3fgj7ytv] {
+    width: 100%;
+    padding-left: 0.25rem;
+}
+
+    .submenu[b-dw3fgj7ytv]  .nav-link {
+        padding-left: 1.25rem !important;
+        font-size: 0.88rem;
+        font-weight: 400;
+        height: 2.75rem;
+    }
+
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
+
+.nav-scrollable[b-dw3fgj7ytv] {
+    display: block;
+    height: calc(100vh - 3.5rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #0C2366;
+    background: linear-gradient(180deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
+}
+
+
+    /* =========================================
+   SCROLLBAR
+   ========================================= */
+
+    .nav-scrollable[b-dw3fgj7ytv]::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .nav-scrollable[b-dw3fgj7ytv]::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .nav-scrollable[b-dw3fgj7ytv]::-webkit-scrollbar-thumb {
+        background-color: rgba(255,255,255,0.25);
+        border-radius: 10px;
+    }
+
+
+/* =========================================
+   LOGIN
+   ========================================= */
+
+.login-menu[b-dw3fgj7ytv] {
+    margin-top: 10px;
+}
+
+
+/* =========================================
+   DESKTOP
+   ========================================= */
+
+@media (min-width: 641px) {
+
+    .navbar-toggler[b-dw3fgj7ytv] {
+        display: none;
+    }
+
+    .nav-scrollable[b-dw3fgj7ytv] {
+        display: block;
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 640px) {
+
+    .navbar-toggler[b-dw3fgj7ytv] {
+        display: block;
+    }
+
+    .top-row[b-dw3fgj7ytv] {
+        height: 3.5rem;
+    }
+
+    .navbar-brand[b-dw3fgj7ytv] {
+        font-size: 1rem;
+    }
+
+    .nav-scrollable[b-dw3fgj7ytv] {
+        display: none;
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+        .nav-scrollable.show[b-dw3fgj7ytv] {
+            display: block;
+        }
+
+    .nav-item[b-dw3fgj7ytv] {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+        .nav-item[b-dw3fgj7ytv]  .nav-link {
+            height: 3rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+    .nav-group-title[b-dw3fgj7ytv] {
+        height: 3rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+.logout-menu[b-dw3fgj7ytv] {
+    margin-top: 0.75rem;
+}
+
+    .logout-menu[b-dw3fgj7ytv]  .nav-link {
+        display: flex;
+        align-items: center;
+        padding-left: 1rem !important;
+    }
+
+    .logout-menu[b-dw3fgj7ytv]  .bi {
+        width: 1.15rem;
+        height: 1.15rem;
+        margin-left: 0.15rem;
+        margin-right: 0.85rem;
+    }

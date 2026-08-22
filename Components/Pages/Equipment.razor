@@ -1,0 +1,494 @@
+﻿@page "/equipment"
+
+@using System.ComponentModel.DataAnnotations
+@using RBI_Malaysia.Services
+@using RBI_Malaysia.Components.Shared
+@using Microsoft.JSInterop
+
+@inject EquipmentService EquipmentService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<SessionGuard />
+<PageTitle>Equipment Master</PageTitle>
+<div class="staff-page">
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================================== -->
+    <div class="page-header mb-3">
+        <div>
+            <h4>
+                <i class="bi bi-gear-wide-connected me-2"></i>
+                Equipment Master
+            </h4>
+            <small>
+                Manage equipment information
+            </small>
+        </div>
+    </div>
+    <!-- ===================================================== -->
+    <!-- FORM -->
+    <!-- ===================================================== -->
+    <EditForm Model="@equipment" OnValidSubmit="@SaveEquipment" FormName="EquipmentForm">
+        <DataAnnotationsValidator />
+        <div class="row g-3 mb-3">
+            <!-- ================================================= -->
+            <!-- LEFT SIDE -->
+            <!-- ================================================= -->
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card staff-card">
+                    <div class="card-header staff-header">
+                        <i class="bi bi-gear me-2"></i>
+                        Equipment Details
+                    </div>
+                    <div class="card-body">
+                        <!-- PROCESS AREA -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Process Area
+                                <span class="text-danger">*</span>
+                            </label>
+                            <InputSelect class="form-select" @bind-Value="equipment.ProcessAreaID">
+                                <option value="0">Select Process Area...</option>
+                                @foreach (var area in processAreas)
+                                {
+                                    <option value="@area.ProcessAreaID">
+                                        @area.ProcessArea
+                                    </option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => equipment.ProcessAreaID)" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <!-- EQUIPMENT ID -->
+                                <label class="form-label">
+                                    Equipment ID
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <InputText class="form-control" @bind-Value="equipment.EquPID" placeholder="Enter Equipment ID" maxlength="50" />
+                                <ValidationMessage For="@(() => equipment.EquPID)" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- EQUIPMENT TYPE -->
+                                <label class="form-label">
+                                    Equipment Type
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputText class="form-control" @bind-Value="equipment.EqupType" placeholder="Enter Equipment Type" maxlength="50" />
+                                <ValidationMessage For="@(() => equipment.EqupType)" />
+                            </div>
+                        </div>
+                        <!-- DESCRIPTION -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Equipment Description
+                            </label>
+                            <InputText class="form-control" @bind-Value="equipment.EqupDescription" placeholder="Enter Equipment Description" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <!-- DOSH NO -->
+                                <label class="form-label">
+                                    DOSH No
+                                </label>
+                                <InputText class="form-control" @bind-Value="equipment.DoshNo" placeholder="Enter DOSH No" maxlength="50" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- P&ID -->
+                                <label class="form-label">
+                                    P&ID
+                                </label>
+                                <InputText class="form-control" @bind-Value="equipment.PID" placeholder="Enter P&ID" maxlength="50" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <!-- YEAR INSTALLED -->
+                                <label class="form-label">
+                                    Year Installed
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="equipment.YearInstalled">
+                                    <option value="">Select Year...</option>
+                                    @for (int year = 1970; year <= 2050; year++)
+                                    {
+                                        <option value="@year">
+                                            @year
+                                        </option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- DESIGN CODE -->
+                                <label class="form-label">
+                                    Design Code
+                                </label>
+                                <InputText class="form-control" @bind-Value="equipment.DesignCode" placeholder="Enter Design Code" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <!-- INTERNAL PROTECTIVE LAYER -->
+                                <label class="form-label">
+                                    Internal Protective Layer
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="equipment.IPLayer">
+                                    <option value="None">None</option>
+                                    <option value="Coating">Coating</option>
+                                    <option value="Metalic Lining">Metalic Lining</option>
+                                    <option value="Rubber Lining">Rubber Lining</option>
+                                    <option value="Weld Lining">Weld Lining</option>
+                                </InputSelect>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- INTRUSIVE -->
+                                <label class="form-label">
+                                    Intrusive
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="equipment.Instructive">
+                                    <option value="None">None </option>
+                                    <option value="Intrusive None Entry">Intrusive None Entry</option>
+                                    <option value="Intrusive Entry">Intrusive Entry</option>
+                                </InputSelect>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ================================================= -->
+            <!-- RIGHT SIDE -->
+            <!-- ================================================= -->
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card staff-card">
+                    <div class="card-header staff-header">
+                        <i class="bi bi-sliders me-2"></i>
+                        Equipment Configuration
+                    </div>
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <!-- WTM -->
+                            <div class="form-check">
+                                <InputCheckbox class="form-check-input" @bind-Value="equipment.WTM" />
+                                <label class="form-check-label">
+                                    Wall Thickness Measurement
+                                </label>
+                            </div>
+                        </div>
+                        <!-- HISTORY -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                History Description
+                            </label>
+                            <InputTextArea class="form-control" rows="3" @bind-Value="equipment.HistoryDescription" placeholder="Enter history description" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <!-- INSPECTION TECHNIQUES -->
+                                <label class="form-label">
+                                    Inspection Techniques
+                                </label>
+                                <InputTextArea class="form-control" rows="3" @bind-Value="equipment.InspectionTechniques" placeholder="Enter inspection techniques" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- INSPECTION SCOPE -->
+                                <label class="form-label">
+                                    Inspection Scope
+                                </label>
+                                <InputTextArea class="form-control" rows="3" @bind-Value="equipment.InspectionScope" placeholder="Enter inspection scope" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <!-- RBI OBSERVATION -->
+                                <label class="form-label">
+                                    RBI Observation
+                                </label>
+                                <InputTextArea class="form-control" rows="4" @bind-Value="equipment.RBIObservation" placeholder="Enter RBI observation" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- DOSH OBSERVATION -->
+                                <label class="form-label">
+                                    DOSH Observation
+                                </label>
+                                <InputTextArea class="form-control" rows="4" @bind-Value="equipment.DOSHObservation" placeholder="Enter DOSH observation" />
+                            </div>
+                        </div>
+                        <!-- BUTTONS -->
+                        <div class="staff-buttons pt-1">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save me-1"></i>
+                                @(equipment.EquAutoID == 0 ? "Save" : "Update")
+                            </button>
+                            <button type="button" class="btn btn-danger" @onclick="NewEquipment">
+                                <i class="bi bi-eraser me-1"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+    <!-- ===================================================== -->
+    <!-- EQUIPMENT TABLE -->
+    <!-- ===================================================== -->
+    <div class="card staff-card staff-list-card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table staff-table align-middle mb-0" id="equipmentTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width:70px">
+                                Edit
+                            </th>
+                            <th>
+                                Process Area
+                            </th>
+                            <th>
+                                Equipment ID
+                            </th>
+                            <th>
+                                Equipment Type
+                            </th>
+                            <th>
+                                DOSH No
+                            </th>
+                            <th>
+                                P&ID
+                            </th>
+                            <th>
+                                Year Installed
+                            </th>
+                            <th class="text-center" style="width:80px">
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in equipments)
+                        {
+                            <tr @key="item.EquAutoID">
+                                <!-- EDIT -->
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm staff-edit-btn" title="Edit" @onclick="() => EditEquipment(item)">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                </td>
+                                <!-- PROCESS AREA -->
+                                <td>
+                                    @item.ProcessArea
+                                </td>
+                                <!-- EQUIPMENT ID -->
+                                <td>
+                                    <strong>
+                                        @item.EquPID
+                                    </strong>
+                                </td>
+                                <!-- TYPE -->
+                                <td>
+                                    @item.EqupType
+                                </td>
+                                <!-- DOSH -->
+                                <td>
+                                    @item.DoshNo
+                                </td>
+                                <!-- PID -->
+                                <td>
+                                    @item.PID
+                                </td>
+                                <!-- YEAR -->
+                                <td>
+                                    @item.YearInstalled
+                                </td>
+                                <!-- DELETE -->
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm staff-delete-btn" title="Delete" @onclick="() => DeleteEquipment(item)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    // =========================================================
+    // MODEL
+    // =========================================================
+    private EquipmentModel equipment = new()
+    {
+        IPLayer = "None",
+        Instructive = "None"
+    };
+
+    private List<EquipmentModel> equipments = new();
+    private List<ProcessAreaModel> processAreas = new();
+    private bool dataTablePending = false;
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProcessAreas();
+        await LoadEquipments();
+    }
+    // =========================================================
+    // LOAD PROCESS AREAS
+    // =========================================================
+    private async Task LoadProcessAreas()
+    {
+        decimal companyId = Convert.ToDecimal(UserSession.CompanyID);
+        processAreas = await EquipmentService.GetProcessAreasAsync(companyId);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!dataTablePending)
+            return;
+
+        dataTablePending = false;
+        // First allow Blazor to update the DOM
+        await Task.Delay(100);
+        try
+        {
+            // Destroy old DataTable
+            await JS.InvokeVoidAsync("equipmentDataTable.destroy", "#equipmentTable");
+            // Small delay after destroy
+            await Task.Delay(50);
+            // Initialize new DataTable
+            await JS.InvokeVoidAsync("equipmentDataTable.initialize", "#equipmentTable");
+        }
+        catch (JSException ex)
+        {
+            Console.WriteLine($"DataTable refresh error: {ex.Message}");
+        }
+    }
+    // =========================================================
+    // LOAD EQUIPMENT
+    // =========================================================
+    private async Task LoadEquipments()
+    {
+        decimal companyId = Convert.ToDecimal(UserSession.CompanyID);
+
+        equipments = await EquipmentService.GetEquipmentsAsync(companyId);
+        // Tell OnAfterRenderAsync to rebuild DataTable
+        dataTablePending = true;
+    }
+    // =========================================================
+    // NEW / CLEAR
+    // =========================================================
+    private void NewEquipment()
+    {
+        equipment = new EquipmentModel
+        {
+            IPLayer = "None",
+            Instructive = "None"
+        };
+    }
+    // =========================================================
+    // EDIT
+    // =========================================================
+    private void EditEquipment(EquipmentModel item)
+    {
+        equipment = new EquipmentModel
+        {
+            EquAutoID = item.EquAutoID,
+            ProcessAreaID = item.ProcessAreaID,
+            ProcessArea = item.ProcessArea,
+            EquPID = item.EquPID,
+            EqupType = item.EqupType,
+            EqupDescription = item.EqupDescription,
+            DoshNo = item.DoshNo,
+            PID = item.PID,
+            IPLayer = item.IPLayer,
+            Instructive = item.Instructive,
+            YearInstalled = item.YearInstalled,
+            WTM = item.WTM,
+            HistoryDescription = item.HistoryDescription,
+            InspectionTechniques = item.InspectionTechniques,
+            InspectionScope = item.InspectionScope,
+            RBIObservation = item.RBIObservation,
+            DOSHObservation = item.DOSHObservation,
+            DesignCode = item.DesignCode,
+            CompanyID = item.CompanyID
+        };
+    }
+    // =========================================================
+    // SAVE / UPDATE    
+    // =========================================================
+
+    private async Task SaveEquipment()
+    {
+        try
+        {
+            bool isNew = equipment.EquAutoID == 0;
+
+            equipment.CompanyID = Convert.ToDecimal(UserSession.CompanyID);
+
+            string saveFlag = isNew ? "N" : "U";
+            // -----------------------------------------------------
+            // SAVE / UPDATE
+            // -----------------------------------------------------
+            await EquipmentService.SaveEquipmentAsync(equipment, Convert.ToDecimal(UserSession.UserID), saveFlag);
+
+            await LoadEquipments();
+
+            NewEquipment();
+
+            await InvokeAsync(StateHasChanged);
+
+            if (isNew)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "Equipment details saved successfully.");
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Updated!", "Equipment details updated successfully.");
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+    // =========================================================
+    // DELETE
+    // =========================================================
+    private async Task DeleteEquipment(
+        EquipmentModel item)
+    {
+        try
+        {
+            bool confirmed =
+                await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete equipment {item.EquPID}?");
+
+            if (!confirmed)
+                return;
+
+            await EquipmentService.DeleteEquipmentAsync(item.EquAutoID, Convert.ToDecimal(UserSession.CompanyID), Convert.ToDecimal(UserSession.UserID));            // Reload latest database records
+
+            await LoadEquipments();
+
+            if (equipment.EquAutoID == item.EquAutoID)
+            {
+                NewEquipment();
+            }
+            // Force Blazor to render latest table
+            await InvokeAsync(StateHasChanged);
+
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Equipment details deleted successfully.");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+}

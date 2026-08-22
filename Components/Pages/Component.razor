@@ -1,0 +1,607 @@
+﻿@page "/component"
+
+@using System.ComponentModel.DataAnnotations
+@using RBI_Malaysia.Services
+@using RBI_Malaysia.Components.Shared
+@using Microsoft.JSInterop
+
+@inject ComponentService ComponentService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<SessionGuard />
+
+<PageTitle>Component Master</PageTitle>
+
+<div class="staff-page">
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================================== -->
+    <div class="page-header mb-3">
+        <div>
+            <h4><i class="bi bi-diagram-3 me-2"></i>Component Master</h4>
+            <small>Manage component information</small>
+        </div>
+    </div>
+    <!-- ===================================================== -->
+    <!-- FORM -->
+    <!-- ===================================================== -->
+    <EditForm Model="@component" OnValidSubmit="@SaveComponent" FormName="ComponentForm">
+        <DataAnnotationsValidator />
+        <div class="row g-3 mb-3">
+            <!-- ================================================= -->
+            <!-- LEFT -->
+            <!-- ================================================= -->
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card staff-card">
+                    <div class="card-header staff-header">
+                        <i class="bi bi-diagram-3 me-2"></i>
+                        Component Details
+                    </div>
+                    <!-- PROCESS AREA -->
+                    <!-- EQUIPMENT -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Process Area
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="component.ProcessAreaID" @bind-Value:after="ProcessAreaChanged">
+                                    <option value="0">
+                                        Select Process Area...
+                                    </option>
+                                    @foreach (var area in processAreas)
+                                    {
+                                        <option value="@area.ProcessAreaID">
+                                            @area.ProcessArea
+                                        </option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => component.ProcessAreaID)" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Equipment ID
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <!-- EQUIPMENT -->
+                                <InputSelect class="form-select" @bind-Value="component.EqupID">
+                                    <option value="0">
+                                        Select Equipment...
+                                    </option>
+                                    @foreach (var item in equipmentsLookup)
+                                    {
+                                        <option value="@item.EquAutoID">
+                                            @item.EqupID
+                                        </option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => component.EqupID)" />
+                            </div>
+                        </div>
+                        <!-- COMPONENT NO -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Component No
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.CompNo" placeholder="Enter Component No" maxlength="50" />
+                                <ValidationMessage For="@(() => component.CompNo)" />
+                            </div>
+                            <!-- COMPONENT NAME -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Component Name
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.CompName" placeholder="Enter Component Name" maxlength="50" />
+                                <ValidationMessage For="@(() => component.CompName)" />
+                            </div>
+                        </div>
+                        <!-- INSULATED / PAINTING -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Insulated
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="component.Insulated">
+                                    <option value="None">None</option>
+                                    <option value="Hot Insulation">Hot Insulation</option>
+                                    <option value="Cool Insulation">Cool Insulation</option>
+                                    <option value="Protective Insulation">Protective Insulation</option>
+                                </InputSelect>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Painting
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="component.Painting">
+                                    <option value="None">None</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </InputSelect>
+                            </div>
+                        </div>
+                        <!-- MATERIAL -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Material Type
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="component.Materialtype">
+                                    <option value="None">
+                                        None
+                                    </option>
+                                    <option value="Carbon">
+                                        Carbon
+                                    </option>
+                                    <option value="Stainless">
+                                        Stainless
+                                    </option>
+                                    <option value="Others">
+                                        Others
+                                    </option>
+                                </InputSelect>
+                                <ValidationMessage For="@(() => component.Materialtype)" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- MRT -->
+                                <label class="form-label">
+                                    MRT
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputNumber class="form-control" @bind-Value="component.MRT" />
+                                <ValidationMessage For="@(() => component.MRT)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <!-- MATERIAL SPEC -->
+                                <label class="form-label">
+                                    Material Specification
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.MaterialSpecification" placeholder="Enter Material Specification" maxlength="50" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- CORROSION -->
+                                <label class="form-label">
+                                    Corrosion Allowance
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.CorrosionAllownce" placeholder="Enter Corrosion Allowance" />
+                                <ValidationMessage For="@(() => component.CorrosionAllownce)" />
+                            </div>
+                        </div>
+                        <!-- THICKNESS -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Normal Thickness
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.NormalThickness" placeholder="Enter Normal Thickness" />
+                                <ValidationMessage For="@(() => component.NormalThickness)" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Construction Thickness
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.ConstThickness" placeholder="Enter Construction Thickness" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ================================================= -->
+            <!-- RIGHT -->
+            <!-- ================================================= -->
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card staff-card">
+                    <div class="card-header staff-header">
+                        <i class="bi bi-sliders me-2"></i>
+                        Component Configuration
+                    </div>
+                    <div class="card-body">
+                        <!-- DESIGN PRESSURE -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Design Pressure
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.Designpressure" placeholder="Enter Design Pressure" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Design Temperature
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.DesignTemp" placeholder="Enter Design Temperature" />
+                            </div>
+                        </div>
+                        <!-- OP PRESSURE -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Operating Pressure
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.OPPressure" placeholder="Enter Operating Pressure" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Operating Temperature
+                                </label>
+                                <InputText class="form-control" @bind-Value="component.OPTemp" placeholder="Enter Operating Temperature" />
+                            </div>
+                        </div>
+                        <!-- INSPECTION -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Inspection Effective
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="component.InspectionEffective">
+                                    <option Value="None">None </option>
+                                    <option Value="Highly Effective">Highly Effective </option>
+                                    <option Value="Usually Effective">Usually Effective </option>
+                                    <option Value="Fairly Effective">Fairly Effective </option>
+                                    <option Value="Poorly Effective">Poorly Effective </option>
+                                    <option Value="In Effective">In Effective </option>
+                                </InputSelect>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    No. of Inspection
+                                </label>
+                                <InputNumber class="form-control" @bind-Value="component.NoofInspection" />
+                            </div>
+                        </div>
+                        <!-- EXPECTED RATE -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Expected Rate
+                                </label>
+                                <InputNumber class="form-control" @bind-Value="component.ExpectedRate" step="0.001" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Clad
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <InputSelect class="form-select" @bind-Value="component.Clad">
+                                    <option value="Clad">
+                                        Clad
+                                    </option>
+                                    <option value="Yes">
+                                        Yes
+                                    </option>
+                                    <option value="No">
+                                        No
+                                    </option>
+                                </InputSelect>
+                            </div>
+                        </div>
+
+                        <div class=" mb-3">
+                            <!-- DEFAULT VALUE -->
+                            <label class="form-label">
+                                Default Value
+                                <span class="text-danger">*</span>
+                            </label>
+                            <InputNumber class="form-control" @bind-Value="component.Defaultvalue" step="0.001" />
+                            <ValidationMessage For="@(() => component.Defaultvalue)" />
+                        </div>
+
+                        <!-- BUTTONS -->
+                        <div class="staff-buttons pt-1">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save me-1"></i>
+                                @(component.CompAutoID == 0 ? "Save" : "Update")
+                            </button>
+                            <button type="button" class="btn btn-danger" @onclick="NewComponent">
+                                <i class="bi bi-eraser me-1"></i>
+                                Clear
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+    <!-- ===================================================== -->
+    <!-- COMPONENT TABLE -->
+    <!-- ===================================================== -->
+    <div class="card staff-card staff-list-card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table staff-table align-middle mb-0" id="componentTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width:70px">
+                                Edit
+                            </th>
+                            <th>
+                                Process Area
+                            </th>
+                            <th>
+                                Equipment ID
+                            </th>
+                            <th>
+                                Component No
+                            </th>
+                            <th>
+                                Component Name
+                            </th>
+                            <th>
+                                Material
+                            </th>
+                            <th>
+                                Normal Thickness
+                            </th>
+                            <th>
+                                MRT
+                            </th>
+                            <th>
+                                Inspection
+                            </th>
+                            <th class="text-center" style="width:80px">
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in components)
+                        {
+                            <tr @key="item.CompAutoID">
+                                <!-- EDIT -->
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm staff-edit-btn" title="Edit" @onclick="() => EditComponent(item)">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    @item.ProcessArea
+                                </td>
+                                <td>
+                                    <strong>
+                                        @item.EquipmentID
+                                    </strong>
+                                </td>
+                                <td>
+                                    @item.CompNo
+                                </td>
+                                <td>
+                                    @item.CompName
+                                </td>
+                                <td>
+                                    @item.Materialtype
+                                </td>
+                                <td>
+                                    @item.NormalThickness
+                                </td>
+                                <td>
+                                    @item.MRT
+                                </td>
+                                <td>
+                                    @item.NoofInspection
+                                </td>
+                                <!-- DELETE -->
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm staff-delete-btn" title="Delete" @onclick="() => DeleteComponent(item)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    // =========================================================
+    // MODEL
+    // =========================================================
+    private ComponentModel component = new()
+    {
+        Insulated = "No",
+        Painting = "No",
+        Materialtype = "None",
+        InspectionEffective = "None",
+        Clad = "None"
+    };
+
+    private List<ComponentModel> components = new();
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentLookupModel> equipmentsLookup = new();
+    private bool dataTablePending = false;
+
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProcessAreas();
+        await LoadComponents();
+    }
+    // =========================================================
+    // PROCESS AREA
+    // =========================================================
+    private async Task LoadProcessAreas()
+    {
+        decimal companyId = Convert.ToDecimal(UserSession.CompanyID);
+        processAreas = await ComponentService.GetProcessAreasAsync(companyId);
+    }
+    private async Task ProcessAreaChanged()
+    {
+        try
+        {
+            component.EqupID = 0;
+            equipmentsLookup.Clear();
+            if (component.ProcessAreaID <= 0)
+            {
+                return;
+            }
+            equipmentsLookup = await ComponentService.GetEquipmentsAsync(component.ProcessAreaID);
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            equipmentsLookup.Clear();
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+    // =========================================================
+    // LOAD COMPONENTS
+    // =========================================================
+    private async Task LoadComponents()
+    {
+        decimal companyId = Convert.ToDecimal(UserSession.CompanyID);
+        components = await ComponentService.GetComponentsAsync(companyId);
+        dataTablePending = true;
+    }
+    // =========================================================
+    // DATATABLE
+    // =========================================================
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!dataTablePending)
+            return;
+
+        dataTablePending = false;
+        await Task.Delay(100);
+        try
+        {
+            await JS.InvokeVoidAsync("componentDataTable.destroy", "#componentTable");
+            await Task.Delay(50);
+            await JS.InvokeVoidAsync("componentDataTable.initialize", "#componentTable");
+        }
+        catch (JSException ex)
+        {
+            Console.WriteLine($"Component DataTable refresh error: {ex.Message}");
+        }
+    }
+    // =========================================================
+    // NEW
+    // =========================================================
+    private void NewComponent()
+    {
+        component = new ComponentModel
+        {
+            Insulated = "No",
+            Painting = "No",
+            Materialtype = "None",
+            InspectionEffective = "None",
+            Clad = "None"
+        };
+
+        equipmentsLookup.Clear();
+    }
+    // =========================================================
+    // EDIT
+    // =========================================================
+    private async Task EditComponent(ComponentModel item)
+    {
+        component = new ComponentModel
+        {
+            CompAutoID = item.CompAutoID,
+            ProcessAreaID = item.ProcessAreaID,
+            ProcessArea = item.ProcessArea,
+            EqupID = item.EqupID,
+            EquipmentID = item.EquipmentID,
+            CompNo = item.CompNo,
+            CompName = item.CompName,
+            Insulated = item.Insulated,
+            Painting = item.Painting,
+            Materialtype = item.Materialtype,
+            MaterialSpecification = item.MaterialSpecification,
+            NormalThickness = item.NormalThickness,
+            ConstThickness = item.ConstThickness,
+            MRT = item.MRT,
+            Designpressure = item.Designpressure,
+            DesignTemp = item.DesignTemp,
+            OPPressure = item.OPPressure,
+            OPTemp = item.OPTemp,
+            CorrosionAllownce = item.CorrosionAllownce,
+            InspectionEffective = item.InspectionEffective,
+            ExpectedRate = item.ExpectedRate,
+            NoofInspection = item.NoofInspection,
+            Clad = item.Clad,
+            Defaultvalue = item.Defaultvalue,
+            CompanyID = item.CompanyID
+        };
+
+        // Important:
+        // Edit செய்யும் போது Equipment dropdown
+        // மீண்டும் load ஆக வேண்டும்.
+
+        equipmentsLookup = await ComponentService.GetEquipmentsAsync(item.ProcessAreaID);
+    }
+    // =========================================================
+    // SAVE / UPDATE
+    // =========================================================
+    private async Task SaveComponent()
+    {
+        try
+        {
+            bool isNew = component.CompAutoID == 0;
+            component.CompanyID = Convert.ToDecimal(UserSession.CompanyID);
+
+            string saveFlag = isNew ? "N" : "U";
+
+            await ComponentService.SaveComponentAsync(component, Convert.ToDecimal(UserSession.UserID), saveFlag);
+            // Latest database records
+            await LoadComponents();
+            // Clear form
+            NewComponent();
+            await InvokeAsync(StateHasChanged);
+            if (isNew)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "Component details saved successfully.");
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Updated!", "Component details updated successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+    // =========================================================
+    // DELETE
+    // =========================================================
+    private async Task DeleteComponent(ComponentModel item)
+    {
+        try
+        {
+            bool confirmed =
+                await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete component {item.CompNo}?"
+                );
+
+            if (!confirmed)
+                return;
+
+            await ComponentService.DeleteComponentAsync(item.CompAutoID, Convert.ToDecimal(UserSession.CompanyID), Convert.ToDecimal(UserSession.UserID));
+            // Reload database
+            await LoadComponents();
+            if (component.CompAutoID == item.CompAutoID)
+            {
+                NewComponent();
+            }
+            await InvokeAsync(StateHasChanged);
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Component details deleted successfully.");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+}

@@ -1,23 +1,74 @@
-﻿@using RBI_Malaysia.Services
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using RBI_Malaysia.Services
+
 @inject UserSession UserSession
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @code {
 
     private bool hasChecked = false;
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender || hasChecked)
             return;
 
         hasChecked = true;
 
-        CheckSession();
+        await CheckSession();
     }
 
-    private void CheckSession()
+    private async Task CheckSession()
     {
+        var authState =
+            await AuthenticationStateProvider
+                .GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        // =====================================================
+        // NOT AUTHENTICATED
+        // =====================================================
+
+        if (user.Identity?.IsAuthenticated != true)
+        {
+            Navigation.NavigateTo("/login", replace: true);
+            return;
+        }
+
+
+        // =====================================================
+        // RESTORE UserSession AFTER REFRESH
+        // =====================================================
+
+        if (!UserSession.IsLoggedIn)
+        {
+            var userId =
+                user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+
+            var userName =
+                user.FindFirst(ClaimTypes.Name)?.Value ?? "";
+
+            var companyId =
+                user.FindFirst("CompanyID")?.Value ?? "";
+
+            var companyName =
+                user.FindFirst("CompanyName")?.Value ?? "";
+
+
+            UserSession.UserID = userId;
+            UserSession.UserName = userName;
+            UserSession.CompanyID = companyId;
+            UserSession.CompanyName = companyName;
+        }
+
+
+        // =====================================================
+        // FINAL CHECK
+        // =====================================================
+
         if (!UserSession.IsLoggedIn)
         {
             Navigation.NavigateTo("/login", replace: true);
