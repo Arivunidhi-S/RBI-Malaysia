@@ -58,10 +58,7 @@
                 user.FindFirst("CompanyName")?.Value ?? "";
 
 
-            UserSession.UserID = userId;
-            UserSession.UserName = userName;
-            UserSession.CompanyID = companyId;
-            UserSession.CompanyName = companyName;
+            UserSession.SetSession(userId, userName, companyId, companyName);
         }
 
 

@@ -1,6 +1,14 @@
 ﻿@page "/home"
 
+@using System.Data
+@using Microsoft.Data.SqlClient
+@using RBI_Malaysia.Services
 @using RBI_Malaysia.Components.Shared
+@using Microsoft.JSInterop
+
+
+@inject UserSession UserSession
+@inject IJSRuntime JS
 
 <SessionGuard />
 

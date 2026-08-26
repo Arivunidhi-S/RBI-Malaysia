@@ -322,3 +322,27 @@
         margin-left: 0.15rem;
         margin-right: 0.85rem;
     }
+
+
+/* =========================================
+   SUB MENU ANIMATION
+   ========================================= */
+
+.submenu {
+    width: 100%;
+    padding-left: 0.25rem;
+    animation: submenuOpen 0.22s ease-in-out;
+    transform-origin: top;
+}
+
+@keyframes submenuOpen {
+    0% {
+        opacity: 0;
+        transform: translateY(-6px) scaleY(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
+}

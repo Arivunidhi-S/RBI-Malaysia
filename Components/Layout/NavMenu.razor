@@ -125,7 +125,7 @@
 
                     <div class="nav-item px-3">
                         <NavLink class="nav-link"
-                                 href="inspectiondetails">
+                                 href="inspection">
                             <span class="arrow">›</span>&nbsp;&nbsp;Inspection Details
                         </NavLink>
                     </div>
@@ -304,33 +304,122 @@
     private bool reportsOpen;
 
 
+    // =========================================================
+    // ADMIN MASTER
+    // =========================================================
     private void ToggleAdminMaster()
     {
-        adminMasterOpen = !adminMasterOpen;
+        bool newState = !adminMasterOpen;
+
+        // Close all other menus
+        adminMasterOpen = false;
+        masterOpen = false;
+        inspectionOpen = false;
+        pofOpen = false;
+        cofOpen = false;
+        reportsOpen = false;
+
+        // Open selected menu
+        adminMasterOpen = newState;
     }
 
+
+    // =========================================================
+    // MASTER
+    // =========================================================
     private void ToggleMaster()
     {
-        masterOpen = !masterOpen;
+        bool newState = !masterOpen;
+
+        // Close all other menus
+        adminMasterOpen = false;
+        masterOpen = false;
+        inspectionOpen = false;
+        pofOpen = false;
+        cofOpen = false;
+        reportsOpen = false;
+
+        // Open selected menu
+        masterOpen = newState;
     }
 
+
+    // =========================================================
+    // INSPECTION
+    // =========================================================
     private void ToggleInspection()
     {
-        inspectionOpen = !inspectionOpen;
+        bool newState = !inspectionOpen;
+
+        // Close all other menus
+        adminMasterOpen = false;
+        masterOpen = false;
+        inspectionOpen = false;
+        pofOpen = false;
+        cofOpen = false;
+        reportsOpen = false;
+
+        // Open selected menu
+        inspectionOpen = newState;
     }
 
+
+    // =========================================================
+    // POF
+    // =========================================================
     private void TogglePof()
     {
-        pofOpen = !pofOpen;
+        bool newState = !pofOpen;
+
+        // Close all other menus
+        adminMasterOpen = false;
+        masterOpen = false;
+        inspectionOpen = false;
+        pofOpen = false;
+        cofOpen = false;
+        reportsOpen = false;
+
+        // Open selected menu
+        pofOpen = newState;
     }
 
+
+    // =========================================================
+    // COF
+    // =========================================================
     private void ToggleCof()
     {
-        cofOpen = !cofOpen;
+        bool newState = !cofOpen;
+
+        // Close all other menus
+        adminMasterOpen = false;
+        masterOpen = false;
+        inspectionOpen = false;
+        pofOpen = false;
+        cofOpen = false;
+        reportsOpen = false;
+
+        // Open selected menu
+        cofOpen = newState;
     }
 
+
+    // =========================================================
+    // REPORTS
+    // =========================================================
     private void ToggleReports()
     {
-        reportsOpen = !reportsOpen;
+        bool newState = !reportsOpen;
+
+        // Close all other menus
+        adminMasterOpen = false;
+        masterOpen = false;
+        inspectionOpen = false;
+        pofOpen = false;
+        cofOpen = false;
+        reportsOpen = false;
+
+        // Open selected menu
+        reportsOpen = newState;
     }
 }

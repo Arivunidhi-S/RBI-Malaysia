@@ -1,18 +1,57 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
+
+@using RBI_Malaysia.Services
+@using RBI_Malaysia.Components.Shared
+
 @inject UserSession UserSession
+
 <div class="page">
+
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
-        @* <div class="top-row px-4"> *@
+
         <div class="top-bar">
-            <span class="d-none d-lg-inline-block"><b>Hi, @UserSession.UserName</b></span>&nbsp;&nbsp;<a href="login" class="mb-1 btn btn-warning"><i class="arrow bi bi-lock-fill"></i>Logout</a>
+
+            <span class="d-none d-lg-inline-block">
+                <strong>Hi, @UserSession.UserName</strong>
+            </span>
+
+            &nbsp;&nbsp;
+
+            <a href="login" class="mb-1 btn btn-warning border-1">
+                <i class="bi bi-lock-fill"></i>
+                Logout
+            </a>
+
         </div>
+
         <article class="content">
             @Body
         </article>
+
     </main>
 
 </div>
+
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        UserSession.OnChange += RefreshLayout;
+    }
+
+    private void RefreshLayout()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        UserSession.OnChange -= RefreshLayout;
+    }
+}

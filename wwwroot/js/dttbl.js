@@ -35,12 +35,12 @@
 
             lengthChange: true,
 
-            pageLength: 10,
+            pageLength: 5,
 
             lengthMenu: [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "All"],
-                [10, 25, 50, 100, "All"]
+                [5, 10, 25, 50, 100, -1],
+                [5, 10, 25, 50, 100, "All"],
+                [5, , 25, 50, 100, "All"]
             ],
 
             order: [],
@@ -113,10 +113,10 @@ window.componentDataTable = {
         }
 
         $(selector).DataTable({
-            pageLength: 10,
+            pageLength: 5,
             lengthMenu: [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "All"]
+                [5, 10, 25, 50, 100, -1],
+                [5, 10, 25, 50, 100, "All"]
             ],
             ordering: true,
             searching: true,
@@ -134,6 +134,50 @@ window.componentDataTable = {
 
         if ($.fn.DataTable.isDataTable(selector)) {
             $(selector).DataTable().destroy();
+        }
+    }
+};
+
+window.inspectionTable = {
+
+    initialize: function () {
+
+        const table = document.getElementById("inspectionTable");
+
+        if (!table) {
+            console.log("inspectionTable not found");
+            return;
+        }
+
+        // Existing DataTable இருந்தால் முதலில் destroy
+        if ($.fn.DataTable.isDataTable(table)) {
+            $(table).DataTable().clear().destroy();
+        }
+
+        // புதிய DataTable
+        $(table).DataTable({
+            responsive: true,
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            pageLength: 10,
+            autoWidth: false
+        });
+
+        console.log("Inspection DataTable initialized");
+    },
+
+    destroy: function () {
+
+        const table = document.getElementById("inspectionTable");
+
+        if (!table) {
+            return;
+        }
+
+        if ($.fn.DataTable.isDataTable(table)) {
+            $(table).DataTable().clear().destroy();
         }
     }
 };
