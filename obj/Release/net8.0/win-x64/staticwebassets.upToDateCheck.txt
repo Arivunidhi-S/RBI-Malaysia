@@ -3,6 +3,6 @@ wwwroot\bootstrap\bootstrap.min.css
 wwwroot\bootstrap\bootstrap.min.css.map
 wwwroot\favicon.png
 wwwroot\js\dashboard.js
-wwwroot\js\dttbl.js
 wwwroot\js\sweetalert2-helper.js
 wwwroot\js\validation.js
+wwwroot\js\dttbl.js

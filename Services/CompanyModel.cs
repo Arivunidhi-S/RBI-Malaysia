@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RBI_Malaysia.Services
+namespace Services
 {
     public class CompanyModel
     {

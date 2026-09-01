@@ -1803,6 +1803,118 @@ main[b-k0zhljh4ke] {
         font-size: 18px;
     }
 }
+/* _content/RBI_Malaysia/Components/Pages/Inspection.razor.rz.scp.css */
+.staff-page[b-s04qvmpvp3] {
+    padding: 0;
+}
+
+.staff-card[b-s04qvmpvp3] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-s04qvmpvp3] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-s04qvmpvp3],
+    .staff-card-header h6[b-s04qvmpvp3] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-s04qvmpvp3] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-s04qvmpvp3] {
+    padding: 20px;
+}
+
+.form-label[b-s04qvmpvp3] {
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-select[b-s04qvmpvp3],
+.form-control[b-s04qvmpvp3] {
+    min-height: 38px;
+    border-radius: 5px;
+}
+
+    .form-select:focus[b-s04qvmpvp3],
+    .form-control:focus[b-s04qvmpvp3] {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, .12);
+    }
+
+.staff-table[b-s04qvmpvp3] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-s04qvmpvp3] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-s04qvmpvp3] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-s04qvmpvp3] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-s04qvmpvp3] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-s04qvmpvp3] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-s04qvmpvp3] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.btn[b-s04qvmpvp3] {
+    border-radius: 5px;    
+}
+
+@media (max-width: 768px) {
+
+    .staff-page[b-s04qvmpvp3] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-s04qvmpvp3] {
+        padding: 15px;
+    }
+
+    .staff-table[b-s04qvmpvp3] {
+        font-size: 12px;
+    }
+}
 /* _content/RBI_Malaysia/Components/Pages/Login.razor.rz.scp.css */
 /* =====================================================
    LOGIN PAGE

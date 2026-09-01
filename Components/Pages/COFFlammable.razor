@@ -1,0 +1,361 @@
+﻿@page "/cof-flammable"
+
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject COFFlammableService COFService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<PageTitle>COF Flammable</PageTitle>
+
+<div class="staff-page">
+    <div class="staff-card">
+        
+        <div class="staff-card-header">
+            <div>
+                <h5 class="mb-0"><i class="bi bi-fire me-2 text-danger"></i> COF Flammable</h5>
+                <small>Flammable Component Consequence Area Calculation</small>
+            </div>
+        </div>
+
+        <div class="staff-card-body">
+            <!-- வடிகட்டி பகுதி (Cascading Dropdowns) -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area <span class="text-danger">*</span></label>
+                  
+                    <select class="form-select" value="@selectedProcessArea" @onchange="ProcessAreaChanged">
+                        <option value="0">-- Select Process Area --</option>
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">@item.ProcessArea</option>
+
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged" disabled="@(selectedProcessArea <= 0)">
+                    @* <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged" disabled="@(selectedProcessArea <= 0)"> *@
+                        <option value="0">-- Select Equipment --</option>
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">@item.EquPID</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged" disabled="@(selectedEquipment <= 0)">
+                  @*   <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged" disabled="@(selectedEquipment <= 0)"> *@
+                        <option value="0">-- Select Component --</option>
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">@item.CompNo</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- படிவம் (Input Form) -->
+            <EditForm Model="@model" OnValidSubmit="CalculateAndSave" FormName="FlammableForm">
+                <DataAnnotationsValidator />
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Fluid Stored</label>
+                        <select class="form-select" @bind="model.Fluid" @bind:after="OnFluidStoredChanged">
+                            <option value="">Select</option>
+                            <option value="Liquid">Liquid</option>
+                            <option value="Gas">Gas or Vapour</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Representative Fluid</label>
+                        <select class="form-select" @bind="model.Repfluid">  @* @bind:after="OnRepFluidChanged" *@
+                            <option value="">Select</option>
+                            @foreach (var fluid in repFluids)
+                            {
+                                <option value="@fluid">@fluid</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Final Phase</label>
+                        <select class="form-select" @bind="model.Phase">
+                            <option value="">Select</option>
+                            <option value="A">Liquid</option>
+                            <option value="B">Vapor</option>
+                            <option value="C">Powder</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Fluid Type</label>
+                        <InputText class="form-control" @bind-Value="model.FluidType" readonly />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Operating Pressure</label>
+                        <InputNumber class="form-control" @bind-Value="model.Pressure" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Operating Temp</label>
+                        <InputNumber class="form-control" @bind-Value="model.Temperature" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">P1</label>
+                        <InputNumber class="form-control" @bind-Value="model.P1" disabled="@(model.Fluid != "Liquid")" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Mass, lbs</label>
+                        <InputNumber class="form-control" @bind-Value="model.Inventory" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Detection</label>
+                        <select class="form-select" @bind="model.Detection" @bind:after="OnDetectionChanged">
+                            <option value="">Select</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                        <small class="text-muted d-block mt-1">@detectionDesc</small>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Isolation</label>
+                        <select class="form-select" @bind="model.Isolation" @bind:after="OnIsolationChanged">
+                            <option value="">Select</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                        <small class="text-muted d-block mt-1">@isolationDesc</small>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Mitigation System</label>
+                        <select class="form-select" @bind="model.MitigationValue">
+                            <option value="">Select</option>
+                            <option value="0.25">Inventory blowdown, coupled with isolation classification B or higher</option>
+                            <option value="0.20">Fire water deluge system and monitors</option>
+                            <option value="0.05">Fire water monitors only</option>
+                            <option value="0.15">Foam spray system</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- கணக்கீட்டு முடிவுகள் (Outputs - Read Only) -->
+                <div class="row g-3 mt-3 border-top pt-3 bg-light p-2 rounded">
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Component Damage</label>
+                        <input type="text" class="form-control" value="@model.CAcmdTotal" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Personnel Injury</label>
+                        <input type="text" class="form-control" value="@model.CAInjTotal" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Damage Category</label>
+                        <input type="text" class="form-control fw-bold text-danger" value="@model.CAcmdCategory" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Injury Category</label>
+                        <input type="text" class="form-control fw-bold text-danger" value="@model.CAInjCategory" readonly />
+                    </div>
+                </div>
+
+                <!-- பொத்தான்கள் (Action Buttons) -->
+                <div class="mt-4 d-flex gap-2">
+                    <button type="button" class="btn btn-success fw-bold" @onclick="CalculateAndSave" disabled="@isSaving">
+                        @(isSaving ? "Saving..." : "Calculate & Save")
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="ClearForm">Clear</button>
+                    @if (hasExistingData)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="DeleteRecord">Delete</button>
+                    }
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private COFFlammableModel model = new();
+    private decimal selectedProcessArea, selectedEquipment, selectedComponent;
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel> equipments = new();
+    private List<ComponentModel> components = new();
+    private List<string> repFluids = new();
+    private string detectionDesc = "", isolationDesc = "";
+    private bool isCalculated = false, hasExistingData = false, isSaving = false;
+
+    protected override async Task OnInitializedAsync() => processAreas = await COFService.GetFlamProcessAreasAsync(UserSession.CompanyID);
+
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
+    {
+        selectedProcessArea = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var processAreaId))
+        {
+            selectedProcessArea = processAreaId;
+        }
+
+        // Reset inputs and cascading lists (Inspection கோப்பில் உள்ளது போல)
+        selectedEquipment = 0;
+        selectedComponent = 0;
+        equipments.Clear();
+        components.Clear();
+        hasExistingData = false;
+        isCalculated = false;
+
+        if (selectedProcessArea > 0)
+        {
+            try
+            {
+                equipments = await COFService.GetflamEquipmentsByProcessAsync(selectedProcessArea);
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Equipment load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task EquipmentChanged(ChangeEventArgs e)
+    {
+        selectedEquipment = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var equipId))
+        {
+            selectedEquipment = equipId;
+        }
+
+        selectedComponent = 0;
+        components.Clear();
+        hasExistingData = false;
+        isCalculated = false;
+
+        if (selectedEquipment > 0)
+        {
+            try
+            {
+                components = await COFService.GetFlamComponentsByEquipmentAsync(selectedEquipment.ToString());
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Component load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task ComponentChanged(ChangeEventArgs e)
+    {
+        selectedComponent = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var compId))
+        {
+            selectedComponent = compId;
+        }
+
+        hasExistingData = false;
+        isCalculated = false;
+
+        if (selectedComponent > 0)
+        {
+            try
+            {
+                var existing = await COFService.GetFlammableRecordAsync(selectedProcessArea, selectedEquipment, selectedComponent);
+                if (existing != null)
+                {
+                    model = existing;
+                    repFluids = await COFService.GetFluidsAsync(model.Fluid); // populate options so Repfluid dropdown shows the saved value
+                    hasExistingData = true;
+                    isCalculated = true;
+                }
+                else
+                {
+                    model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = selectedComponent };
+                    repFluids.Clear();
+                    hasExistingData = false;
+                    isCalculated = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Record load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task OnFluidStoredChanged()
+    {
+        if (model.Fluid != "Liquid") model.P1 = 0;
+        repFluids = await COFService.GetFluidsAsync(model.Fluid);
+    }
+    // private async Task OnRepFluidChanged() => model.FluidType = await COFService.GetFluidTypeAsync(model.Repfluid);
+    private void OnDetectionChanged()
+    {
+        detectionDesc = model.Detection switch
+        {
+            "A" => "Instrumentation designed specially to detect material losses by changes in operating conditions.",
+            "B" => "Suitably locate detectors to determine when the material is present outside.",
+            "C" => "Visual detection, cameras, or detectors with marginal coverage.",
+            _ => ""
+        };
+    }
+    private void OnIsolationChanged()
+    {
+        isolationDesc = model.Isolation switch
+        {
+            "A" => "Isolation shutdown systems activated directly from process instrumentation with no operator intervention.",
+            "B" => "Isolation shutdown systems activated by operators in the control room remote from the leak.",
+            "C" => "Isolation dependent on manually-operated valves.",
+            _ => ""
+        };
+    }
+    private async Task CalculateAndSave()
+    {
+        isSaving = true;
+        StateHasChanged();
+        try
+        {
+            // ஒரே அழைப்பில் calculate + save — table-ல எல்லா column-உம் நிரம்பும்
+            model = await COFService.CalculateAndSaveFlammableAsync(model);
+            isCalculated = true;
+            await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "COF-Flammable calculated and saved successfully.");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Calculate & Save failed: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+
+
+    private async Task DeleteRecord()
+    {
+        await COFService.DeleteFlammableAsync(model.ProcID, model.EquID, model.CompID);
+        
+            await JS.InvokeVoidAsync("alert", "Successfully Deleted");
+            ClearForm();
+        
+    }
+
+    private void ClearForm() {
+        model = new();
+        selectedProcessArea = selectedEquipment = selectedComponent = 0; 
+        isCalculated = hasExistingData = false;
+    }
+}
+

@@ -1,17 +1,16 @@
 ﻿@page "/inspection"
-
-@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 @using RBI_Malaysia.Services
 @using RBI_Malaysia.Components.Shared
-@using System.Data
 @using Microsoft.JSInterop
+@using System.Data
 @using Microsoft.Data.SqlClient
 
 @inject InspectionService InspectionService
 @inject UserSession UserSession
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-@inject IConfiguration Configuration
+@inject IConfiguration Configuration 
 
 <PageTitle>Inspection</PageTitle>
 
@@ -1057,27 +1056,6 @@
             isLoading = false;
         }
     }
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     if (initializeTable &&
-    //         hasLoadedGrid &&
-    //         !isLoading)
-    //     {
-    //         initializeTable = false;
-
-    //         try
-    //         {
-    //             await JS.InvokeVoidAsync(
-    //                 "inspectionTable.initialize");
-    //         }
-    //         catch (JSException ex)
-    //         {
-    //             Console.WriteLine(
-    //                 "DataTable initialization error: " +
-    //                 ex.Message);
-    //         }
-    //     }
-    // }
 
     private async Task LoadLastInspection()
     {

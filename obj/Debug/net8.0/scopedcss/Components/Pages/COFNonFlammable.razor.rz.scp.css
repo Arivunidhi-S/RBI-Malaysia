@@ -1,0 +1,117 @@
+.staff-page[b-mbax10v5ra] {
+    padding: 0;
+}
+
+.staff-card[b-mbax10v5ra] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-mbax10v5ra] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-mbax10v5ra],
+    .staff-card-header h6[b-mbax10v5ra] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-mbax10v5ra] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-mbax10v5ra] {
+    padding: 20px;
+}
+
+.form-label[b-mbax10v5ra] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-mbax10v5ra] .staff-card .form-control,
+.staff-card .form-select[b-mbax10v5ra] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+[b-mbax10v5ra] .staff-card .form-control:focus,
+.staff-card .form-select:focus[b-mbax10v5ra] {
+    background-color: #ffffff;
+    border-color: #6979ff;
+    box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+}
+
+.staff-table[b-mbax10v5ra] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-mbax10v5ra] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-mbax10v5ra] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-mbax10v5ra] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-mbax10v5ra] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-mbax10v5ra] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-mbax10v5ra] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.btn[b-mbax10v5ra] {
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+
+    .staff-page[b-mbax10v5ra] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-mbax10v5ra] {
+        padding: 15px;
+    }
+
+    .staff-table[b-mbax10v5ra] {
+        font-size: 12px;
+    }
+}

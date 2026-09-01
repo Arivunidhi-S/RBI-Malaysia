@@ -35,14 +35,15 @@
     color: #374151;
 }
 
-.form-select,
-.form-control {
+::deep .staff-card .form-control,
+.staff-card .form-select 
+{
     min-height: 38px;
     border-radius: 5px;
 }
 
-    .form-select:focus,
-    .form-control:focus {
+    ::deep .staff-card .form-control:focus,
+    .staff-card .form-select:focus {
         border-color: #86b7fe;
         box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, .12);
     }

@@ -42,6 +42,7 @@ builder.Services.AddScoped<ProcessAreaService>();
 builder.Services.AddScoped<EquipmentService>();
 builder.Services.AddScoped<ComponentService>();
 builder.Services.AddScoped<InspectionService>();
+builder.Services.AddScoped<COFFlammableService>();
 
 var app = builder.Build();
 

@@ -35,14 +35,15 @@
     color: #374151;
 }
 
-.form-select[b-s04qvmpvp3],
-.form-control[b-s04qvmpvp3] {
+[b-s04qvmpvp3] .staff-card .form-control,
+.staff-card .form-select[b-s04qvmpvp3] 
+{
     min-height: 38px;
     border-radius: 5px;
 }
 
-    .form-select:focus[b-s04qvmpvp3],
-    .form-control:focus[b-s04qvmpvp3] {
+    [b-s04qvmpvp3] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-s04qvmpvp3] {
         border-color: #86b7fe;
         box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, .12);
     }

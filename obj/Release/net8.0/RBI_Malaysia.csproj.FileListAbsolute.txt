@@ -82,3 +82,4 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\refint\RBI_Mala
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\RBI_Malaysia.pdb
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\RBI_Malaysia.genruntimeconfig.cache
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\ref\RBI_Malaysia.dll
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Pages\Inspection.razor.rz.scp.css
