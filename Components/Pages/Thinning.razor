@@ -1,0 +1,246 @@
+@page "/thinning"
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@inject ThinningService ThinningSvc
+
+<h3>Thinning Damage Factor</h3>
+
+<PofSelectorHeader CompanyId="CompanyId" SelectionChanged="OnPofSelectionChangedAsync" />
+
+<div class="thinning-panel">
+
+    @if (!string.IsNullOrEmpty(StatusMessage))
+    {
+        <div class="alert @(IsError ? "alert-danger" : "alert-success")">@StatusMessage</div>
+    }
+
+    <div class="row mb-2">
+        <div class="col-auto">
+            <button class="btn btn-primary" @onclick="OnSubmitClicked" disabled="@(!CanSelectRecord)">Submit</button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-danger" @onclick="OnDeleteClicked" disabled="@(!CanDelete)">Delete</button>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-3 fw-bold">Clad Component:</div>
+        <div class="col-md-3">
+            <select class="form-select" @bind="Model.Clad" disabled="@(!Model.CladDropdownEnabled)">
+                <option value="">Select</option>
+                @foreach (var c in Model.CladOptions)
+                {
+                    <option value="@c.CompName">@c.CompName</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 fw-bold">Inspection Date:</div>
+        <div class="col-md-3">
+            <input type="date" class="form-control" @bind="InspectDateValue" />
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-3 fw-bold">Inspection Effectiveness:</div>
+        <div class="col-md-3">
+            <select class="form-select" @bind="Model.InspectCate">
+                <option value="">Select</option>
+                <option value="A">Highly Effective</option>
+                <option value="B">Usually Effective</option>
+                <option value="C">Fairly Effective</option>
+                <option value="D">Poorly Effective</option>
+                <option value="E">In Effective</option>
+            </select>
+        </div>
+        <div class="col-md-3 fw-bold">No of Inspection:</div>
+        <div class="col-md-3">
+            <select class="form-select" @bind="NoOfInsValue">
+                <option value="">Select</option>
+                @for (int i = 1; i <= 6; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-3 fw-bold">Age:</div>
+        <div class="col-md-3">
+            <input type="number" class="form-control" @bind="AgeValue" />
+        </div>
+        <div class="col-md-3 fw-bold">Thinning Type:</div>
+        <div class="col-md-3">
+            <select class="form-select" @bind="Model.ThinType">
+                <option value="">Select</option>
+                <option value="Local">Local</option>
+                <option value="General">General</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-3 fw-bold">A_rt:</div>
+        <div class="col-md-3">
+            <input class="form-control" value="@Model.Art" disabled />
+        </div>
+        <div class="col-md-3 fw-bold">Tdf:</div>
+        <div class="col-md-3">
+            <input class="form-control" value="@Model.Tdf" disabled />
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-auto">
+            <button class="btn btn-secondary" @onclick="OnCalculateAndSaveClicked" disabled="@(!CanSelectRecord || IsBusy)">
+                @(IsBusy ? "Working..." : "Calculate && Save")
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    /// <summary>From auth/session context (Session["sesCompanyID"] / Session["sesUserID"] in the original page).</summary>
+    [Parameter] public int CompanyId { get; set; }
+    [Parameter] public int UserId { get; set; }
+
+    private int? ProcessAreaId;
+    private int? EquipmentId;
+    private int? ComponentId;
+
+    private ThinningDamageModel Model { get; set; } = new();
+    private string? StatusMessage;
+    private bool IsError;
+    private bool IsBusy;
+
+    private bool CanSelectRecord => ProcessAreaId.HasValue && EquipmentId.HasValue && ComponentId.HasValue;
+    private bool CanDelete => CanSelectRecord && Model.IsExistingRecord;
+
+    private DateTime? InspectDateValue
+    {
+        get => Model.InspectDate;
+        set => Model.InspectDate = value;
+    }
+
+    private int? AgeValue
+    {
+        get => Model.Age;
+        set => Model.Age = value;
+    }
+
+    private int? NoOfInsValue
+    {
+        get => Model.NoOfIns;
+        set => Model.NoOfIns = value;
+    }
+
+    /// <summary>
+    /// Fires on every Process Area / Equipment / Component change from the shared selector,
+    /// mirroring the original's cboProcess/cboEquipment/cboComponent postbacks. We reset the
+    /// working model whenever the selection is incomplete or changes, and - just like
+    /// OnSelectedIndexChanged_cboComponent - immediately reflect the newly-picked component's
+    /// own Clad flag so the Clad dropdown enables/populates before the user even clicks Submit.
+    /// </summary>
+    private async Task OnPofSelectionChangedAsync(PofSelectorHeader.PofSelection selection)
+    {
+        ClearStatus();
+        ProcessAreaId = selection.ProcessAreaId;
+        EquipmentId = selection.EquipmentId;
+        ComponentId = selection.ComponentId;
+
+        Model = new ThinningDamageModel
+        {
+            ProcID = ProcessAreaId,
+            EquID = EquipmentId,
+            CompID = ComponentId,
+            InspectDate = DateTime.Today
+        };
+
+        if (selection.Component is not null)
+        {
+            Model.ComponentClad = selection.Component.Clad;
+            Model.CladOptions = Model.CladDropdownEnabled
+                ? await ThinningSvc.GetCladComponentListAsync()
+                : new();
+        }
+    }
+
+    private async Task OnSubmitClicked()
+    {
+        await LoadRecordAsync();
+    }
+
+    private async Task LoadRecordAsync()
+    {
+        ClearStatus();
+        try
+        {
+            var existing = await ThinningSvc.LoadAsync(ProcessAreaId!.Value, EquipmentId!.Value, ComponentId!.Value, CompanyId);
+            if (existing is not null)
+            {
+                Model = existing;
+            }
+            else
+            {
+                SetStatus("This component doesn't have a value yet - you can enter new data.", isError: false);
+            }
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Error: {ex.Message}", isError: true);
+        }
+    }
+
+    private async Task OnCalculateAndSaveClicked()
+    {
+        ClearStatus();
+        if (!CanSelectRecord)
+        {
+            SetStatus("Please select Process Area, Equipment and Component.", isError: true);
+            return;
+        }
+
+        Model.ProcID = ProcessAreaId;
+        Model.EquID = EquipmentId;
+        Model.CompID = ComponentId;
+
+        IsBusy = true;
+        try
+        {
+            await ThinningSvc.CalculateAndSaveAsync(Model, CompanyId, UserId);
+            SetStatus($"Successfully Thinning Value {(Model.IsExistingRecord ? "Updated" : "Inserted")}", isError: false);
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Error: {ex.Message}", isError: true);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    private async Task OnDeleteClicked()
+    {
+        ClearStatus();
+        if (!CanDelete) return;
+        try
+        {
+            await ThinningSvc.DeleteAsync(ProcessAreaId!.Value, EquipmentId!.Value, ComponentId!.Value, Model.ThinType ?? "General");
+            SetStatus("Thinning Value Successfully Deleted", isError: false);
+            Model = new ThinningDamageModel { ProcID = ProcessAreaId, EquID = EquipmentId, CompID = ComponentId, InspectDate = DateTime.Today };
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Error: {ex.Message}", isError: true);
+        }
+    }
+
+    private void SetStatus(string message, bool isError)
+    {
+        StatusMessage = message;
+        IsError = isError;
+    }
+
+    private void ClearStatus() => StatusMessage = null;
+}

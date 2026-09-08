@@ -64,6 +64,18 @@ main[b-k0zhljh4ke] {
     padding: 30px;
 }
 
+.staff-buttons[b-k0zhljh4ke] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-k0zhljh4ke] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
 
 /* =========================
    MOBILE

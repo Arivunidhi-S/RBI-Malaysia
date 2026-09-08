@@ -97,9 +97,18 @@
         font-size: 15px;
     }
 
-.btn[b-tt6rzzhr16] {
-    border-radius: 5px;
+.staff-buttons[b-tt6rzzhr16] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
+
+
+    .staff-buttons .btn[b-tt6rzzhr16] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
 
 @media (max-width: 768px) {
 

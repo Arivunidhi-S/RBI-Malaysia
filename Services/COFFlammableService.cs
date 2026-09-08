@@ -483,8 +483,8 @@ namespace RBI_Malaysia.Services
             m.CAbleInj1 = cainj1; m.CAbleInj2 = cainj2; m.CAbleInj3 = cainj3; m.CAbleInj4 = cainj4;
             m.CAcmdFinal1 = CACMDFinal1; m.CAcmdFinal2 = CACMDFinal2; m.CAcmdFinal3 = CACMDFinal3; m.CAcmdFinal4 = CACMDFinal4;
             m.CAInjFinal1 = CAnfnt1; m.CAInjFinal2 = CAnfnt2; m.CAInjFinal3 = CAnfnt3; m.CAInjFinal4 = CAnfnt4;
-            m.CAcmdTotal = Convert.ToDecimal(CACMDFinaltot);
-            m.CAInjTotal = Convert.ToDecimal(CAnfnttotal);
+            m.CAcmdTotal = SafeDecimal(CACMDFinaltot);
+            m.CAInjTotal = SafeDecimal(CAnfnttotal);
             m.CAcmdCategory = CmdCate;
             m.CAInjCategory = CAinjCate;
             m.MaxValue = maxval;
@@ -919,7 +919,7 @@ VALUES
 
                 double factmit = string.IsNullOrEmpty(m.MitigationValue) ? 0 : Convert.ToDouble(m.MitigationValue);
                 bool allInstantaneous = Timet1 == "Instantaneous" && Timet2 == "Instantaneous" && Timet3 == "Instantaneous" && Timet4 == "Instantaneous";
-                eneffn = (massInput > 10000 || allInstantaneous) ? 4 * Math.Log10(massInput) - 15 : 1.0;
+                eneffn = (massInput > 10000 || allInstantaneous) && massInput > 0 ? 4 * Math.Log10(massInput) - 15 : 1.0;
 
                 void HoleInjury(string timet, double rate, double mass, out double caInj, out double caInjInst, out double effrate)
                 {
@@ -961,10 +961,10 @@ VALUES
                 g = 2696.0 - 21.9 * diffP + 1.474 * Math.Pow(diffP, 2);
                 h = 0.31 - 0.00032 * Math.Pow(diffP - 40, 2);
 
-                CAc1 = Timet1 == "Continuous" ? 0.2 * C8 * g * Math.Pow(C4 * rate1, h) : 0.0;
-                CAc2 = Timet2 == "Continuous" ? 0.2 * C8 * g * Math.Pow(C4 * rate2, h) : 0.0;
-                CAc3 = Timet3 == "Continuous" ? 0.2 * C8 * g * Math.Pow(C4 * rate3, h) : 0.0;
-                CAc4 = Timet4 == "Continuous" ? 0.2 * C8 * g * Math.Pow(C4 * rate4, h) : 0.0;
+                CAc1 = (Timet1 == "Continuous" && rate1 > 0) ? 0.2 * C8 * g * Math.Pow(C4 * rate1, h) : 0.0;
+                CAc2 = (Timet2 == "Continuous" && rate2 > 0) ? 0.2 * C8 * g * Math.Pow(C4 * rate2, h) : 0.0;
+                CAc3 = (Timet3 == "Continuous" && rate3 > 0) ? 0.2 * C8 * g * Math.Pow(C4 * rate3, h) : 0.0;
+                CAc4 = (Timet4 == "Continuous" && rate4 > 0) ? 0.2 * C8 * g * Math.Pow(C4 * rate4, h) : 0.0;
 
                 // mass1-4/useld1-4 still computed the same way as steam-continuous case for record-keeping
                 (double m1, string id1) HoleMassNS(string timet, double rate, double usld)
@@ -997,7 +997,7 @@ VALUES
             m.Factic1 = factic1; m.Factic2 = factic2; m.Factic3 = factic3; m.Factic4 = factic4;
             m.CAbleInj1 = CAc1; m.CAbleInj2 = CAc2; m.CAbleInj3 = CAc3; m.CAbleInj4 = CAc4;
             m.CAInjFinal1 = CAnfnt1; m.CAInjFinal2 = CAnfnt2; m.CAInjFinal3 = CAnfnt3; m.CAInjFinal4 = CAnfnt4;
-            m.CAInjTotal = Convert.ToDecimal(CAInjTotal);
+            m.CAInjTotal = SafeDecimal(CAInjTotal);
             m.CAInjCategory = CmdCate;
             m.Ptrans = ptrans;
             m.G = g; m.H = h;
@@ -1158,6 +1158,7 @@ VALUES
 
         private static double SafeDiv(double numerator, double denominator) => denominator == 0 ? 0 : numerator / denominator;
         private static double ToD(object val) => val == DBNull.Value ? 0 : Convert.ToDouble(val);
+        private static decimal SafeDecimal(double val) => double.IsNaN(val) || double.IsInfinity(val) ? 0 : Convert.ToDecimal(val);
 
         private async Task<(double a, double b)> GetCoeffAsync(SqlConnection conn, string table, string fluidStoredType, string prefix, string repFluid)
         {

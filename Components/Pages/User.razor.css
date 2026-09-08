@@ -52,18 +52,26 @@
     padding: 20px;
 }
 
-.form-select,
-.form-control {
-    min-height: 40px;
-    border: 1px solid #cbd5e1;
-    border-radius: 5px;
+/* --- மாற்றி அமைக்க வேண்டிய பகுதி --- */
+
+::deep .form-control,
+::deep .form-select { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
 }
 
-    .form-select:focus,
-    .form-control:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 0.15rem rgba(59, 130, 246, 0.15);
+    ::deep .form-control:focus,
+    ::deep .form-select:focus { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
     }
+
 
 ::deep .form-control::placeholder {
     color: #888888;

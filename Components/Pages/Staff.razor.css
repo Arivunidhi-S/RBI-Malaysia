@@ -84,8 +84,10 @@
    INPUT
    ========================================================= */
 
+/* --- மாற்றி அமைக்க வேண்டிய பகுதி --- */
+
 ::deep .staff-card .form-control,
-.staff-card .form-select {
+::deep .staff-card .form-select { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
     min-height: 35px;
     background-color: #f0f1f7;
     border: 1px solid #cfd4e1;
@@ -95,13 +97,13 @@
     box-shadow: none;
 }
 
-
     ::deep .staff-card .form-control:focus,
-    .staff-card .form-select:focus {
+    ::deep .staff-card .form-select:focus { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
         background-color: #ffffff;
         border-color: #6979ff;
         box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
     }
+
 
 
 /* =========================================================

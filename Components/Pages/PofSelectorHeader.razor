@@ -1,0 +1,134 @@
+﻿@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@inject PofLookupService LookupSvc
+
+
+
+<div class="staff-page">
+    <div class="staff-card">
+
+        <div class="staff-card-header">
+            <div>
+                <h5 class="mb-0"><i class="bi bi-droplet me-2 text-info"></i> COF Non-Flammable</h5>
+                <small>Non-Flammable Component Consequence Area Calculation</small>
+            </div>
+        </div>
+
+        <div class="staff-card-body">
+            <!-- வடிகட்டி பகுதி -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area <span class="text-danger">*</span></label>
+                    <select class="form-select" @bind="SelectedProcessAreaId" @bind:after="OnProcessAreaChangedAsync">
+                        <option value="">Select</option>
+                        @foreach (var p in ProcessAreas)
+                        {
+                            <option value="@p.ProcessAreaID">@p.ProcessArea</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment <span class="text-danger">*</span></label>
+                    <select class="form-select" @bind="SelectedEquipmentId" @bind:after="OnEquipmentChangedAsync" disabled="@(!SelectedProcessAreaId.HasValue)">
+                        <option value="">Select</option>
+                        @foreach (var eq in Equipment)
+                        {
+                            <option value="@eq.EquAutoID">@eq.EqupID</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component <span class="text-danger">*</span></label>
+                    <select class="form-select" @bind="SelectedComponentId" @bind:after="OnComponentChangedAsync" disabled="@(!SelectedEquipmentId.HasValue)">
+                        <option value="">Select</option>
+                        @foreach (var c in Components)
+                        {
+                            <option value="@c.CompAutoID">@c.CompName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public int CompanyId { get; set; }
+
+    /// <summary>Fired whenever the fully-resolved selection changes (any of the three IDs becomes null when a
+    /// higher-level pick changes, exactly like the original page clearing the dependent RadComboBoxes).</summary>
+    [Parameter] public EventCallback<PofSelection> SelectionChanged { get; set; }
+
+    private List<ProcessAreaOption> ProcessAreas { get; set; } = new();
+    private List<EquipmentOption> Equipment { get; set; } = new();
+    private List<ComponentOption> Components { get; set; } = new();
+
+    private int? SelectedProcessAreaId;
+    private int? SelectedEquipmentId;
+    private int? SelectedComponentId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProcessAreas = await LookupSvc.GetProcessAreasAsync(CompanyId);
+    }
+
+    private async Task OnProcessAreaChangedAsync()
+    {
+        Equipment.Clear();
+        Components.Clear();
+        SelectedEquipmentId = null;
+        SelectedComponentId = null;
+
+        if (SelectedProcessAreaId.HasValue)
+        {
+            Equipment = await LookupSvc.GetEquipmentAsync(SelectedProcessAreaId.Value);
+        }
+
+        await RaiseSelectionChangedAsync();
+    }
+
+    private async Task OnEquipmentChangedAsync()
+    {
+        Components.Clear();
+        SelectedComponentId = null;
+
+        if (SelectedEquipmentId.HasValue)
+        {
+            Components = await LookupSvc.GetComponentsAsync(SelectedEquipmentId.Value);
+        }
+
+        await RaiseSelectionChangedAsync();
+    }
+
+    private async Task OnComponentChangedAsync()
+    {
+        await RaiseSelectionChangedAsync();
+    }
+
+    private async Task RaiseSelectionChangedAsync()
+    {
+        var selectedComponent = SelectedComponentId.HasValue
+            ? Components.Find(c => c.CompAutoID == SelectedComponentId.Value)
+            : null;
+
+        await SelectionChanged.InvokeAsync(new PofSelection
+        {
+            ProcessAreaId = SelectedProcessAreaId,
+            EquipmentId = SelectedEquipmentId,
+            ComponentId = SelectedComponentId,
+            Component = selectedComponent
+        });
+    }
+
+    public class PofSelection
+    {
+        public int? ProcessAreaId { get; set; }
+        public int? EquipmentId { get; set; }
+        public int? ComponentId { get; set; }
+        public ComponentOption? Component { get; set; }
+
+        public bool IsComplete => ProcessAreaId.HasValue && EquipmentId.HasValue && ComponentId.HasValue;
+    }
+}

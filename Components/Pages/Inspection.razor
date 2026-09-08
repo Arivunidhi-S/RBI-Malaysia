@@ -192,7 +192,7 @@
                 <!-- BUTTONS -->
                 <!-- ================================================= -->
 
-                <div class="mt-4 d-flex gap-2">
+                <div class="staff-buttons mt-4 d-flex gap-2">
 
                     <button type="submit"
                             class="btn btn-primary"
@@ -373,7 +373,7 @@
                         @if (isLoading)
                         {
                             <tr>
-                                <td colspan="17" class="text-center py-4">
+                                <td colspan="16" class="text-center py-4">
                                     <div class="spinner-border text-primary"></div>
                                     <div class="mt-2">Loading...</div>
                                 </td>
@@ -382,7 +382,7 @@
                         else if (!hasLoadedGrid)
                         {
                             <tr>
-                                <td colspan="17" class="text-center py-5 text-muted">
+                                <td colspan="16" class="text-center py-5 text-muted">
                                     <i class="bi bi-funnel fs-3 d-block mb-2"></i>
                                     Please select
                                     <strong>Process Area</strong>,
@@ -395,7 +395,7 @@
                         else if (inspections.Count == 0)
                         {
                             <tr>
-                                <td colspan="17" class="text-center py-4 text-muted">
+                                <td colspan="16" class="text-center py-4 text-muted">
                                     No inspection records found.
                                 </td>
                             </tr>

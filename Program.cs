@@ -43,6 +43,9 @@ builder.Services.AddScoped<EquipmentService>();
 builder.Services.AddScoped<ComponentService>();
 builder.Services.AddScoped<InspectionService>();
 builder.Services.AddScoped<COFFlammableService>();
+builder.Services.AddScoped<ThinningService>();
+builder.Services.AddScoped<PofLookupService>();
+
 
 var app = builder.Build();
 
