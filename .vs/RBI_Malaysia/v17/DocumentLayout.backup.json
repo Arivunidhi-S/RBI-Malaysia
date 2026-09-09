@@ -3,24 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\wwwroot\\js\\dttbl.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:wwwroot\\js\\dttbl.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\componentlining.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\componentlining.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\inspection.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\inspection.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\services\\inspectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:services\\inspectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\thinning.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\thinning.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\thinning.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\thinning.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\equipment.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\equipment.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\models\\thinningmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:models\\thinningmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\services\\thinningservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:services\\thinningservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,47 +34,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "InspectionService.cs",
-              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Services\\InspectionService.cs",
-              "RelativeDocumentMoniker": "Services\\InspectionService.cs",
-              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Services\\InspectionService.cs",
-              "RelativeToolTip": "Services\\InspectionService.cs",
-              "ViewState": "AgIAAHoCAAAAAAAAAAAUwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-08T15:06:37.864Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "App.razor",
-              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\App.razor",
-              "RelativeDocumentMoniker": "Components\\App.razor",
-              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\App.razor",
-              "RelativeToolTip": "Components\\App.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-09-08T14:48:08.261Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Equipment.razor",
-              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\Equipment.razor",
-              "RelativeDocumentMoniker": "Components\\Pages\\Equipment.razor",
-              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\Equipment.razor",
-              "RelativeToolTip": "Components\\Pages\\Equipment.razor",
-              "ViewState": "AgIAABUBAAAAAAAAAAAAAPAAAABVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-09-08T14:38:08.548Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -79,22 +44,74 @@
               "RelativeDocumentMoniker": "Components\\Pages\\Inspection.razor",
               "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\Inspection.razor",
               "RelativeToolTip": "Components\\Pages\\Inspection.razor",
-              "ViewState": "AgIAAGwBAAAAAAAAAAAAAH4BAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAP0AAAAAAAAAAAAAAEEBAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-09-08T14:35:19.237Z",
+              "WhenOpened": "2026-09-09T12:48:17.323Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Thinning.razor.css",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\Thinning.razor.css",
+              "RelativeDocumentMoniker": "Components\\Pages\\Thinning.razor.css",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\Thinning.razor.css",
+              "RelativeToolTip": "Components\\Pages\\Thinning.razor.css",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAAAGMAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-09-09T12:07:28.895Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "dttbl.js",
-              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\wwwroot\\js\\dttbl.js",
-              "RelativeDocumentMoniker": "wwwroot\\js\\dttbl.js",
-              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\wwwroot\\js\\dttbl.js",
-              "RelativeToolTip": "wwwroot\\js\\dttbl.js",
-              "ViewState": "AgIAAH4AAAAAAAAAAAAAAJwAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2026-09-08T14:34:16.65Z",
+              "Title": "ComponentLining.razor",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\ComponentLining.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\ComponentLining.razor",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\ComponentLining.razor",
+              "RelativeToolTip": "Components\\Pages\\ComponentLining.razor",
+              "ViewState": "AgIAAJQBAAAAAAAAAAAwwO4BAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-09-09T12:04:16.567Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ThinningModel.cs",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Models\\ThinningModel.cs",
+              "RelativeDocumentMoniker": "Models\\ThinningModel.cs",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Models\\ThinningModel.cs",
+              "RelativeToolTip": "Models\\ThinningModel.cs",
+              "ViewState": "AgIAADAAAAAAAAAAAAAywD8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-09T11:42:50.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ThinningService.cs",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Services\\ThinningService.cs",
+              "RelativeDocumentMoniker": "Services\\ThinningService.cs",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Services\\ThinningService.cs",
+              "RelativeToolTip": "Services\\ThinningService.cs",
+              "ViewState": "AgIAAAIBAAAAAAAAAAAYwBYBAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-09T08:46:22.14Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Thinning.razor",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\Thinning.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Thinning.razor",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\Thinning.razor",
+              "RelativeToolTip": "Components\\Pages\\Thinning.razor",
+              "ViewState": "AgIAALwAAAAAAAAAAAAkwN0AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-09-09T08:04:25.794Z",
               "EditorCaption": ""
             }
           ]

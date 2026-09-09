@@ -1,246 +1,390 @@
-@page "/thinning"
+﻿@page "/thinning"
+
 @using RBI_Malaysia.Models
 @using RBI_Malaysia.Services
-@inject ThinningService ThinningSvc
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject ThinningService ThinService
+@inject UserSession UserSession
+@inject IJSRuntime JS
 
-<h3>Thinning Damage Factor</h3>
 
-<PofSelectorHeader CompanyId="CompanyId" SelectionChanged="OnPofSelectionChangedAsync" />
+<PageTitle>POF - Thinning Damage</PageTitle>
 
-<div class="thinning-panel">
+<div class="staff-page">
+    <div class="staff-card">
 
-    @if (!string.IsNullOrEmpty(StatusMessage))
-    {
-        <div class="alert @(IsError ? "alert-danger" : "alert-success")">@StatusMessage</div>
-    }
+        <div class="staff-card-header">
+            <div>
+                <h5 class="mb-0"><i class="bi bi-graph-down-arrow me-2 text-warning"></i> POF — Thinning Damage</h5>
+                <small>Component Thinning Damage Factor Calculation</small>
+            </div>
+        </div>
 
-    <div class="row mb-2">
-        <div class="col-auto">
-            <button class="btn btn-primary" @onclick="OnSubmitClicked" disabled="@(!CanSelectRecord)">Submit</button>
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-danger" @onclick="OnDeleteClicked" disabled="@(!CanDelete)">Delete</button>
-        </div>
-    </div>
+        <div class="staff-card-body">
+            <!-- வடிகட்டி பகுதி -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedProcessArea" @onchange="ProcessAreaChanged">
+                        <option value="0">-- Select Process Area --</option>
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">@item.ProcessArea</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged" disabled="@(selectedProcessArea <= 0)">
+                        <option value="0">-- Select Equipment --</option>
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">@item.EquPID</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged" disabled="@(selectedEquipment <= 0)">
+                        <option value="0">-- Select Component --</option>
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">@item.CompNo</option>
+                        }
+                    </select>
+                </div>
+            </div>
 
-    <div class="row mb-2">
-        <div class="col-md-3 fw-bold">Clad Component:</div>
-        <div class="col-md-3">
-            <select class="form-select" @bind="Model.Clad" disabled="@(!Model.CladDropdownEnabled)">
-                <option value="">Select</option>
-                @foreach (var c in Model.CladOptions)
-                {
-                    <option value="@c.CompName">@c.CompName</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-3 fw-bold">Inspection Date:</div>
-        <div class="col-md-3">
-            <input type="date" class="form-control" @bind="InspectDateValue" />
-        </div>
-    </div>
+            <EditForm Model="@model" OnValidSubmit="Calculate" FormName="ThinningForm">
+                <DataAnnotationsValidator />
 
-    <div class="row mb-2">
-        <div class="col-md-3 fw-bold">Inspection Effectiveness:</div>
-        <div class="col-md-3">
-            <select class="form-select" @bind="Model.InspectCate">
-                <option value="">Select</option>
-                <option value="A">Highly Effective</option>
-                <option value="B">Usually Effective</option>
-                <option value="C">Fairly Effective</option>
-                <option value="D">Poorly Effective</option>
-                <option value="E">In Effective</option>
-            </select>
-        </div>
-        <div class="col-md-3 fw-bold">No of Inspection:</div>
-        <div class="col-md-3">
-            <select class="form-select" @bind="NoOfInsValue">
-                <option value="">Select</option>
-                @for (int i = 1; i <= 6; i++)
-                {
-                    <option value="@i">@i</option>
-                }
-            </select>
-        </div>
-    </div>
+                <h6 class="text-muted border-bottom pb-1 mb-3">Basic Inputs</h6>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Clad</label>
+                        <input type="text" class="form-control" value="@model.Clad" readonly />
+                        <small class="text-muted">When select Component it will auto-fill</small>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Age (years) <span class="text-danger">*</span></label>
+                        <InputNumber class="form-control" @bind-Value="model.Age" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Inspection Date</label>
+                        <InputDate class="form-control" @bind-Value="model.InspectDate" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Thinning Type</label>
+                        <select class="form-select" @bind="model.ThinType">
+                            <option value="">Select</option>
+                            <option value="General">General</option>
+                            <option value="Local">Local</option>
+                        </select>
+                    </div>
+                </div>
 
-    <div class="row mb-2">
-        <div class="col-md-3 fw-bold">Age:</div>
-        <div class="col-md-3">
-            <input type="number" class="form-control" @bind="AgeValue" />
-        </div>
-        <div class="col-md-3 fw-bold">Thinning Type:</div>
-        <div class="col-md-3">
-            <select class="form-select" @bind="Model.ThinType">
-                <option value="">Select</option>
-                <option value="Local">Local</option>
-                <option value="General">General</option>
-            </select>
-        </div>
-    </div>
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Main Inspection Category (Damage Factor)</h6>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Inspection Category</label>
+                        <select class="form-select" @bind="model.InspectCate">
+                            <option value="">Select</option>
+                            <option value="A">A — Highly Effective</option>
+                            <option value="B">B — Usually Effective</option>
+                            <option value="C">C — Fairly Effective</option>
+                            <option value="D">D — Poorly Effective</option>
+                            <option value="E">E — Ineffective</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">No. of Inspections</label>
+                        <InputNumber class="form-control" @bind-Value="model.Nofins" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Art (calculated)</label>
+                        <input type="text" class="form-control" value="@model.Art" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">TDF (calculated)</label>
+                        <input type="text" class="form-control fw-bold text-warning" value="@model.Tdf" readonly />
+                    </div>
+                </div>
 
-    <div class="row mb-2">
-        <div class="col-md-3 fw-bold">A_rt:</div>
-        <div class="col-md-3">
-            <input class="form-control" value="@Model.Art" disabled />
-        </div>
-        <div class="col-md-3 fw-bold">Tdf:</div>
-        <div class="col-md-3">
-            <input class="form-control" value="@Model.Tdf" disabled />
-        </div>
-    </div>
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Material Properties</h6>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Yield Strength (YS)(psi)</label>
+                        <InputNumber class="form-control" @bind-Value="model.YS" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Tensile Strength (TS)(psi)</label>
+                        <InputNumber class="form-control" @bind-Value="model.TS" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Allowable Stress (S)(psi)</label>
+                        <InputNumber class="form-control" @bind-Value="model.S" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Joint Efficiency (E)</label>
+                        <InputNumber class="form-control" @bind-Value="model.E" />
+                    </div>
+                </div>
 
-    <div class="row mb-2">
-        <div class="col-auto">
-            <button class="btn btn-secondary" @onclick="OnCalculateAndSaveClicked" disabled="@(!CanSelectRecord || IsBusy)">
-                @(IsBusy ? "Working..." : "Calculate && Save")
-            </button>
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Additional Inspection Categories (B / C / D)</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">No. of Inspections — Category B</label>
+                        <InputNumber class="form-control" @bind-Value="model.NofinsB" />
+                        <small class="text-muted">DS1 (Category B Damage Factor): <strong>@model.DS1</strong></small>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">No. of Inspections — Category C</label>
+                        <InputNumber class="form-control" @bind-Value="model.NofinsC" />
+                        <small class="text-muted">DS2 (Category C Damage Factor): <strong>@model.DS2</strong></small>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">No. of Inspections — Category D</label>
+                        <InputNumber class="form-control" @bind-Value="model.NofinsD" />
+                        <small class="text-muted">DS3 (Category D Damage Factor): <strong>@model.DS3</strong></small>
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Bayesian Damage Factor — Prior Probabilities</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Prp1 (DS=1 scenario prior)</label>
+                        <InputNumber class="form-control" @bind-Value="model.Prp1_thin" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Prp2 (DS=2 scenario prior)</label>
+                        <InputNumber class="form-control" @bind-Value="model.Prp2_thin" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Prp3 (DS=4 scenario prior)</label>
+                        <InputNumber class="form-control" @bind-Value="model.Prp3_thin" />
+                    </div>
+                    <small class="text-muted">Table 4.6 conditional-probability constants (CoP) are fixed and applied automatically — no input needed.</small>
+                </div>
+
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary fw-bold">Flow Stress, FS_thin (calculated)</label>
+                        <input type="text" class="form-control" value="@model.FSThin" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary fw-bold">Strength Ratio Parameter, SRP_thin (calculated)</label>
+                        <input type="text" class="form-control" value="@model.SRPThin" readonly />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Table 4.7 Modification Factors</h6>
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FIP</label>
+                        <InputNumber class="form-control" @bind-Value="model.FIP" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FDL</label>
+                        <InputNumber class="form-control" @bind-Value="model.FDL" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FWD</label>
+                        <InputNumber class="form-control" @bind-Value="model.FWD" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FAM</label>
+                        <InputNumber class="form-control" @bind-Value="model.FAM" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FSM</label>
+                        <InputNumber class="form-control" @bind-Value="model.FSM" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FOM</label>
+                        <InputNumber class="form-control" @bind-Value="model.FOM" />
+                    </div>
+                </div>
+
+                <!-- பொத்தான்கள் -->
+                <div class="staff-buttons mt-4 d-flex gap-2">
+                    <button type="button" class="btn btn-info text-white fw-bold" @onclick="Calculate" disabled="@isCalculating">
+                        @(isCalculating ? "Calculating..." : "Calculate")
+                    </button>
+                    <button type="button" class="btn btn-success fw-bold" @onclick="Save" disabled="@isSaving">
+                        @(isSaving ? "Saving..." : "Save")
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="ClearForm">Clear</button>
+                    @if (hasExistingData)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="DeleteRecord">Delete</button>
+                    }
+                </div>
+            </EditForm>
         </div>
     </div>
 </div>
 
-@code {
-    /// <summary>From auth/session context (Session["sesCompanyID"] / Session["sesUserID"] in the original page).</summary>
-    [Parameter] public int CompanyId { get; set; }
-    [Parameter] public int UserId { get; set; }
+@code
+{
 
-    private int? ProcessAreaId;
-    private int? EquipmentId;
-    private int? ComponentId;
+    private ThinningModel model = new();
+    private decimal selectedProcessArea, selectedEquipment, selectedComponent;
 
-    private ThinningDamageModel Model { get; set; } = new();
-    private string? StatusMessage;
-    private bool IsError;
-    private bool IsBusy;
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel> equipments = new();
+    private List<ComponentModel> components = new();
 
-    private bool CanSelectRecord => ProcessAreaId.HasValue && EquipmentId.HasValue && ComponentId.HasValue;
-    private bool CanDelete => CanSelectRecord && Model.IsExistingRecord;
+    private bool hasExistingData = false, isSaving = false, isCalculating = false;
 
-    private DateTime? InspectDateValue
+    protected override async Task OnInitializedAsync() => processAreas = await ThinService.GetProcessAreasAsync(UserSession.CompanyID);
+
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
     {
-        get => Model.InspectDate;
-        set => Model.InspectDate = value;
-    }
-
-    private int? AgeValue
-    {
-        get => Model.Age;
-        set => Model.Age = value;
-    }
-
-    private int? NoOfInsValue
-    {
-        get => Model.NoOfIns;
-        set => Model.NoOfIns = value;
-    }
-
-    /// <summary>
-    /// Fires on every Process Area / Equipment / Component change from the shared selector,
-    /// mirroring the original's cboProcess/cboEquipment/cboComponent postbacks. We reset the
-    /// working model whenever the selection is incomplete or changes, and - just like
-    /// OnSelectedIndexChanged_cboComponent - immediately reflect the newly-picked component's
-    /// own Clad flag so the Clad dropdown enables/populates before the user even clicks Submit.
-    /// </summary>
-    private async Task OnPofSelectionChangedAsync(PofSelectorHeader.PofSelection selection)
-    {
-        ClearStatus();
-        ProcessAreaId = selection.ProcessAreaId;
-        EquipmentId = selection.EquipmentId;
-        ComponentId = selection.ComponentId;
-
-        Model = new ThinningDamageModel
+        selectedProcessArea = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var processAreaId))
         {
-            ProcID = ProcessAreaId,
-            EquID = EquipmentId,
-            CompID = ComponentId,
-            InspectDate = DateTime.Today
-        };
+            selectedProcessArea = processAreaId;
+        }
 
-        if (selection.Component is not null)
+        selectedEquipment = 0;
+        selectedComponent = 0;
+        equipments.Clear();
+        components.Clear();
+        hasExistingData = false;
+
+        if (selectedProcessArea > 0)
         {
-            Model.ComponentClad = selection.Component.Clad;
-            Model.CladOptions = Model.CladDropdownEnabled
-                ? await ThinningSvc.GetCladComponentListAsync()
-                : new();
+            try
+            {
+                equipments = await ThinService.GetEquipmentsByProcessAsync(selectedProcessArea);
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Equipment load failed: {ex.Message}");
+            }
         }
     }
 
-    private async Task OnSubmitClicked()
+    private async Task EquipmentChanged(ChangeEventArgs e)
     {
-        await LoadRecordAsync();
+        selectedEquipment = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var equipId))
+        {
+            selectedEquipment = equipId;
+        }
+
+        selectedComponent = 0;
+        components.Clear();
+        hasExistingData = false;
+
+        if (selectedEquipment > 0)
+        {
+            try
+            {
+                components = await ThinService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Component load failed: {ex.Message}");
+            }
+        }
     }
 
-    private async Task LoadRecordAsync()
+    private async Task ComponentChanged(ChangeEventArgs e)
     {
-        ClearStatus();
+        if (decimal.TryParse(e.Value?.ToString(), out decimal id))
+        {
+            selectedComponent = id;
+            try
+            {
+                var existing = await ThinService.GetThinningRecordAsync(selectedProcessArea, selectedEquipment, id);
+                if (existing != null)
+                {
+                    model = existing;
+                    hasExistingData = true;
+                }
+                else
+                {
+                    model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = id };
+                    if (decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;
+                    // Clad-ஐ Tbl_EquipmentComponentDetails-ல இருந்து முன்னதாகவே காட்ட
+                    var material = await ThinService.GetComponentMaterialAsync(selectedProcessArea, selectedEquipment, id);
+                    if (material != null) model.Clad = material.Value.clad;
+                    hasExistingData = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Record load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task Calculate()
+    {
+        isCalculating = true;
+        StateHasChanged();
         try
         {
-            var existing = await ThinningSvc.LoadAsync(ProcessAreaId!.Value, EquipmentId!.Value, ComponentId!.Value, CompanyId);
-            if (existing is not null)
-            {
-                Model = existing;
-            }
-            else
-            {
-                SetStatus("This component doesn't have a value yet - you can enter new data.", isError: false);
-            }
+            if (model.CompanyID == null && decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;
+            model = await ThinService.CalculateThinningAsync(model);
         }
         catch (Exception ex)
         {
-            SetStatus($"Error: {ex.Message}", isError: true);
-        }
-    }
-
-    private async Task OnCalculateAndSaveClicked()
-    {
-        ClearStatus();
-        if (!CanSelectRecord)
-        {
-            SetStatus("Please select Process Area, Equipment and Component.", isError: true);
-            return;
-        }
-
-        Model.ProcID = ProcessAreaId;
-        Model.EquID = EquipmentId;
-        Model.CompID = ComponentId;
-
-        IsBusy = true;
-        try
-        {
-            await ThinningSvc.CalculateAndSaveAsync(Model, CompanyId, UserId);
-            SetStatus($"Successfully Thinning Value {(Model.IsExistingRecord ? "Updated" : "Inserted")}", isError: false);
-        }
-        catch (Exception ex)
-        {
-            SetStatus($"Error: {ex.Message}", isError: true);
+            await JS.InvokeVoidAsync("alert", $"Calculate failed: {ex.Message}");
         }
         finally
         {
-            IsBusy = false;
+            isCalculating = false;
+            StateHasChanged();
         }
     }
 
-    private async Task OnDeleteClicked()
+    private async Task Save()
     {
-        ClearStatus();
-        if (!CanDelete) return;
+        isSaving = true;
+        StateHasChanged();
         try
         {
-            await ThinningSvc.DeleteAsync(ProcessAreaId!.Value, EquipmentId!.Value, ComponentId!.Value, Model.ThinType ?? "General");
-            SetStatus("Thinning Value Successfully Deleted", isError: false);
-            Model = new ThinningDamageModel { ProcID = ProcessAreaId, EquID = EquipmentId, CompID = ComponentId, InspectDate = DateTime.Today };
+            if (model.CompanyID == null && decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;            
+            if (model.CreatedBy == null && decimal.TryParse(UserSession.UserID, out var uid)) model.CompanyID = uid;
+            if (model.UpdatedBy == null && decimal.TryParse(UserSession.UserID, out var modid)) model.UpdatedBy = modid;
+            model = await ThinService.SaveThinningAsync(model);
+            hasExistingData = true;
+            await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "Thinning Damage saved successfully.");
         }
         catch (Exception ex)
         {
-            SetStatus($"Error: {ex.Message}", isError: true);
+            await JS.InvokeVoidAsync("alert", $"Save failed: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
         }
     }
 
-    private void SetStatus(string message, bool isError)
+    private async Task DeleteRecord()
     {
-        StatusMessage = message;
-        IsError = isError;
+        try
+        {
+            await ThinService.DeleteThinningAsync(model.ProcID, model.EquID, model.CompID);
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Record deleted successfully.");
+            ClearForm();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Delete failed: {ex.Message}");
+        }
     }
 
-    private void ClearStatus() => StatusMessage = null;
+    private void ClearForm()
+    {
+        model = new();
+        selectedProcessArea = selectedEquipment = selectedComponent = 0;
+        equipments.Clear();
+        components.Clear();
+        hasExistingData = false;
+    }
 }

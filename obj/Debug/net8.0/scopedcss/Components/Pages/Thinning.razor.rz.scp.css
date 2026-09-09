@@ -97,9 +97,18 @@
         font-size: 15px;
     }
 
-.btn[b-lrfprmwkpn] {
-    border-radius: 5px;
+.staff-buttons[b-lrfprmwkpn] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
+
+
+    .staff-buttons .btn[b-lrfprmwkpn] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
 
 @media (max-width: 768px) {
 

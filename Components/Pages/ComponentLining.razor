@@ -1,0 +1,1446 @@
+﻿@page "/componentlining"
+
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@using RBI_Malaysia.Components.Shared
+@using Microsoft.JSInterop
+
+@inject LiningDamageService LiningService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<PageTitle>Component Lining</PageTitle>
+
+<SessionGuard />
+
+<div class="staff-page">
+
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="staff-card mb-3">
+
+        <div class="staff-card-header">
+
+            <div>
+                <h5 class="mb-0">
+                    <i class="bi bi-layers me-2"></i>
+                    Component Lining
+                </h5>
+
+                <small>
+                    Component Lining Damage Factor
+                </small>
+            </div>
+
+        </div>
+
+        <div class="staff-card-body">
+
+            <!-- ================================================= -->
+            <!-- PROCESS AREA / EQUIPMENT / COMPONENT -->
+            <!-- ================================================= -->
+
+            <div class="row g-3">
+
+                <!-- PROCESS AREA -->
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        Process Area
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <select class="form-select"
+                            value="@selectedProcessArea"
+                            @onchange="ProcessAreaChanged">
+
+                        <option value="0">
+                            -- Select Process Area --
+                        </option>
+
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">
+                                @item.ProcessArea
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <!-- EQUIPMENT -->
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        Equipment
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <select class="form-select"
+                            value="@selectedEquipment"
+                            @onchange="EquipmentChanged"
+                            disabled="@(selectedProcessArea <= 0)">
+
+                        <option value="">
+                            -- Select Equipment --
+                        </option>
+
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">
+                                @item.EquPID
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <!-- COMPONENT -->
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        Component
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <select class="form-select"
+                            value="@selectedComponent"
+                            @onchange="ComponentChanged"
+                            disabled="@string.IsNullOrWhiteSpace(selectedEquipment)">
+
+                        <option value="">
+                            -- Select Component --
+                        </option>
+
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">
+                                @item.CompNo
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="d-flex gap-2 mt-4 pt-2">
+
+                        <button type="button"
+                                class="btn btn-primary btn-sm"
+                                @onclick="LoadExistingLining"
+                                disabled="@loading">
+
+                            <i class="bi bi-search me-1"></i>
+                            Submit
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-danger btn-sm"
+                                @onclick="DeleteLining"
+                                disabled="@(!existingRecord || loading)">
+
+                            <i class="bi bi-trash me-1"></i>
+                            Delete
+                        </button>
+
+                    </div>
+                    </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- LINING DAMAGE FACTOR -->
+    <!-- ===================================================== -->
+    @* @if (selectedComponentId > 0)
+    { *@
+        <div class="staff-card">
+
+            <div class="staff-card-header">
+
+                <div>
+                    <h6 class="mb-0">
+                        <i class="bi bi-shield-exclamation me-2"></i>
+                        Component Lining Damage Factor
+                    </h6>
+
+                    <small>
+                        Lining Damage Factor Calculation
+                    </small>
+                </div>
+
+                
+
+            </div>
+
+
+            <div class="staff-card-body">
+
+                <div class="row g-3">
+
+                    <!-- TYPE OF LINING -->
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Type of Lining
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <select class="form-select"
+                                value="@model.Lntype"
+                                @onchange="TypeLiningChanged">
+
+                            <option value="">
+                                -- Select --
+                            </option>
+
+                            <option value="Organic">
+                                Organic
+                            </option>
+
+                            <option value="Inorganic">
+                                Inorganic
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- YEARS -->
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            @lineAgeLabel
+                            <span class="text-danger">*</span>
+                        </label>
+                    <div class="dropdown">
+                        <!-- The main trigger button that looks like a form-select -->
+                        <button class="form-select text-start d-flex justify-content-between align-items-center"
+                                type="button"
+                                @onclick="ToggleDropdown">
+                            <span>@(model.SIyear == 0 ? "-- Select --" : model.SIyear.ToString())</span>
+                        </button>
+
+                        <!-- The downward floating list container -->
+                        <ul class="dropdown-menu w-100 @(isDropdownOpen ? "show" : "")"
+                            style="max-height: 250px; overflow-y: auto;">
+                            <li>
+                                <button type="button" class="dropdown-item" @onclick="() => SelectYear(0)">-- Select --</button>
+                            </li>
+                            @foreach (var age in liningAges)
+                            {
+                                <li>
+                                    <button type="button"
+                                            class="dropdown-item @(model.SIyear == age ? "active" : "")"
+                                            @onclick="() => SelectYear(age)">
+                                        @age
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                       @*  <select class="form-select"
+                                value="@model.SIyear"
+                                @onchange="AgeChanged">
+
+                            <option value="0">
+                                -- Select --
+                            </option>
+
+                            @foreach (var age in liningAges)
+                            {
+                            <div style="height: 100px;">
+                                <option value="@age">
+                                    @age
+                                </option>
+                    </div>
+                            }
+
+                        </select> *@
+
+                    </div>
+
+
+                    <!-- DFB -->
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Dfb
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <select class="form-select"
+                                value="@model.Dfb"
+                                @onchange="DfbChanged"
+                                disabled="@string.IsNullOrWhiteSpace(model.Lntype)">
+
+                            <option value="">
+                                -- Select --
+                            </option>
+
+                            @foreach (var item in dfbOptions)
+                            {
+                                <option value="@item.Value">
+                                    @item.Text
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- LINING CONDITION -->
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Lining Condition
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <select class="form-select"
+                                value="@model.LnCond"
+                                @onchange="LiningConditionChanged">
+
+                            <option value="">
+                                -- Select --
+                            </option>
+
+                            <option value="Poor">
+                                Poor
+                            </option>
+
+                            <option value="Average">
+                                Average
+                            </option>
+
+                            <option value="Good">
+                                Good
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+                    @if (!string.IsNullOrWhiteSpace(liningConditionDescription))
+                    {
+                        <div class="col-12">
+
+                            <div class="lining-description">
+
+                                <strong>
+                                    Description:
+                                </strong>
+
+                                <span>
+                                    @liningConditionDescription
+                                </span>
+
+                            </div>
+
+                        </div>
+                    }
+
+
+                    <!-- ONLINE MONITORING -->
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Online Monitoring
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <select class="form-select"
+                                value="@model.OnMoni"
+                                @onchange="OnlineMonitoringChanged">
+
+                            <option value="">
+                                -- Select --
+                            </option>
+
+                            <option value="Yes">
+                                Yes
+                            </option>
+
+                            <option value="No">
+                                No
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DF LINER -->
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Df Liner
+                        </label>
+
+                        <input class="form-control"
+                               value="@FormatDecimal(model.DfLine)"
+                               readonly />
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- BUTTONS -->
+                <!-- ================================================= -->
+
+                <div class="staff-buttons mt-4">
+
+                    <button type="button"
+                            class="btn btn-primary"
+                            @onclick="CalculateLining"
+                            disabled="@loading">
+
+                        <i class="bi bi-calculator me-1"></i>
+                        Calculate
+
+                    </button>
+
+
+                    <button type="button"
+                            class="btn btn-success"
+                            @onclick="SaveLining"
+                            disabled="@(!calculated || loading)">
+
+                        <i class="bi bi-save me-1"></i>
+
+                        @(existingRecord ? "Update" : "Save")
+
+                    </button>
+
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            @onclick="ClearLining">
+
+                        <i class="bi bi-eraser me-1"></i>
+                        Clear
+
+                    </button>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- RESULT -->
+                <!-- ================================================= -->
+                @if (calculated)
+                {
+
+                <div class="staff-card-body">
+
+                    <div class="row g-3">  
+
+                        <div class="col-md-3">
+                            <div class="inspection-summary">
+                                <small>Base Dfb</small>
+                                <strong>
+                                    @FormatDecimal(baseDfb)
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="inspection-summary">
+                                <small>Lining Condition</small>
+                                <strong>
+                                    @FormatDecimal(model.LnCondVal)
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="inspection-summary">
+                            <small>Online Monitoring</small>
+                            <strong>
+                                @FormatDecimal(model.OnMoniVal)
+                            </strong>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="inspection-summary">
+                                <small>Df Liner</small>
+                                <strong>
+                                    @FormatDecimal(model.DfLine)
+                                </strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>                    
+                }
+
+            </div>
+
+        </div>
+    @* } *@
+
+</div>
+
+
+@code {
+
+    // =========================================================
+    // DATA
+    // =========================================================
+
+    private LiningDamageModel model = new();
+
+    private List<ProcessAreaModel> processAreas = new();
+
+    private List<EquipmentModel> equipments = new();
+
+    private List<ComponentModel> components = new();
+
+
+    // =========================================================
+    // SELECTED
+    // =========================================================
+
+    private decimal selectedProcessArea = 0;
+
+    private string? selectedEquipment;
+
+    private string? selectedComponent;
+
+    private decimal selectedComponentId = 0;
+
+
+    // =========================================================
+    // LINING OPTIONS
+    // =========================================================
+
+    private List<int> liningAges = new();
+
+    private List<LiningOption> dfbOptions = new();
+
+    private string lineAgeLabel = "Years";
+
+
+    // =========================================================
+    // CALCULATION
+    // =========================================================
+
+    private decimal baseDfb = 0;
+
+    private bool calculated = false;
+
+    private bool existingRecord = false;
+
+    private bool loading = false;
+
+
+    // =========================================================
+    // DESCRIPTION
+    // =========================================================
+
+    private string liningConditionDescription = "";
+
+    private bool isDropdownOpen = false;
+
+    private void ToggleDropdown()
+    {
+        isDropdownOpen = !isDropdownOpen;
+    }
+
+    private void SelectYear(int age)
+    {
+        model.SIyear = age;
+        isDropdownOpen = false; // Closes dropdown safely
+
+        // Manually trigger your original AgeChanged logic
+        AgeChanged(new ChangeEventArgs { Value = age });
+    }
+
+    private void AgeChanged(ChangeEventArgs e)
+    {
+        // Your existing AgeChanged logic remains unchanged
+    }
+
+
+    // =========================================================
+    // INITIALIZE
+    // =========================================================
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            decimal companyId =
+                Convert.ToDecimal(
+                    UserSession.CompanyID);
+
+            processAreas =
+                await LiningService
+                    .GetProcessAreasAsync(companyId);
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                "Component Lining loading failed.",
+                ex.Message);
+        }
+    }
+
+
+    // =========================================================
+    // PROCESS AREA
+    // =========================================================
+
+    private async Task ProcessAreaChanged(
+        ChangeEventArgs e)
+    {
+        selectedProcessArea = 0;
+
+        decimal.TryParse(
+            e.Value?.ToString(),
+            out selectedProcessArea);
+
+        selectedEquipment = null;
+        selectedComponent = null;
+        selectedComponentId = 0;
+
+        equipments.Clear();
+        components.Clear();
+
+        ClearCalculation();
+
+        if (selectedProcessArea <= 0)
+            return;
+
+        try
+        {
+            equipments =
+                await LiningService
+                    .GetEquipmentsAsync(
+                        selectedProcessArea);
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                "Equipment loading failed.",
+                ex.Message);
+        }
+    }
+
+
+    // =========================================================
+    // EQUIPMENT
+    // =========================================================
+
+    private async Task EquipmentChanged(
+        ChangeEventArgs e)
+    {
+        selectedEquipment =
+            e.Value?.ToString();
+
+        selectedComponent = null;
+        selectedComponentId = 0;
+
+        components.Clear();
+
+        ClearCalculation();
+
+        if (string.IsNullOrWhiteSpace(
+            selectedEquipment))
+        {
+            return;
+        }
+
+        try
+        {
+            components =
+                await LiningService
+                    .GetComponentsAsync(
+                        selectedEquipment);
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                "Component loading failed.",
+                ex.Message);
+        }
+    }
+
+
+    // =========================================================
+    // COMPONENT
+    // =========================================================
+
+    private Task ComponentChanged(
+        ChangeEventArgs e)
+    {
+        selectedComponent =
+            e.Value?.ToString();
+
+        selectedComponentId = 0;
+
+        if (decimal.TryParse(
+            selectedComponent,
+            out decimal compId))
+        {
+            selectedComponentId = compId;
+        }
+
+        ClearCalculation();
+
+        return Task.CompletedTask;
+    }
+
+
+    // =========================================================
+    // TYPE OF LINING
+    // =========================================================
+
+    private Task TypeLiningChanged(
+        ChangeEventArgs e)
+    {
+        model.Lntype =
+            e.Value?.ToString() ?? "";
+
+        model.SIyear = 0;
+        model.Dfb = "";
+
+        dfbOptions.Clear();
+
+        if (model.Lntype == "Organic")
+        {
+            lineAgeLabel = "Years in Service";
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Inspected More Than 6 Years Ago",
+                    Value = "agosix"
+                });
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Inspected within Last 6 Years",
+                    Value = "sixyear"
+                });
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Inspected within Last 3 Years",
+                    Value = "threeyear"
+                });
+        }
+        else if (model.Lntype == "Inorganic")
+        {
+            lineAgeLabel = "Years Last Inspection";
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Strip Lined Alloy(Resistant)",
+                    Value = "Alloy"
+                });
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Castable Refractory",
+                    Value = "Castable"
+                });
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Castable Refractory Severe Conditions",
+                    Value = "Severe"
+                });
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Glass Lined",
+                    Value = "Glass"
+                });
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Acid Brick",
+                    Value = "Acid"
+                });
+
+            dfbOptions.Add(
+                new LiningOption
+                {
+                    Text = "Fiberglass",
+                    Value = "Fiber"
+                });
+        }
+
+        // Legacy code creates 1 - 25
+        liningAges =
+            Enumerable.Range(1, 25)
+                .ToList();
+
+        ClearCalculation();
+
+        return Task.CompletedTask;
+    }
+
+
+    // =========================================================
+    // AGE
+    // =========================================================
+
+    // private Task AgeChanged(ChangeEventArgs e)
+    // {
+    //     if (int.TryParse(e.Value?.ToString(), out var age))
+    //     {
+    //         model.SIyear = age;
+    //     }
+    //     else
+    //     {
+    //         model.SIyear = 0;
+    //     }
+
+    //     ClearCalculation();
+
+    //     return Task.CompletedTask;
+    // }
+
+
+    // =========================================================
+    // DFB
+    // =========================================================
+
+    private Task DfbChanged(ChangeEventArgs e)
+    {
+        model.Dfb =
+            e.Value?.ToString() ?? "";
+
+        ClearCalculation();
+
+        return Task.CompletedTask;
+    }
+
+
+    // =========================================================
+    // LINING CONDITION
+    // =========================================================
+
+    private Task LiningConditionChanged(
+        ChangeEventArgs e)
+    {
+        model.LnCond =
+            e.Value?.ToString() ?? "";
+
+        model.LnCondVal =
+            model.LnCond switch
+            {
+                "Poor" => 10,
+                "Average" => 2,
+                "Good" => 1,
+                _ => 0
+            };
+
+        liningConditionDescription =
+            model.LnCond switch
+            {
+                "Poor" =>
+                    "The lining has either had previous failures or exhibits conditions that may lead to failure in the near future. Repairs to previous failures are not successful or are of poor quality.",
+
+                "Average" =>
+                    "The lining is not showing signs of excessive attack by any damage mechanisms. Local repairs may have been performed, but they are of good quality and have successfully corrected the lining condition.",
+
+                "Good" =>
+                    "The lining is in 'like new' condition with no signs of attack by any damage mechanisms. There has been no need for any repairs to the lining.",
+
+                _ => ""
+            };
+
+        ClearCalculation();
+
+        return Task.CompletedTask;
+    }
+
+
+    // =========================================================
+    // ONLINE MONITORING
+    // =========================================================
+
+    private Task OnlineMonitoringChanged(
+        ChangeEventArgs e)
+    {
+        model.OnMoni =
+            e.Value?.ToString() ?? "";
+
+        model.OnMoniVal =
+            model.OnMoni switch
+            {
+                "Yes" => 0.1m,
+                "No" => 1.0m,
+                _ => 0
+            };
+
+        ClearCalculation();
+
+        return Task.CompletedTask;
+    }
+
+
+    // =========================================================
+    // CALCULATE
+    // =========================================================
+
+    private async Task CalculateLining()
+    {
+        if (loading)
+            return;
+
+        // Validation
+        if (selectedProcessArea <= 0)
+        {
+            await ShowWarning(
+                "Please select Process Area.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(
+            selectedEquipment))
+        {
+            await ShowWarning(
+                "Please select Equipment.");
+            return;
+        }
+
+        if (selectedComponentId <= 0)
+        {
+            await ShowWarning(
+                "Please select Component.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(
+            model.Lntype))
+        {
+            await ShowWarning(
+                "Please select Type of Lining.");
+            return;
+        }
+
+        if (model.SIyear <= 0)
+        {
+            await ShowWarning(
+                "Please select Years.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(
+            model.Dfb))
+        {
+            await ShowWarning(
+                "Please select Dfb.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(
+            model.LnCond))
+        {
+            await ShowWarning(
+                "Please select Lining Condition.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(
+            model.OnMoni))
+        {
+            await ShowWarning(
+                "Please select Online Monitoring.");
+            return;
+        }
+
+        try
+        {
+            loading = true;
+
+            model.ProcID =
+                selectedProcessArea;
+
+            model.EquID =
+                Convert.ToDecimal(
+                    selectedEquipment);
+
+            model.CompID =
+                selectedComponentId;
+
+            // =============================================
+            // OLD LOGIC
+            //
+            // df = SELECT Dfb FROM Organic/Inorganic
+            // Dfliner = df * LnCondVal * OnMoniVal
+            // =============================================
+
+            baseDfb =
+                await LiningService.GetDfbValueAsync(
+                    model.Lntype,
+                    model.SIyear,
+                    model.Dfb);
+
+            model.DfLine =
+                baseDfb *
+                model.LnCondVal *
+                model.OnMoniVal;
+
+            calculated = true;
+
+            await JS.InvokeVoidAsync(
+                "sweetAlert.success",
+                "Calculated!",
+                "Lining damage factor calculated successfully.");
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                "Calculation failed.",
+                ex.Message);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+
+    // =========================================================
+    // LOAD EXISTING
+    // =========================================================
+
+    private async Task LoadExistingLining()
+    {
+        if (selectedProcessArea <= 0 ||
+            string.IsNullOrWhiteSpace(
+                selectedEquipment) ||
+            selectedComponentId <= 0)
+        {
+            await ShowWarning(
+                "Please select Process Area, Equipment and Component.");
+
+            return;
+        }
+
+        try
+        {
+            loading = true;
+
+            var record =
+                await LiningService.GetLiningAsync(
+                    selectedProcessArea,
+                    Convert.ToDecimal(
+                        selectedEquipment),
+                    selectedComponentId);
+
+            if (record == null)
+            {
+                model = new LiningDamageModel
+                {
+                    ProcID = selectedProcessArea,
+                    EquID = Convert.ToDecimal(
+                        selectedEquipment),
+                    CompID = selectedComponentId
+                };
+
+                existingRecord = false;
+                calculated = false;
+
+                await JS.InvokeVoidAsync(
+                    "sweetAlert.info",
+                    "No Record",
+                    "This component does not have a lining value. You can enter new data.");
+
+                return;
+            }
+
+            model = record;
+
+            existingRecord = true;
+
+            // Rebuild type-dependent options
+            BuildLiningOptions();
+
+            liningConditionDescription =
+                GetConditionDescription(
+                    model.LnCond);
+
+            // Recalculate base Dfb only for display
+            baseDfb =
+                await LiningService.GetDfbValueAsync(
+                    model.Lntype,
+                    model.SIyear,
+                    model.Dfb);
+
+            calculated = true;
+
+            await JS.InvokeVoidAsync(
+                "sweetAlert.success",
+                "Loaded!",
+                "Existing lining value loaded successfully.");
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                "Unable to load lining value.",
+                ex.Message);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+
+    // =========================================================
+    // SAVE
+    // =========================================================
+
+    private async Task SaveLining()
+    {
+        if (!calculated)
+        {
+            await ShowWarning(
+                "Please calculate the Df Liner first.");
+
+            return;
+        }
+
+        try
+        {
+            loading = true;
+
+            model.ProcID =
+                selectedProcessArea;
+
+            model.EquID =
+                Convert.ToDecimal(
+                    selectedEquipment);
+
+            model.CompID =
+                selectedComponentId;
+
+            decimal companyId =
+                Convert.ToDecimal(
+                    UserSession.CompanyID);
+
+            decimal userId =
+                Convert.ToDecimal(
+                    UserSession.UserID);
+
+            bool isNew =
+                model.LnfID <= 0;
+
+            await LiningService.SaveAsync(
+                model,
+                companyId,
+                userId);
+
+            existingRecord = true;
+
+            await JS.InvokeVoidAsync(
+                "sweetAlert.success",
+                isNew ? "Saved!" : "Updated!",
+                isNew
+                    ? "Lining value inserted successfully."
+                    : "Lining value updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                "Save failed.",
+                ex.Message);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+
+    // =========================================================
+    // DELETE
+    // =========================================================
+
+    private async Task DeleteLining()
+    {
+        if (!existingRecord ||
+            model.LnfID <= 0)
+        {
+            await ShowWarning(
+                "No lining record selected.");
+
+            return;
+        }
+
+        bool confirmed =
+            await JS.InvokeAsync<bool>(
+                "sweetAlert.confirmDelete",
+                "Are you sure?",
+                "Do you want to delete this lining value?",
+                "");
+
+        if (!confirmed)
+            return;
+
+        try
+        {
+            loading = true;
+
+            decimal userId =
+                Convert.ToDecimal(
+                    UserSession.UserID);
+
+            bool deleted =
+                await LiningService.DeleteAsync(
+                    model.LnfID,
+                    userId);
+
+            if (deleted)
+            {
+                await JS.InvokeVoidAsync(
+                    "sweetAlert.success",
+                    "Deleted!",
+                    "Lining value deleted successfully.");
+
+                ClearLining();
+            }
+            else
+            {
+                await ShowWarning(
+                    "Lining record was not found.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                "Delete failed.",
+                ex.Message);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+
+    // =========================================================
+    // BUILD OPTIONS
+    // =========================================================
+
+    private void BuildLiningOptions()
+    {
+        liningAges =
+            Enumerable.Range(1, 25)
+                .ToList();
+
+        dfbOptions.Clear();
+
+        if (model.Lntype == "Organic")
+        {
+            lineAgeLabel = "Years in Service";
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Inspected More Than 6 Years Ago",
+                Value = "agosix"
+            });
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Inspected within Last 6 Years",
+                Value = "sixyear"
+            });
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Inspected within Last 3 Years",
+                Value = "threeyear"
+            });
+        }
+        else if (model.Lntype == "Inorganic")
+        {
+            lineAgeLabel = "Years Last Inspection";
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Strip Lined Alloy(Resistant)",
+                Value = "Alloy"
+            });
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Castable Refractory",
+                Value = "Castable"
+            });
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Castable Refractory Severe Conditions",
+                Value = "Severe"
+            });
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Glass Lined",
+                Value = "Glass"
+            });
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Acid Brick",
+                Value = "Acid"
+            });
+
+            dfbOptions.Add(new LiningOption
+            {
+                Text = "Fiberglass",
+                Value = "Fiber"
+            });
+        }
+    }
+
+
+    // =========================================================
+    // CLEAR CALCULATION
+    // =========================================================
+
+    private void ClearCalculation()
+    {
+        calculated = false;
+        baseDfb = 0;
+        model.DfLine = 0;
+    }
+
+
+    // =========================================================
+    // CLEAR
+    // =========================================================
+
+    private void ClearLining()
+    {
+        model = new LiningDamageModel
+        {
+            ProcID = selectedProcessArea,
+
+            EquID =
+                decimal.TryParse(
+                    selectedEquipment,
+                    out var eq)
+                    ? eq
+                    : 0,
+
+            CompID = selectedComponentId
+        };
+
+        existingRecord = false;
+        calculated = false;
+
+        baseDfb = 0;
+
+        liningConditionDescription = "";
+
+        BuildLiningOptions();
+    }
+
+
+    // =========================================================
+    // DESCRIPTION
+    // =========================================================
+
+    private static string GetConditionDescription(
+        string condition)
+    {
+        return condition switch
+        {
+            "Poor" =>
+                "The lining has either had previous failures or exhibits conditions that may lead to failure in the near future. Repairs to previous failures are not successful or are of poor quality.",
+
+            "Average" =>
+                "The lining is not showing signs of excessive attack by any damage mechanisms. Local repairs may have been performed, but they are of good quality and have successfully corrected the lining condition.",
+
+            "Good" =>
+                "The lining is in 'like new' condition with no signs of attack by any damage mechanisms. There has been no need for any repairs to the lining.",
+
+            _ => ""
+        };
+    }
+
+
+    // =========================================================
+    // FORMAT
+    // =========================================================
+
+    private static string FormatDecimal(
+        decimal value)
+    {
+        return value.ToString("0.00");
+    }
+
+
+    // =========================================================
+    // SWEET ALERT
+    // =========================================================
+
+    private async Task ShowWarning(
+        string message)
+    {
+        await JS.InvokeVoidAsync(
+            "sweetAlert.warning",
+            "Warning!",
+            message);
+    }
+
+    private async Task ShowError(
+        string title,
+        string message)
+    {
+        await JS.InvokeVoidAsync(
+            "sweetAlert.error",
+            title,
+            message);
+    }
+
+
+    // =========================================================
+    // OPTION MODEL
+    // =========================================================
+
+    private class LiningOption
+    {
+        public string Text { get; set; } = "";
+
+        public string Value { get; set; } = "";
+    }
+}

@@ -65,11 +65,11 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Compone
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\COFNonFlammable.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Company.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Component.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\ComponentLining.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Equipment.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Home.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Inspection.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Login.razor.rz.scp.css
-C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\PofSelectorHeader.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\ProcessArea.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Staff.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\Thinning.razor.rz.scp.css

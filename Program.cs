@@ -44,8 +44,7 @@ builder.Services.AddScoped<ComponentService>();
 builder.Services.AddScoped<InspectionService>();
 builder.Services.AddScoped<COFFlammableService>();
 builder.Services.AddScoped<ThinningService>();
-builder.Services.AddScoped<PofLookupService>();
-
+builder.Services.AddScoped<LiningDamageService>();
 
 var app = builder.Build();
 
