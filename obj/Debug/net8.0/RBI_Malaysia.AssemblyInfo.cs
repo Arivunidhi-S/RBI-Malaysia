@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RBI_Malaysia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67e71cadc76c2add40138333fa4baa4387bf3f4e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2155751b82fd53f18103a6a79c85021387e30ba7")]
 [assembly: System.Reflection.AssemblyProductAttribute("RBI_Malaysia")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RBI_Malaysia")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

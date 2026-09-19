@@ -1,0 +1,313 @@
+﻿@page "/ecdlist"
+
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@using Microsoft.JSInterop
+@inject ECDService ECDService
+@inject ThinningService ThinningService
+@inject UserSession UserSession
+@inject IConfiguration Configuration
+@inject IJSRuntime JS
+
+
+<PageTitle>POF — External Corrosion List</PageTitle>
+
+<div class="staff-page">
+    <div class="staff-card">
+
+        <div class="staff-card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">
+                    <i class="bi bi-cloud-rain-heavy me-2 text-secondary"></i> External Corrosion Damage — Records
+                </h5>
+                <small>Filter and manage External Corrosion Damage Factor records</small>
+            </div>
+            <div class="staff-buttons">
+                <NavLink class="btn btn-primary add-equipment-btn" href="externaldamage">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Add External Damage
+                </NavLink>
+            </div>
+        </div>
+
+        <div class="staff-card-body">
+
+            <!-- Cascading Filters -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area</label>
+                    <select class="form-select" value="@selectedProcessArea" @onchange="ProcessAreaChanged">
+                        <option value="0">-- All Process Areas --</option>
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">@item.ProcessArea</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment</label>
+                    <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged"
+                            disabled="@(selectedProcessArea <= 0)">
+                        <option value="0">-- All Equipments --</option>
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">@item.EquPID</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component</label>
+                    <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged"
+                            disabled="@(selectedEquipment <= 0)">
+                        <option value="0">-- All Components --</option>
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">@item.CompNo</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div @key="renderKey">
+                @if (isLoading)
+                {
+                    <p class="text-muted"><i class="bi bi-hourglass-split me-1"></i> Loading...</p>
+                }
+                else if (rows.Count == 0)
+                {
+                    <p class="text-muted">No External Corrosion records found.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table id="ecdListTable" class="table table-hover staff-table mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Process Area</th>
+                                    <th>Equipment</th>
+                                    <th>Component</th>
+                                    <th>age_tke</th>
+                                    <th>Cr</th>
+                                    <th>t_rde</th>
+                                    <th>Art</th>
+                                    <th>ECD Df</th>
+                                    <th>Coat Quality</th>
+                                    <th>Insp Category</th>
+                                    <th>No. Insp</th>
+                                    <th>Inspect Date</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1; }
+                                @foreach (var row in rows)
+                                {
+                                    var r = row;
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@r.ProcessArea</td>
+                                        <td>@r.EquipmentName</td>
+                                        <td>@r.ComponentName</td>
+                                        <td>@r.AgeTke</td>
+                                        <td>@r.Cr</td>
+                                        <td>@r.TRde</td>
+                                        <td>@r.ECDart?.ToString("0.###")</td>
+                                        <td class="fw-bold text-secondary">@r.ECDDf?.ToString("0.##")</td>
+                                        <td>@r.CoatQual</td>
+                                        <td>@r.InsEff</td>
+                                        <td>@r.Nofins</td>
+                                        <td>@r.InspectDate?.ToString("dd-MMM-yyyy")</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger" style="width:40px"
+                                                    title="Delete"
+                                                    @onclick="() => DeleteRow(r)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private decimal selectedProcessArea, selectedEquipment, selectedComponent;
+    private bool isLoading;
+    private int renderKey;
+    private bool needsTableInit;
+
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel> equipments = new();
+    private List<ComponentModel> components = new();
+
+    private record Row(
+        decimal ProcID, decimal EquID, decimal CompID,
+        string ProcessArea, string EquipmentName, string ComponentName,
+        decimal? AgeTke, decimal? Cr, decimal? TRde,
+        decimal? ECDart, decimal? ECDDf,
+        string? CoatQual, string? InsEff, int? Nofins, DateTime? InspectDate);
+
+    private List<Row> rows = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        processAreas = await ThinningService.GetProcessAreasAsync(UserSession.CompanyID);
+        //await LoadData();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (needsTableInit)
+        {
+            needsTableInit = false;
+            try { await JS.InvokeVoidAsync("equipmentDataTable.initialize", "#ecdListTable"); }
+            catch { }
+        }
+    }
+
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
+    {
+        selectedProcessArea = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
+        selectedEquipment = 0;
+        selectedComponent = 0;
+        equipments.Clear();
+        components.Clear();
+
+        if (selectedProcessArea > 0)
+            equipments = await ThinningService.GetEquipmentsByProcessAsync(selectedProcessArea);
+
+        await LoadData();
+    }
+
+    private async Task EquipmentChanged(ChangeEventArgs e)
+    {
+        selectedEquipment = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
+        selectedComponent = 0;
+        components.Clear();
+
+        if (selectedEquipment > 0)
+            components = await ThinningService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
+
+        await LoadData();
+    }
+
+    private async Task ComponentChanged(ChangeEventArgs e)
+    {
+        selectedComponent = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        isLoading = true;
+        StateHasChanged();
+        try
+        {
+            rows.Clear();
+            string sql = @"
+                SELECT e.ProcID, e.EquID, e.CompID,
+                       pa.processarea,
+                       ea.EqupID + ' - ' + ea.EqupType AS EquipName,
+                       cd.CompNo + ' - ' + cd.compname  AS CompName,
+                       e.age_tke, e.cr, e.t_rde, e.ECDart, e.ECDDf,
+                       e.coatqual, e.InsEff, e.nofins, e.InspectDate
+                FROM ECD e
+                LEFT JOIN Tbl_ProcessArea               pa ON pa.ProcessAreaID = e.ProcID
+                LEFT JOIN Tbl_EquipmentAsset            ea ON ea.EquAutoID     = e.EquID
+                LEFT JOIN Tbl_EquipmentComponentDetails cd ON cd.compautoid    = e.CompID
+                WHERE e.Deleted = 0 and pa.CompanyID=@companyID
+                  AND (@ProcID = 0 OR e.ProcID = @ProcID)
+                  AND (@EquID  = 0 OR e.EquID  = @EquID)
+                  AND (@CompID = 0 OR e.CompID = @CompID)
+                ORDER BY pa.processarea, ea.EqupID, cd.CompNo";
+
+            using var conn = new Microsoft.Data.SqlClient.SqlConnection(GetConn());
+            using var cmd  = new Microsoft.Data.SqlClient.SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@ProcID", selectedProcessArea);
+            cmd.Parameters.AddWithValue("@EquID",  selectedEquipment);
+            cmd.Parameters.AddWithValue("@CompID", selectedComponent);
+            cmd.Parameters.AddWithValue("@companyID", UserSession.CompanyID);
+            await conn.OpenAsync();
+            using var rd = await cmd.ExecuteReaderAsync();
+            while (await rd.ReadAsync())
+            {
+                decimal? Dec(string c) => rd[c] == DBNull.Value ? null : Convert.ToDecimal(rd[c]);
+                int?     Int(string c) => rd[c] == DBNull.Value ? null : Convert.ToInt32(rd[c]);
+                DateTime? Dt(string c) => rd[c] == DBNull.Value ? null : Convert.ToDateTime(rd[c]);
+                string   S(string c)  => rd[c]?.ToString() ?? "";
+
+                rows.Add(new Row(
+                    Convert.ToDecimal(rd["ProcID"]),
+                    Convert.ToDecimal(rd["EquID"]),
+                    Convert.ToDecimal(rd["CompID"]),
+                    S("processarea"), S("EquipName"), S("CompName"),
+                    Dec("age_tke"), Dec("cr"), Dec("t_rde"),
+                    Dec("ECDart"), Dec("ECDDf"),
+                    S("coatqual"), S("InsEff"), Int("nofins"), Dt("InspectDate")));
+            }
+
+            renderKey++;
+            needsTableInit = rows.Count > 0;
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Error!", text = ex.Message, icon = "error" });
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeleteRow(Row row)
+    {
+        // bool confirm = await JS.InvokeAsync<bool>(
+        //     "Swal.fire",
+        //     new
+        //     {
+        //         title             = "Delete Record?",
+        //         text              = $"ECD record for {row.ComponentName} will be permanently deleted.",
+        //         icon              = "warning",
+        //         showCancelButton  = true,
+        //         confirmButtonColor = "#d33",
+        //         cancelButtonColor  = "#6c757d",
+        //         confirmButtonText  = "Yes, delete it!",
+        //         cancelButtonText   = "Cancel"
+        //     }
+        // ).ContinueWith(t => t.Result.GetProperty("isConfirmed").GetBoolean());
+
+        bool confirmed =
+               await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete Record {row.ComponentName}?");
+
+        if (!confirmed) return;
+
+        try
+        {
+            await ECDService.DeleteECDAsync(row.ProcID, row.EquID, row.CompID);
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Deleted!", text = "Record has been deleted.", icon = "success", timer = 1800, showConfirmButton = false });
+            await LoadData();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Error!", text = ex.Message, icon = "error" });
+        }
+    }
+
+    private string GetConn() =>
+        Configuration.GetConnectionString("connString")
+        ?? throw new InvalidOperationException("connString not found");
+}

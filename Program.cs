@@ -45,6 +45,10 @@ builder.Services.AddScoped<InspectionService>();
 builder.Services.AddScoped<COFFlammableService>();
 builder.Services.AddScoped<ThinningService>();
 builder.Services.AddScoped<LiningDamageService>();
+builder.Services.AddScoped<ECDService>();
+builder.Services.AddScoped<CausticService>();
+builder.Services.AddScoped<SulfidationService>();
+
 
 var app = builder.Build();
 

@@ -346,7 +346,7 @@
             </button>
         </div>
         <div class="staff-card-body">
-            <div class="table-responsive">
+            <div class="table-responsive" @key="tableRenderKey">
                 <table id="inspectionTable" class="table table-hover staff-table mb-0">
                     <thead>
                         <tr>
@@ -542,6 +542,8 @@
     private bool showCalculation;
 
     private bool hasLoadedGrid;
+    private bool needsDataTableInit;
+    private int tableRenderKey;
 
     private InspectionModel? lastInspection;
 
@@ -569,6 +571,26 @@
             await ShowError(
                 "Process Area loading failed.\n\n" +
                 ex.Message);
+        }
+    }
+
+
+    // =========================================================
+    // DATATABLE INIT
+    //
+    // jQuery DataTables must be (re)initialized AFTER Blazor has
+    // rendered the <tr> rows into the DOM — never right inside
+    // LoadData()/LoadLastInspection() itself, since the render
+    // hasn't happened yet at that point. We set needsDataTableInit
+    // in those methods, then consume it here.
+    // =========================================================
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (needsDataTableInit)
+        {
+            needsDataTableInit = false;
+            await JS.InvokeVoidAsync("inspectionTable.initialize");
         }
     }
 
@@ -1040,6 +1062,8 @@
                     selectedComponent);
 
             hasLoadedGrid = true;
+            needsDataTableInit = true;
+            tableRenderKey++;
             await LoadCalculation();
         }
         catch (Exception ex)
@@ -1070,9 +1094,8 @@
 
         try
         {
-            //isLoading = true;
-
-            //hasLoadedGrid = false;
+            isLoading = true;
+            hasLoadedGrid = false;
 
             inspections.Clear();
            
@@ -1082,7 +1105,9 @@
                     Convert.ToInt32(UserSession.CompanyID),
                     selectedEquipment,
                     selectedComponent);
-            //hasLoadedGrid = true;
+            hasLoadedGrid = true;
+            needsDataTableInit = true;
+            tableRenderKey++;
 
             //showCalculation = inspections != null;
             await LoadCalculation();
@@ -1096,7 +1121,10 @@
                 "Last Inspection loading failed.\n\n" +
                 ex.Message);
         }
-        
+        finally
+        {
+            isLoading = false;
+        }
     }
 
     // =========================================================

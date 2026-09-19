@@ -1,0 +1,448 @@
+﻿@page "/externaldamage"
+
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject ECDService ECDService
+@inject ThinningService ThinningService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+
+<PageTitle>POF - External Corrosion Damage</PageTitle>
+
+<div class="staff-page">
+    <div class="staff-card">
+
+        <div class="staff-card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0"><i class="bi bi-cloud-rain-heavy me-2 text-secondary"></i> POF — External Corrosion Damage</h5>
+                <small>External Corrosion Damage Factor Calculation (Bayesian)</small>
+            </div>
+            <div class="staff-buttons">
+                <NavLink class="btn btn-primary add-equipment-btn" href="ecdlist">
+                    <i class="bi bi-card-list"></i>
+                ECD List
+            </NavLink>
+            </div>
+        </div>
+
+        <div class="staff-card-body">
+            <!-- வடிகட்டி பகுதி -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedProcessArea" @onchange="ProcessAreaChanged">
+                        <option value="0">-- Select Process Area --</option>
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">@item.ProcessArea</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged" disabled="@(selectedProcessArea <= 0)">
+                        <option value="0">-- Select Equipment --</option>
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">@item.EquPID</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged" disabled="@(selectedEquipment <= 0)">
+                        <option value="0">-- Select Component --</option>
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">@item.CompNo</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <EditForm Model="@model" OnValidSubmit="Calculate" FormName="ECDForm">
+                <DataAnnotationsValidator />
+
+                <h6 class="text-muted border-bottom pb-1 mb-3">Basic Inputs</h6>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Age (general)</label>
+                        <InputNumber class="form-control" @bind-Value="model.Agtk" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Inspection Date</label>
+                        <InputDate class="form-control" @bind-Value="model.InspectDate" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Inspection Effectiveness</label>
+                        <select class="form-select" @bind="model.InsEff">
+                            <option value="">Select</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">No. of Inspections</label>
+                        <InputNumber class="form-control" @bind-Value="model.Nofins" />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Wall Loss (STEP 5)</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Le — Measured Wall Loss</label>
+                        <InputNumber class="form-control" @bind-Value="model.Le" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">age_tke (time since t_rde measured)</label>
+                        <InputNumber class="form-control" @bind-Value="model.AgeTke" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-secondary fw-bold">t_rde (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.TRde" readonly />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Coating Adjustment (STEP 6-9)</h6>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Coating Install Date</label>
+                        <InputDate class="form-control" @bind-Value="model.CmpInstalDate" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Calculation Date</label>
+                        <InputDate class="form-control" @bind-Value="model.CalcDate" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Coating Quality</label>
+                        <select class="form-select" @bind="model.CoatQualCode">
+                            <option value="">Select</option>
+                            <option value="1">No Coating or Poor Quality</option>
+                            <option value="2">Lower Quality</option>
+                            <option value="3">High Quality</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="coatingFailed" @bind="model.CoatingFailed">
+                            <label class="form-check-label" for="coatingFailed">
+                                Coating already failed (only if age_tke &lt; age_coat)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">age_coat (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.AgeCoat" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Cage (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.Cage" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Coat_adj (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.CoatAdj" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">age (final, calculated)</label>
+                        <input type="text" class="form-control fw-bold bg-warning-subtle text-danger" value="@model.Age" readonly />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Corrosion Rate (STEP 2-4 skipped — manual entry)</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Cr (from inspection history / specialist)</label>
+                        <InputNumber class="form-control" @bind-Value="model.Cr" />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Material Properties</h6>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Yield Strength (YS)</label>
+                        <InputNumber class="form-control" @bind-Value="model.YS" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Tensile Strength (TS)</label>
+                        <InputNumber class="form-control" @bind-Value="model.TS" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Allowable Stress (S)</label>
+                        <InputNumber class="form-control" @bind-Value="model.S" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Joint Efficiency (E)</label>
+                        <InputNumber class="form-control" @bind-Value="model.E" />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Bayesian Damage Factor — Prior Probabilities</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Prp1 (DS=1 scenario prior)</label>
+                        <InputNumber class="form-control" @bind-Value="model.Prp1_ext" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Prp2 (DS=2 scenario prior)</label>
+                        <InputNumber class="form-control" @bind-Value="model.Prp2_ext" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Prp3 (DS=4 scenario prior)</label>
+                        <InputNumber class="form-control" @bind-Value="model.Prp3_ext" />
+                    </div>
+                    <small class="text-muted">Table 4.6 conditional-probability constants are fixed and applied automatically (same as Thinning DF).</small>
+                </div>
+
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary fw-bold">Flow Stress, FS_extcorr (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.FSExtcorr" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary fw-bold">Strength Ratio Parameter, SRP_extcorr (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.SRPExtcorr" readonly />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Table 4.7 Modification Factors</h6>
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FIP</label>
+                        <InputNumber class="form-control" @bind-Value="model.FIP" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FDL</label>
+                        <InputNumber class="form-control" @bind-Value="model.FDL" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FWD</label>
+                        <InputNumber class="form-control" @bind-Value="model.FWD" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FAM</label>
+                        <InputNumber class="form-control" @bind-Value="model.FAM" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FSM</label>
+                        <InputNumber class="form-control" @bind-Value="model.FSM" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">FOM</label>
+                        <InputNumber class="form-control" @bind-Value="model.FOM" />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Results</h6>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary fw-bold">Art (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.ECDart" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary fw-bold">External Corrosion Damage Factor (calculated)</label>
+                        <input type="text" class="form-control fw-bold text-secondary bg-warning-subtle text-danger" value="@model.ECDDf" readonly />
+                    </div>
+                </div>
+
+                <!-- பொத்தான்கள் -->
+                <div class="staff-buttons mt-4 d-flex gap-2">
+                    <button type="button" class="btn btn-info text-white fw-bold" @onclick="Calculate" disabled="@isCalculating">
+                        @(isCalculating ? "Calculating..." : "Calculate")
+                    </button>
+                    <button type="button" class="btn btn-success fw-bold" @onclick="Save" disabled="@isSaving">
+                        @(isSaving ? "Saving..." : "Save")
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="ClearForm">Clear</button>
+                    @if (hasExistingData)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="DeleteRecord">Delete</button>
+                    }
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private ECDModel model = new();
+    private ThinningModel model2 = new();
+    private decimal selectedProcessArea, selectedEquipment, selectedComponent;
+
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel> equipments = new();
+    private List<ComponentModel> components = new();
+
+    private bool hasExistingData = false, isSaving = false, isCalculating = false;
+
+    [SupplyParameterFromQuery] public decimal Proc { get; set; }
+    [SupplyParameterFromQuery] public decimal Equ { get; set; }
+    [SupplyParameterFromQuery] public decimal Comp { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Proc > 0 && Equ > 0 && Comp > 0)
+        {
+            selectedProcessArea = Proc;
+            selectedEquipment = Equ;
+            // cascade load பண்ணி component select பண்ணு
+            equipments = await ThinningService.GetEquipmentsByProcessAsync(Proc);
+            components = await ThinningService.GetComponentsByEquipmentAsync(Equ.ToString());
+            selectedComponent = Comp;
+            var existing = await ThinningService.GetThinningRecordAsync(Proc, Equ, Comp);
+            if (existing != null) { model2 = existing; hasExistingData = true; }
+        }
+    }
+
+    protected override async Task OnInitializedAsync() => processAreas = await ECDService.GetProcessAreasAsync(UserSession.CompanyID);
+
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
+    {
+        selectedProcessArea = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var processAreaId))
+        {
+            selectedProcessArea = processAreaId;
+        }
+
+        selectedEquipment = 0;
+        selectedComponent = 0;
+        equipments.Clear();
+        components.Clear();
+        hasExistingData = false;
+
+        if (selectedProcessArea > 0)
+        {
+            try
+            {
+                equipments = await ECDService.GetEquipmentsByProcessAsync(selectedProcessArea);
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Equipment load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task EquipmentChanged(ChangeEventArgs e)
+    {
+        selectedEquipment = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var equipId))
+        {
+            selectedEquipment = equipId;
+        }
+
+        selectedComponent = 0;
+        components.Clear();
+        hasExistingData = false;
+
+        if (selectedEquipment > 0)
+        {
+            try
+            {
+                components = await ECDService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Component load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task ComponentChanged(ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value?.ToString(), out decimal id))
+        {
+            selectedComponent = id;
+            try
+            {
+                var existing = await ECDService.GetECDRecordAsync(selectedProcessArea, selectedEquipment, id);
+                if (existing != null)
+                {
+                    model = existing;
+                    hasExistingData = true;
+                }
+                else
+                {
+                    model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = id };
+                    if (decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;
+                    hasExistingData = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Record load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task Calculate()
+    {
+        isCalculating = true;
+        StateHasChanged();
+        try
+        {
+            model = await ECDService.CalculateECDAsync(model);
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Calculate failed: {ex.Message}");
+        }
+        finally
+        {
+            isCalculating = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task Save()
+    {
+        isSaving = true;
+        StateHasChanged();
+        try
+        {
+            if (model.CompanyID == null && decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;
+            model = await ECDService.SaveECDAsync(model);
+            hasExistingData = true;
+            await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "External Corrosion Damage saved successfully.");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Save failed: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeleteRecord()
+    {
+        try
+        {
+            await ECDService.DeleteECDAsync(model.ProcID, model.EquID, model.CompID);
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Record deleted successfully.");
+            ClearForm();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Delete failed: {ex.Message}");
+        }
+    }
+
+    private void ClearForm()
+    {
+        model = new();
+        selectedProcessArea = selectedEquipment = selectedComponent = 0;
+        equipments.Clear();
+        components.Clear();
+        hasExistingData = false;
+    }
+}

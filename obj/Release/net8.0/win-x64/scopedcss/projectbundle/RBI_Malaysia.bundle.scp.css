@@ -69,6 +69,18 @@ main[b-k0zhljh4ke] {
     padding: 30px;
 }
 
+.staff-buttons[b-k0zhljh4ke] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-k0zhljh4ke] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
 
 /* =========================
    MOBILE
@@ -453,6 +465,260 @@ main[b-k0zhljh4ke] {
         transform: translateY(0) scaleY(1);
     }
 }
+/* _content/RBI_Malaysia/Components/Pages/COFFlammable.razor.rz.scp.css */
+.staff-page[b-tt6rzzhr16] {
+    padding: 0;
+}
+
+.staff-card[b-tt6rzzhr16] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-tt6rzzhr16] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-tt6rzzhr16],
+    .staff-card-header h6[b-tt6rzzhr16] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-tt6rzzhr16] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-tt6rzzhr16] {
+    padding: 20px;
+}
+
+.form-label[b-tt6rzzhr16] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-tt6rzzhr16] .staff-card .form-control,
+.staff-card .form-select[b-tt6rzzhr16] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+[b-tt6rzzhr16] .staff-card .form-control:focus,
+.staff-card .form-select:focus[b-tt6rzzhr16] {
+    background-color: #ffffff;
+    border-color: #6979ff;
+    box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+}
+
+.staff-table[b-tt6rzzhr16] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-tt6rzzhr16] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-tt6rzzhr16] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-tt6rzzhr16] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-tt6rzzhr16] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-tt6rzzhr16] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-tt6rzzhr16] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-tt6rzzhr16] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-tt6rzzhr16] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-tt6rzzhr16] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-tt6rzzhr16] {
+        padding: 15px;
+    }
+
+    .staff-table[b-tt6rzzhr16] {
+        font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Pages/COFNonFlammable.razor.rz.scp.css */
+.staff-page[b-mbax10v5ra] {
+    padding: 0;
+}
+
+.staff-card[b-mbax10v5ra] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-mbax10v5ra] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-mbax10v5ra],
+    .staff-card-header h6[b-mbax10v5ra] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-mbax10v5ra] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-mbax10v5ra] {
+    padding: 20px;
+}
+
+.form-label[b-mbax10v5ra] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-mbax10v5ra] .staff-card .form-control,
+.staff-card .form-select[b-mbax10v5ra] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+[b-mbax10v5ra] .staff-card .form-control:focus,
+.staff-card .form-select:focus[b-mbax10v5ra] {
+    background-color: #ffffff;
+    border-color: #6979ff;
+    box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+}
+
+.staff-table[b-mbax10v5ra] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-mbax10v5ra] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-mbax10v5ra] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-mbax10v5ra] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-mbax10v5ra] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-mbax10v5ra] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-mbax10v5ra] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-mbax10v5ra] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-mbax10v5ra] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-mbax10v5ra] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-mbax10v5ra] {
+        padding: 15px;
+    }
+
+    .staff-table[b-mbax10v5ra] {
+        font-size: 12px;
+    }
+}
 /* _content/RBI_Malaysia/Components/Pages/Company.razor.rz.scp.css */
 /* =========================================
    COMPANY PAGE
@@ -819,8 +1085,10 @@ main[b-k0zhljh4ke] {
    INPUT
    ========================================================= */
 
+/* --- மாற்றி அமைக்க வேண்டிய பகுதி --- */
+
 [b-8mc1l6yn6j] .staff-card .form-control,
-.staff-card .form-select[b-8mc1l6yn6j] {
+[b-8mc1l6yn6j] .staff-card .form-select { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
     min-height: 35px;
     background-color: #f0f1f7;
     border: 1px solid #cfd4e1;
@@ -830,9 +1098,8 @@ main[b-k0zhljh4ke] {
     box-shadow: none;
 }
 
-
     [b-8mc1l6yn6j] .staff-card .form-control:focus,
-    .staff-card .form-select:focus[b-8mc1l6yn6j] {
+    [b-8mc1l6yn6j] .staff-card .form-select:focus { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
         background-color: #ffffff;
         border-color: #6979ff;
         box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
@@ -1001,6 +1268,133 @@ main[b-k0zhljh4ke] {
         min-width: 850px;
     }
 }
+/* _content/RBI_Malaysia/Components/Pages/ComponentLining.razor.rz.scp.css */
+.staff-page[b-xva99finj3] {
+    padding: 0;
+}
+
+.staff-card[b-xva99finj3] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-xva99finj3] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-xva99finj3],
+    .staff-card-header h6[b-xva99finj3] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-xva99finj3] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-xva99finj3] {
+    padding: 20px;
+}
+
+.form-label[b-xva99finj3] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-xva99finj3] .staff-card .form-control,
+.staff-card .form-select[b-xva99finj3] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-xva99finj3] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-xva99finj3] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-xva99finj3] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-xva99finj3] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-xva99finj3] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-xva99finj3] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-xva99finj3] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-xva99finj3] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-xva99finj3] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-xva99finj3] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-xva99finj3] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-xva99finj3] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-xva99finj3] {
+        padding: 15px;
+    }
+
+    .staff-table[b-xva99finj3] {
+        font-size: 12px;
+    }
+}
 /* _content/RBI_Malaysia/Components/Pages/Equipment.razor.rz.scp.css */
 /* =========================================================
    STAFF PAGE
@@ -1088,8 +1482,10 @@ main[b-k0zhljh4ke] {
    INPUT
    ========================================================= */
 
+/* --- மாற்றி அமைக்க வேண்டிய பகுதி --- */
+
 [b-7tnb1lrxfz] .staff-card .form-control,
-.staff-card .form-select[b-7tnb1lrxfz] {
+[b-7tnb1lrxfz] .staff-card .form-select { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
     min-height: 35px;
     background-color: #f0f1f7;
     border: 1px solid #cfd4e1;
@@ -1099,9 +1495,8 @@ main[b-k0zhljh4ke] {
     box-shadow: none;
 }
 
-
     [b-7tnb1lrxfz] .staff-card .form-control:focus,
-    .staff-card .form-select:focus[b-7tnb1lrxfz] {
+    [b-7tnb1lrxfz] .staff-card .form-select:focus { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
         background-color: #ffffff;
         border-color: #6979ff;
         box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
@@ -1841,17 +2236,26 @@ main[b-k0zhljh4ke] {
     color: #374151;
 }
 
-.form-select[b-s04qvmpvp3],
-.form-control[b-s04qvmpvp3] {
-    min-height: 38px;
-    border-radius: 5px;
+/* --- மாற்றி அமைக்க வேண்டிய பகுதி --- */
+
+[b-s04qvmpvp3] .staff-card .form-control,
+[b-s04qvmpvp3] .staff-card .form-select { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
 }
 
-    .form-select:focus[b-s04qvmpvp3],
-    .form-control:focus[b-s04qvmpvp3] {
-        border-color: #86b7fe;
-        box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, .12);
+    [b-s04qvmpvp3] .staff-card .form-control:focus,
+    [b-s04qvmpvp3] .staff-card .form-select:focus { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
     }
+
 
 .staff-table[b-s04qvmpvp3] {
     font-size: 13px;
@@ -1897,9 +2301,18 @@ main[b-k0zhljh4ke] {
         font-size: 15px;
     }
 
-.btn[b-s04qvmpvp3] {
-    border-radius: 5px;    
+.staff-buttons[b-s04qvmpvp3] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
+
+
+    .staff-buttons .btn[b-s04qvmpvp3] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
 
 @media (max-width: 768px) {
 
@@ -2542,8 +2955,10 @@ main[b-k0zhljh4ke] {
    INPUT
    ========================================================= */
 
+/* --- மாற்றி அமைக்க வேண்டிய பகுதி --- */
+
 [b-9evgbndrpc] .staff-card .form-control,
-.staff-card .form-select[b-9evgbndrpc] {
+[b-9evgbndrpc] .staff-card .form-select { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
     min-height: 35px;
     background-color: #f0f1f7;
     border: 1px solid #cfd4e1;
@@ -2553,13 +2968,13 @@ main[b-k0zhljh4ke] {
     box-shadow: none;
 }
 
-
     [b-9evgbndrpc] .staff-card .form-control:focus,
-    .staff-card .form-select:focus[b-9evgbndrpc] {
+    [b-9evgbndrpc] .staff-card .form-select:focus { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
         background-color: #ffffff;
         border-color: #6979ff;
         box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
     }
+
 
 
 /* =========================================================
@@ -2724,6 +3139,133 @@ main[b-k0zhljh4ke] {
         min-width: 850px;
     }
 }
+/* _content/RBI_Malaysia/Components/Pages/Thinning.razor.rz.scp.css */
+.staff-page[b-lrfprmwkpn] {
+    padding: 0;
+}
+
+.staff-card[b-lrfprmwkpn] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-lrfprmwkpn] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-lrfprmwkpn],
+    .staff-card-header h6[b-lrfprmwkpn] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-lrfprmwkpn] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-lrfprmwkpn] {
+    padding: 20px;
+}
+
+.form-label[b-lrfprmwkpn] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-lrfprmwkpn] .staff-card .form-control,
+.staff-card .form-select[b-lrfprmwkpn] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-lrfprmwkpn] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-lrfprmwkpn] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-lrfprmwkpn] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-lrfprmwkpn] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-lrfprmwkpn] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-lrfprmwkpn] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-lrfprmwkpn] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-lrfprmwkpn] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-lrfprmwkpn] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-lrfprmwkpn] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-lrfprmwkpn] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-lrfprmwkpn] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-lrfprmwkpn] {
+        padding: 15px;
+    }
+
+    .staff-table[b-lrfprmwkpn] {
+        font-size: 12px;
+    }
+}
 /* _content/RBI_Malaysia/Components/Pages/User.razor.rz.scp.css */
 .user-page[b-z823e84y30] {
     padding: 10px;
@@ -2779,18 +3321,26 @@ main[b-k0zhljh4ke] {
     padding: 20px;
 }
 
-.form-select[b-z823e84y30],
-.form-control[b-z823e84y30] {
-    min-height: 40px;
-    border: 1px solid #cbd5e1;
-    border-radius: 5px;
+/* --- மாற்றி அமைக்க வேண்டிய பகுதி --- */
+
+[b-z823e84y30] .form-control,
+[b-z823e84y30] .form-select { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
 }
 
-    .form-select:focus[b-z823e84y30],
-    .form-control:focus[b-z823e84y30] {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 0.15rem rgba(59, 130, 246, 0.15);
+    [b-z823e84y30] .form-control:focus,
+    [b-z823e84y30] .form-select:focus { /* இங்கும் ::deep சேர்க்கப்பட்டுள்ளது */
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
     }
+
 
 [b-z823e84y30] .form-control::placeholder {
     color: #888888;

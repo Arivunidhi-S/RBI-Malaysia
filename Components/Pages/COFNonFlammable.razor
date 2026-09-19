@@ -91,7 +91,7 @@
 
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Fluid Type</label>
-                        <InputText class="form-control" @bind-Value="model.FluidType" readonly />
+                        <InputText class="form-control bg-warning-subtle text-danger" @bind-Value="model.FluidType" readonly />
                     </div>
 
                     <div class="col-md-4">
@@ -150,11 +150,11 @@
                 <div class="row g-3 mt-3 border-top pt-3 bg-light p-2 rounded">
                     <div class="col-md-6">
                         <label class="form-label text-secondary fw-bold">Personnel Injury Area</label>
-                        <input type="text" class="form-control" value="@model.CAInjTotal" readonly />
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.CAInjTotal" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label text-secondary fw-bold">Injury Category</label>
-                        <input type="text" class="form-control fw-bold text-info" value="@model.CAInjCategory" readonly />
+                        <input type="text" class="form-control fw-bold bg-warning-subtle text-success" value="@model.CAInjCategory" readonly />
                     </div>
                 </div>
 

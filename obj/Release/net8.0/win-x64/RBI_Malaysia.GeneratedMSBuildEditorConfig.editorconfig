@@ -52,6 +52,14 @@ build_metadata.AdditionalFiles.CssScope = b-k0zhljh4ke
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-dw3fgj7ytv
 
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/COFFlammable.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDT0ZGbGFtbWFibGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-tt6rzzhr16
+
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/COFNonFlammable.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDT0ZOb25GbGFtbWFibGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-mbax10v5ra
+
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Company.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb21wYW55LnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-27pjoswe3a
@@ -59,6 +67,10 @@ build_metadata.AdditionalFiles.CssScope = b-27pjoswe3a
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Component.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb21wb25lbnQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-8mc1l6yn6j
+
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/ComponentLining.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb21wb25lbnRMaW5pbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-xva99finj3
 
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Equipment.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcXVpcG1lbnQucmF6b3I=
@@ -83,6 +95,10 @@ build_metadata.AdditionalFiles.CssScope = b-ehtneuaaes
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Staff.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdGFmZi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-9evgbndrpc
+
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Thinning.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaGlubmluZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-lrfprmwkpn
 
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/User.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyLnJhem9y

@@ -52,6 +52,14 @@ build_metadata.AdditionalFiles.CssScope = b-k0zhljh4ke
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-dw3fgj7ytv
 
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Amine.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbWluZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-9nkzm9xfqj
+
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/CausticCracking.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYXVzdGljQ3JhY2tpbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-oru8w7icw2
+
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/COFFlammable.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDT0ZGbGFtbWFibGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-tt6rzzhr16
@@ -71,6 +79,14 @@ build_metadata.AdditionalFiles.CssScope = b-8mc1l6yn6j
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/ComponentLining.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb21wb25lbnRMaW5pbmcucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-xva99finj3
+
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/ECD.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFQ0QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-uxudrp4ujp
+
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/ECDList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFQ0RMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-pz760w39zi
 
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Equipment.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcXVpcG1lbnQucmF6b3I=
@@ -96,9 +112,17 @@ build_metadata.AdditionalFiles.CssScope = b-ehtneuaaes
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdGFmZi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-9evgbndrpc
 
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Sulfidation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdWxmaWRhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-kpxul5hch4
+
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/Thinning.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaGlubmluZy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-lrfprmwkpn
+
+[C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/ThinningList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaGlubmluZ0xpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-3zzvnbtfmb
 
 [C:/Users/Arivunithi/source/repos/RBI-Malaysia/Components/Pages/User.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyLnJhem9y

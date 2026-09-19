@@ -14,10 +14,16 @@
 <div class="staff-page">
     <div class="staff-card">
 
-        <div class="staff-card-header">
+        <div class="staff-card-header d-flex justify-content-between align-items-center">
             <div>
                 <h5 class="mb-0"><i class="bi bi-graph-down-arrow me-2 text-warning"></i> POF — Thinning Damage</h5>
                 <small>Component Thinning Damage Factor Calculation</small>
+            </div>
+            <div class="staff-buttons">
+                <NavLink class="btn btn-primary add-equipment-btn" href="thinninglist">
+                    <i class="bi bi-card-list"></i>
+                    Thinning List
+                </NavLink>
             </div>
         </div>
 
@@ -62,9 +68,18 @@
                 <h6 class="text-muted border-bottom pb-1 mb-3">Basic Inputs</h6>
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Clad</label>
-                        <input type="text" class="form-control" value="@model.Clad" readonly />
-                        <small class="text-muted">When select Component it will auto-fill</small>
+                        @* <label class="form-label fw-bold">Clad</label> *@
+                        <input type="hidden" class="form-control bg-warning-subtle text-danger" value="@model.Clad" readonly />
+                        @* <small class="text-muted">When select Component it will auto-fill</small> *@                       
+                            <label class="form-label fw-bold">Inspection Category</label>
+                            <select class="form-select" @bind="model.InspectCate">
+                                <option value="">Select</option>
+                                <option value="A">A — Highly Effective</option>
+                                <option value="B">B — Usually Effective</option>
+                                <option value="C">C — Fairly Effective</option>
+                                <option value="D">D — Poorly Effective</option>
+                                <option value="E">E — Ineffective</option>
+                            </select>    
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Age (years) <span class="text-danger">*</span></label>
@@ -83,33 +98,28 @@
                         </select>
                     </div>
                 </div>
-
-                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Main Inspection Category (Damage Factor)</h6>
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">No. of Inspection Categories (A / B / C / D)</h6>
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Inspection Category</label>
-                        <select class="form-select" @bind="model.InspectCate">
-                            <option value="">Select</option>
-                            <option value="A">A — Highly Effective</option>
-                            <option value="B">B — Usually Effective</option>
-                            <option value="C">C — Fairly Effective</option>
-                            <option value="D">D — Poorly Effective</option>
-                            <option value="E">E — Ineffective</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">No. of Inspections</label>
+                        <label class="form-label fw-bold">No. of Inspections — Category A</label>
                         <InputNumber class="form-control" @bind-Value="model.Nofins" />
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label text-secondary fw-bold">Art (calculated)</label>
-                        <input type="text" class="form-control" value="@model.Art" readonly />
+                        <label class="form-label fw-bold">No. of Inspections — Category B</label>
+                        <InputNumber class="form-control" @bind-Value="model.NofinsB" />
+                        @* <small class="text-muted">DS1 (Category B Damage Factor): <strong>@model.DS1</strong></small> *@
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label text-secondary fw-bold">TDF (calculated)</label>
-                        <input type="text" class="form-control fw-bold text-warning" value="@model.Tdf" readonly />
+                        <label class="form-label fw-bold">No. of Inspections — Category C</label>
+                        <InputNumber class="form-control" @bind-Value="model.NofinsC" />
+                        @* <small class="text-muted">DS2 (Category C Damage Factor): <strong>@model.DS2</strong></small> *@
                     </div>
-                </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">No. of Inspections — Category D</label>
+                        <InputNumber class="form-control" @bind-Value="model.NofinsD" />
+                        @* <small class="text-muted">DS3 (Category D Damage Factor): <strong>@model.DS3</strong></small> *@
+                    </div>
+                </div>              
 
                 <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Material Properties</h6>
                 <div class="row g-3">
@@ -131,53 +141,24 @@
                     </div>
                 </div>
 
-                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Additional Inspection Categories (B / C / D)</h6>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">No. of Inspections — Category B</label>
-                        <InputNumber class="form-control" @bind-Value="model.NofinsB" />
-                        <small class="text-muted">DS1 (Category B Damage Factor): <strong>@model.DS1</strong></small>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">No. of Inspections — Category C</label>
-                        <InputNumber class="form-control" @bind-Value="model.NofinsC" />
-                        <small class="text-muted">DS2 (Category C Damage Factor): <strong>@model.DS2</strong></small>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">No. of Inspections — Category D</label>
-                        <InputNumber class="form-control" @bind-Value="model.NofinsD" />
-                        <small class="text-muted">DS3 (Category D Damage Factor): <strong>@model.DS3</strong></small>
-                    </div>
-                </div>
+
 
                 <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Bayesian Damage Factor — Prior Probabilities</h6>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Prp1 (DS=1 scenario prior)</label>
+                        <label class="form-label fw-bold">Prp1 @* (DS=1 scenario prior) *@</label>
                         <InputNumber class="form-control" @bind-Value="model.Prp1_thin" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Prp2 (DS=2 scenario prior)</label>
+                        <label class="form-label fw-bold">Prp2 @* (DS=2 scenario prior) *@</label>
                         <InputNumber class="form-control" @bind-Value="model.Prp2_thin" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Prp3 (DS=4 scenario prior)</label>
+                        <label class="form-label fw-bold">Prp3 @* (DS=4 scenario prior) *@</label>
                         <InputNumber class="form-control" @bind-Value="model.Prp3_thin" />
                     </div>
-                    <small class="text-muted">Table 4.6 conditional-probability constants (CoP) are fixed and applied automatically — no input needed.</small>
+                    @* <small class="text-muted">Table 4.6 conditional-probability constants (CoP) are fixed and applied automatically — no input needed.</small> *@
                 </div>
-
-                <div class="row g-3 mt-2">
-                    <div class="col-md-6">
-                        <label class="form-label text-secondary fw-bold">Flow Stress, FS_thin (calculated)</label>
-                        <input type="text" class="form-control" value="@model.FSThin" readonly />
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label text-secondary fw-bold">Strength Ratio Parameter, SRP_thin (calculated)</label>
-                        <input type="text" class="form-control" value="@model.SRPThin" readonly />
-                    </div>
-                </div>
-
                 <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Table 4.7 Modification Factors</h6>
                 <div class="row g-3">
                     <div class="col-md-2">
@@ -205,6 +186,27 @@
                         <InputNumber class="form-control" @bind-Value="model.FOM" />
                     </div>
                 </div>
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Main Inspection Category (Damage Factor)</h6>
+                <div class="row g-3 mt-2">
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Flow Stress, FS_thin (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.FSThin" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Strength Ratio Parameter, SRP_thin (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.SRPThin" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Art (calculated)</label>
+                        <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.Art" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">TDF (calculated)</label>
+                        <input type="text" class="form-control fw-bold text-warning bg-warning-subtle text-danger" value="@model.Tdf" readonly />
+                    </div>
+                </div>
+
+               
 
                 <!-- பொத்தான்கள் -->
                 <div class="staff-buttons mt-4 d-flex gap-2">

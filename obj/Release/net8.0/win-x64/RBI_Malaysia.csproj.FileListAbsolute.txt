@@ -394,3 +394,7 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\win-x64\RBI_Mal
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\win-x64\RBI_Malaysia.genruntimeconfig.cache
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\win-x64\ref\RBI_Malaysia.dll
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\win-x64\scopedcss\Components\Pages\Inspection.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\win-x64\scopedcss\Components\Pages\COFFlammable.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\win-x64\scopedcss\Components\Pages\COFNonFlammable.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\win-x64\scopedcss\Components\Pages\ComponentLining.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\win-x64\scopedcss\Components\Pages\Thinning.razor.rz.scp.css

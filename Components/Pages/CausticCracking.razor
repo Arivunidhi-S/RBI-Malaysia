@@ -1,0 +1,305 @@
+﻿@page "/pof-scc-caustic"
+
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject CausticService CausticService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+
+<PageTitle>POF — SCC Caustic Cracking</PageTitle>
+
+<!-- =====================================================================
+     STRESS CORROSION CRACKING — TOP NAVIGATION MENU
+     9 tabs, each links to its own page
+     ===================================================================== -->
+<div class="staff-page">
+    <nav class="staff-Menu">
+      <ul>
+          <li><a class="nav-link @(Nav.Uri.Contains("caustic")   ? "active" : "")" href="/pof-scc-caustic">Caustic</a></li>
+          <li><a class="nav-link @(Nav.Uri.Contains("amine")     ? "active" : "")" href="/pof-scc-amine">Amine</a></li>
+          <li><a class="nav-link @(Nav.Uri.Contains("sulfidation") ? "active" : "")" href="/pof-scc-sulfidation">Sulfidation</a></li>         
+          <li><a class="nav-link @(Nav.Uri.Contains("hic")       ? "active" : "")" href="/pof-scc-hic">HIC / SOHIC-H2S</a></li>
+          <li><a class="nav-link @(Nav.Uri.Contains("carbonate") ? "active" : "")" href="/pof-scc-carbonate">Carbonate</a></li>
+          <li><a class="nav-link @(Nav.Uri.Contains("pta") ? "active" : "")" href="/pof-scc-pta">PTA</a></li>
+          <li><a class="nav-link @(Nav.Uri.Contains("hf") ? "active" : "")" href="/pof-scc-hf">HF</a></li>
+          <li><a class="nav-link @(Nav.Uri.Contains("htha")      ? "active" : "")" href="/pof-scc-htha">HTHA</a></li>
+          <li><a class="nav-link @(Nav.Uri.Contains("clscc")     ? "active" : "")" href="/pof-scc-clscc">CLSCC</a></li>
+        </ul> 
+    </nav>
+
+    <div class="staff-card">
+        <div class="staff-card-header">
+            <div>
+                <h5 class="mb-0">
+                    <i class="bi bi-droplet-half me-2 text-danger"></i> SCC — Caustic Cracking
+                </h5>
+                <small>SCCDF Caustic Cracking Damage Factor Calculation</small>
+            </div>
+        </div>
+
+        <div class="staff-card-body">
+
+            <!-- Cascading Filters -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedProcessArea" @onchange="ProcessAreaChanged">
+                        <option value="0">-- Select Process Area --</option>
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">@item.ProcessArea</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged"
+                            disabled="@(selectedProcessArea <= 0)">
+                        <option value="0">-- Select Equipment --</option>
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">@item.EquPID</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged"
+                            disabled="@(selectedEquipment <= 0)">
+                        <option value="0">-- Select Component --</option>
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">@item.CompNo</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- Input Form -->
+            <EditForm Model="@model" OnValidSubmit="Calculate" FormName="CausticForm">
+                <DataAnnotationsValidator />
+
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Age <span class="text-danger">*</span></label>
+                        <InputNumber class="form-control" @bind-Value="model.CSAge" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Inspection Effectiveness <span class="text-danger">*</span></label>
+                        <select class="form-select" @bind="model.CSInsEff">
+                            <option value="">Select</option>
+                            <option value="A">A — Highly Effective</option>
+                            <option value="B">B — Usually Effective</option>
+                            <option value="C">C — Fairly Effective</option>
+                            <option value="D">D — Poorly Effective</option>
+                            <option value="E">E — In Effective</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">No. of Inspections <span class="text-danger">*</span></label>
+                        <select class="form-select" @bind="model.CSnofIns">
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Inspection Date</label>
+                        <InputDate class="form-control" @bind-Value="model.InspectDate" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Susceptibility &amp; Svi <span class="text-danger">*</span></label>
+                        <select class="form-select" @bind="model.CSSvi" @bind:after="OnSviChanged">
+                            <option value="">Select</option>
+                            @foreach (var opt in CausticService.SviOptions)
+                            {
+                                <option value="@opt.Label">@opt.Label (@opt.Value)</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Result -->
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Df — Caustic Cracking (calculated)</label>
+                        <input type="text" class="form-control fw-bold bg-warning-subtle text-danger"
+                               value="@model.CSDf" readonly />
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="staff-buttons mt-4 d-flex gap-2">
+                    <button type="button" class="btn btn-info text-white"
+                            @onclick="Calculate" disabled="@isCalculating">
+                        @(isCalculating ? "Calculating..." : "Calculate")
+                    </button>
+                    <button type="button" class="btn btn-success"
+                            @onclick="Save" disabled="@isSaving">
+                        @(isSaving ? "Saving..." : "Save")
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="ClearForm">Clear</button>
+                    @if (hasExistingData)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="DeleteRecord">Delete</button>
+                    }
+                </div>
+            </EditForm>
+
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private CausticModel model = new();
+    private decimal selectedProcessArea, selectedEquipment, selectedComponent;
+
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel>   equipments   = new();
+    private List<ComponentModel>   components   = new();
+
+    private bool hasExistingData, isSaving, isCalculating;
+
+    protected override async Task OnInitializedAsync() =>
+        processAreas = await CausticService.GetProcessAreasAsync(UserSession.CompanyID);
+
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
+    {
+        selectedProcessArea = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
+        selectedEquipment = 0; selectedComponent = 0;
+        equipments.Clear(); components.Clear();
+        hasExistingData = false;
+        if (selectedProcessArea > 0)
+            equipments = await CausticService.GetEquipmentsByProcessAsync(selectedProcessArea);
+    }
+
+    private async Task EquipmentChanged(ChangeEventArgs e)
+    {
+        selectedEquipment = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
+        selectedComponent = 0;
+        components.Clear();
+        hasExistingData = false;
+        if (selectedEquipment > 0)
+            components = await CausticService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
+    }
+
+    private async Task ComponentChanged(ChangeEventArgs e)
+    {
+        if (!decimal.TryParse(e.Value?.ToString(), out decimal id)) return;
+        selectedComponent = id;
+        try
+        {
+            var existing = await CausticService.GetCausticRecordAsync(selectedProcessArea, selectedEquipment, id);
+            if (existing != null)
+            {
+                model = existing;
+                hasExistingData = true;
+            }
+            else
+            {
+                model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = id };
+                hasExistingData = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Load Error", text = ex.Message, icon = "error" });
+        }
+    }
+
+    // When Svi label changes, auto-set the numeric value
+    private void OnSviChanged()
+    {
+        var match = CausticService.SviOptions.Find(o => o.Label == model.CSSvi);
+        model.CSSviVal = match == default ? null : match.Value;
+    }
+
+    private async Task Calculate()
+    {
+        isCalculating = true; StateHasChanged();
+        try
+        {
+            model = await CausticService.CalculateCausticAsync(model);
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Calculate Error", text = ex.Message, icon = "error" });
+        }
+        finally { isCalculating = false; StateHasChanged(); }
+    }
+
+    private async Task Save()
+    {
+        isSaving = true; StateHasChanged();
+        try
+        {
+            model = await CausticService.SaveCausticAsync(model);
+            hasExistingData = true;
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Saved!", text = "Caustic Cracking record saved successfully.", icon = "success",
+                      timer = 2000, showConfirmButton = false });
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Save Error", text = ex.Message, icon = "error" });
+        }
+        finally { isSaving = false; StateHasChanged(); }
+    }
+
+    private async Task DeleteRecord()
+    {
+        // bool confirm = await JS.InvokeAsync<bool>("Swal.fire", new
+        // {
+        //     title = "Delete Record?",
+        //     text = "This Caustic Cracking record will be permanently deleted.",
+        //     icon = "warning",
+        //     showCancelButton = true,
+        //     confirmButtonColor = "#d33",
+        //     cancelButtonColor = "#6c757d",
+        //     confirmButtonText = "Yes, delete it!",
+        //     cancelButtonText = "Cancel"
+        // }).ContinueWith(t => t.Result.GetProperty("isConfirmed").GetBoolean());
+
+
+        bool confirmed =
+              await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete this Caustic Cracking record?");
+
+        if (!confirmed) return;
+
+        try
+        {
+            await CausticService.DeleteCausticAsync(model.ProcID, model.EquID, model.CompID);
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Deleted!", text = "Record has been deleted.", icon = "success",
+                      timer = 1800, showConfirmButton = false });
+            ClearForm();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Delete Error", text = ex.Message, icon = "error" });
+        }
+    }
+
+    private void ClearForm()
+    {
+        model = new();
+        selectedProcessArea = selectedEquipment = selectedComponent = 0;
+        equipments.Clear(); components.Clear();
+        hasExistingData = false;
+    }
+}
