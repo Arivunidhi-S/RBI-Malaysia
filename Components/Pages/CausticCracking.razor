@@ -17,20 +17,7 @@
      9 tabs, each links to its own page
      ===================================================================== -->
 <div class="staff-page">
-    <nav class="staff-Menu">
-      <ul>
-          <li><a class="nav-link @(Nav.Uri.Contains("caustic")   ? "active" : "")" href="/pof-scc-caustic">Caustic</a></li>
-          <li><a class="nav-link @(Nav.Uri.Contains("amine")     ? "active" : "")" href="/pof-scc-amine">Amine</a></li>
-          <li><a class="nav-link @(Nav.Uri.Contains("sulfidation") ? "active" : "")" href="/pof-scc-sulfidation">Sulfidation</a></li>         
-          <li><a class="nav-link @(Nav.Uri.Contains("hic")       ? "active" : "")" href="/pof-scc-hic">HIC / SOHIC-H2S</a></li>
-          <li><a class="nav-link @(Nav.Uri.Contains("carbonate") ? "active" : "")" href="/pof-scc-carbonate">Carbonate</a></li>
-          <li><a class="nav-link @(Nav.Uri.Contains("pta") ? "active" : "")" href="/pof-scc-pta">PTA</a></li>
-          <li><a class="nav-link @(Nav.Uri.Contains("hf") ? "active" : "")" href="/pof-scc-hf">HF</a></li>
-          <li><a class="nav-link @(Nav.Uri.Contains("htha")      ? "active" : "")" href="/pof-scc-htha">HTHA</a></li>
-          <li><a class="nav-link @(Nav.Uri.Contains("clscc")     ? "active" : "")" href="/pof-scc-clscc">CLSCC</a></li>
-        </ul> 
-    </nav>
-
+    @layout StaffLayout
     <div class="staff-card">
         <div class="staff-card-header">
             <div>

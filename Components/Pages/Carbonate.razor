@@ -1,16 +1,16 @@
-﻿@page "/pof-scc-sulfidation"
+﻿@page "/pof-scc-carbonate"
 
 @using RBI_Malaysia.Models
 @using RBI_Malaysia.Services
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
-@inject SulfidationService SulfidationService
+@inject CarbonateService CarbonateService
 @inject UserSession UserSession
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
 
-<PageTitle>POF — SCC Sulfide Stress Cracking</PageTitle>
+<PageTitle>POF — SCC Carbonate Cracking</PageTitle>
 
 <div class="staff-page">
 
@@ -21,9 +21,9 @@
         <div class="staff-card-header">
             <div>
                 <h5 class="mb-0">
-                    <i class="bi bi-radioactive me-2 text-warning"></i> SCC — Sulfide Stress Cracking
+                    <i class="bi bi-water me-2 text-info"></i> SCC — Carbonate Cracking
                 </h5>
-                <small>SCCDF Sulfide Stress Cracking Damage Factor Calculation</small>
+                <small>SCCDF Carbonate Cracking Damage Factor Calculation</small>
             </div>
         </div>
 
@@ -66,18 +66,18 @@
             </div>
 
             <!-- Input Form -->
-            <EditForm Model="@model" OnValidSubmit="Calculate" FormName="SulfidationForm">
+            <EditForm Model="@model" OnValidSubmit="Calculate" FormName="CarbonateForm">
                 <DataAnnotationsValidator />
 
                 <h6 class="text-muted border-bottom pb-1 mb-3">Basic Inputs</h6>
                 <div class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Age <span class="text-danger">*</span></label>
-                        <InputNumber class="form-control" @bind-Value="model.SulAge" />
+                        <InputNumber class="form-control" @bind-Value="model.CO3Age" />
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Inspection Effectiveness <span class="text-danger">*</span></label>
-                        <select class="form-select" @bind="model.SulInsEff">
+                        <select class="form-select" @bind="model.CO3InsEff">
                             <option value="">Select</option>
                             <option value="A">A — Highly Effective</option>
                             <option value="B">B — Usually Effective</option>
@@ -88,7 +88,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">No. of Inspections <span class="text-danger">*</span></label>
-                        <select class="form-select" @bind="model.SulnofIns">
+                        <select class="form-select" @bind="model.CO3nofIns">
                             <option value="">Select</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -104,64 +104,34 @@
                     </div>
                 </div>
 
-                <!-- Step 1: pH + H2S → Environmental Severity -->
-                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Environmental Severity (STEP 1)</h6>
-                <div class="row g-3">
+                <!-- Step 1: pH + CO3 → Svi -->
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Susceptibility (STEP 1)</h6>
+                <div class="row g-3 align-items-end">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">pH of Water</label>
-                        <select class="form-select" @bind="model.PHwaterCode" @bind:after="RecalcEnvSeverity">
+                        <select class="form-select" @bind="model.PHwaterCode" @bind:after="RecalcSvi">
                             <option value="">Select</option>
-                            @foreach (var opt in SulfidationService.PHOptions)
+                            @foreach (var opt in CarbonateService.PHOptions)
                             {
                                 <option value="@opt.Code">@opt.Label</option>
                             }
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">H2S Content</label>
-                        <select class="form-select" @bind="model.H2SCode" @bind:after="RecalcEnvSeverity">
+                        <label class="form-label fw-bold">CO3 Content</label>
+                        <select class="form-select" @bind="model.CO3Code" @bind:after="RecalcSvi">
                             <option value="">Select</option>
-                            @foreach (var opt in SulfidationService.H2SOptions)
+                            @foreach (var opt in CarbonateService.CO3Options)
                             {
                                 <option value="@opt.Code">@opt.Label</option>
                             }
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label text-secondary fw-bold">Environmental Severity (auto)</label>
-                        <input type="text" class="form-control fw-bold bg-warning-subtle text-danger" value="@model.Severity" readonly />
+                        <label class="form-label text-secondary fw-bold">Svi (auto)</label>
+                        <input type="text" class="form-control fw-bold text-primary bg-warning-subtle" value="@model.CO3Svi" readonly />
                     </div>
-                </div>
-
-                <!-- Step 2: Heat + Brinnell + Env Severity → Svi -->
-                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Susceptibility & Svi (STEP 2)</h6>
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Heat Treatment</label>
-                        <select class="form-select" @bind="model.HeatCode" @bind:after="RecalcSvi">
-                            <option value="">Select</option>
-                            @foreach (var opt in SulfidationService.HeatOptions)
-                            {
-                                <option value="@opt.Code">@opt.Label</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Max Brinnell Hardness</label>
-                        <select class="form-select" @bind="model.BrinnellCode" @bind:after="RecalcSvi">
-                            <option value="">Select</option>
-                            @foreach (var opt in SulfidationService.BrinnellOptions)
-                            {
-                                <option value="@opt.Code">@opt.Label</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label text-secondary fw-bold">Susceptibility / Svi (auto)</label>
-                        <input type="text" class="form-control fw-bold bg-warning-subtle text-primary" value="@model.SulSvi" readonly />
-                    </div>
-                    <!-- Step 3: Known Crack override -->
-                    <div class="col-md-3 d-flex align-items-end pb-1">
+                    <div class="col-md-3 pb-1">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="knownCrack"
                                    checked="@model.KnownCrack" @onchange="OnKnownCrackChanged" />
@@ -177,19 +147,18 @@
                 <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Result</h6>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label text-secondary fw-bold">Df — Sulfide Stress Cracking</label>
-                        <input type="text" class="form-control fw-bold bg-warning-subtle text-danger"
-                               value="@model.SulDf" readonly />
+                        <label class="form-label text-secondary fw-bold">Df — Carbonate Cracking</label>
+                        <input type="text" class="form-control fw-bold text-info bg-warning-subtle" value="@model.CO3Df" readonly />
                     </div>
                 </div>
 
                 <!-- Buttons -->
                 <div class="staff-buttons mt-4 d-flex gap-2">
-                    <button type="button" class="btn btn-info text-white"
+                    <button type="button" class="btn btn-info text-white fw-bold"
                             @onclick="Calculate" disabled="@isCalculating">
                         @(isCalculating ? "Calculating..." : "Calculate")
                     </button>
-                    <button type="button" class="btn btn-success"
+                    <button type="button" class="btn btn-success fw-bold"
                             @onclick="Save" disabled="@isSaving">
                         @(isSaving ? "Saving..." : "Save")
                     </button>
@@ -200,14 +169,13 @@
                     }
                 </div>
             </EditForm>
-
         </div>
     </div>
 </div>
 
 @code
 {
-    private SulfidationModel model = new();
+    private CarbonateModel model = new();
     private decimal selectedProcessArea, selectedEquipment, selectedComponent;
 
     private List<ProcessAreaModel> processAreas = new();
@@ -217,7 +185,7 @@
     private bool hasExistingData, isSaving, isCalculating;
 
     protected override async Task OnInitializedAsync() =>
-        processAreas = await SulfidationService.GetProcessAreasAsync(UserSession.CompanyID);
+        processAreas = await CarbonateService.GetProcessAreasAsync(UserSession.CompanyID);
 
     private async Task ProcessAreaChanged(ChangeEventArgs e)
     {
@@ -226,7 +194,7 @@
         equipments.Clear(); components.Clear();
         hasExistingData = false;
         if (selectedProcessArea > 0)
-            equipments = await SulfidationService.GetEquipmentsByProcessAsync(selectedProcessArea);
+            equipments = await CarbonateService.GetEquipmentsByProcessAsync(selectedProcessArea);
     }
 
     private async Task EquipmentChanged(ChangeEventArgs e)
@@ -236,7 +204,7 @@
         components.Clear();
         hasExistingData = false;
         if (selectedEquipment > 0)
-            components = await SulfidationService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
+            components = await CarbonateService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
     }
 
     private async Task ComponentChanged(ChangeEventArgs e)
@@ -245,7 +213,7 @@
         selectedComponent = id;
         try
         {
-            var existing = await SulfidationService.GetSulfidationRecordAsync(selectedProcessArea, selectedEquipment, id);
+            var existing = await CarbonateService.GetCarbonateRecordAsync(selectedProcessArea, selectedEquipment, id);
             if (existing != null) { model = existing; hasExistingData = true; }
             else { model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = id }; hasExistingData = false; }
         }
@@ -255,34 +223,16 @@
         }
     }
 
-    // STEP 1 — pH + H2S changed → recalculate Environmental Severity
-    private async Task RecalcEnvSeverity()
-    {
-        if (string.IsNullOrEmpty(model.PHwaterCode) || string.IsNullOrEmpty(model.H2SCode)) return;
-        try
-        {
-            model.Severity = await SulfidationService.ComputeEnvSeverityAsync(model.H2SCode, model.PHwaterCode);
-            model.PHwater = SulfidationService.PHOptions.Find(o => o.Code == model.PHwaterCode).Label;
-            model.H2S = SulfidationService.H2SOptions.Find(o => o.Code == model.H2SCode).Label;
-            // Cascade: if Heat and Brinnell are already set, auto-recalc Svi too
-            await RecalcSvi();
-        }
-        catch (Exception ex)
-        {
-            await JS.InvokeVoidAsync("Swal.fire", new { title = "Error", text = ex.Message, icon = "error" });
-        }
-    }
-
-    // STEP 2 — Heat + Brinnell + Severity changed → recalculate Svi
+    // pH or CO3 changed → auto-compute Svi via Ref_CO3
     private async Task RecalcSvi()
     {
-        if (string.IsNullOrEmpty(model.BrinnellCode) || string.IsNullOrEmpty(model.HeatCode) || string.IsNullOrEmpty(model.Severity)) return;
-        if (model.KnownCrack) return; // override in effect
+        if (string.IsNullOrEmpty(model.PHwaterCode) || string.IsNullOrEmpty(model.CO3Code)) return;
+        if (model.KnownCrack) return;
         try
         {
-            model.SulSvi = await SulfidationService.ComputeSviAsync(model.BrinnellCode, model.HeatCode, model.Severity);
-            model.Heat = SulfidationService.HeatOptions.Find(o => o.Code == model.HeatCode).Label;
-            model.Brinnell = SulfidationService.BrinnellOptions.Find(o => o.Code == model.BrinnellCode).Label;
+            model.CO3Svi = await CarbonateService.ComputeSviAsync(model.CO3Code, model.PHwaterCode);
+            model.PHwater = CarbonateService.PHOptions.Find(o => o.Code == model.PHwaterCode).Label;
+            model.CO3     = CarbonateService.CO3Options.Find(o => o.Code == model.CO3Code).Label;
         }
         catch (Exception ex)
         {
@@ -290,17 +240,15 @@
         }
     }
 
-    // STEP 3 — Known crack checkbox → override or restore Svi
     private async Task OnKnownCrackChanged(ChangeEventArgs e)
     {
         model.KnownCrack = (bool)(e.Value ?? false);
         if (model.KnownCrack)
         {
-            model.SulSvi = "High";
+            model.CO3Svi = "High";
         }
         else
         {
-            // restore from chain
             await RecalcSvi();
         }
     }
@@ -308,7 +256,7 @@
     private async Task Calculate()
     {
         isCalculating = true; StateHasChanged();
-        try { model = await SulfidationService.CalculateSulfidationAsync(model); }
+        try { model = await CarbonateService.CalculateCarbonateAsync(model); }
         catch (Exception ex)
         {
             await JS.InvokeVoidAsync("Swal.fire", new { title = "Calculate Error", text = ex.Message, icon = "error" });
@@ -321,10 +269,10 @@
         isSaving = true; StateHasChanged();
         try
         {
-            model = await SulfidationService.SaveSulfidationAsync(model);
+            model = await CarbonateService.SaveCarbonateAsync(model);
             hasExistingData = true;
             await JS.InvokeVoidAsync("Swal.fire",
-                new { title = "Saved!", text = "Sulfidation record saved successfully.", icon = "success", timer = 2000, showConfirmButton = false });
+                new { title = "Saved!", text = "Carbonate Cracking record saved successfully.", icon = "success", timer = 2000, showConfirmButton = false });
         }
         catch (Exception ex)
         {
@@ -338,7 +286,7 @@
         // bool confirm = await JS.InvokeAsync<bool>("Swal.fire", new
         // {
         //     title = "Delete Record?",
-        //     text = "This Sulfidation record will be permanently deleted.",
+        //     text = "This Carbonate Cracking record will be permanently deleted.",
         //     icon = "warning",
         //     showCancelButton = true,
         //     confirmButtonColor = "#d33",
@@ -348,12 +296,12 @@
         // }).ContinueWith(t => t.Result.GetProperty("isConfirmed").GetBoolean());
 
         bool confirmed =
-            await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete this Sulfidation record?");
+            await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete this Carbonate Cracking record?");
 
         if (!confirmed) return;
         try
         {
-            await SulfidationService.DeleteSulfidationAsync(model.ProcID, model.EquID, model.CompID);
+            await CarbonateService.DeleteCarbonateAsync(model.ProcID, model.EquID, model.CompID);
             await JS.InvokeVoidAsync("Swal.fire",
                 new { title = "Deleted!", text = "Record has been deleted.", icon = "success", timer = 1800, showConfirmButton = false });
             ClearForm();

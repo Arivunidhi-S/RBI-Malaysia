@@ -1,0 +1,26 @@
+﻿/*==========================
+TOP MENU
+==========================*/
+.staff-Menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
+}
+
+    .staff-Menu ul li {
+        float: left;
+    }
+
+        .staff-Menu ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+            .staff-Menu ul li a:hover {
+                background-color: #111111;
+            }

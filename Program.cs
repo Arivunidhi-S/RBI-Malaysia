@@ -48,6 +48,7 @@ builder.Services.AddScoped<LiningDamageService>();
 builder.Services.AddScoped<ECDService>();
 builder.Services.AddScoped<CausticService>();
 builder.Services.AddScoped<SulfidationService>();
+builder.Services.AddScoped<CarbonateService>();
 
 
 var app = builder.Build();

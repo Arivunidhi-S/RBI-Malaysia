@@ -1,4 +1,4 @@
-﻿@page "/pof-scc-sulfidation"
+﻿@page "/pof-scc-hic"
 
 @using RBI_Malaysia.Models
 @using RBI_Malaysia.Services
@@ -10,7 +10,7 @@
 @inject NavigationManager Nav
 
 
-<PageTitle>POF — SCC Sulfide Stress Cracking</PageTitle>
+<PageTitle>POF — HIC / SOHIC-H2S</PageTitle>
 
 <div class="staff-page">
 
@@ -21,9 +21,9 @@
         <div class="staff-card-header">
             <div>
                 <h5 class="mb-0">
-                    <i class="bi bi-radioactive me-2 text-warning"></i> SCC — Sulfide Stress Cracking
+                    <i class="bi bi-radioactive me-2 text-warning"></i> HIC / SOHIC-H2S
                 </h5>
-                <small>SCCDF Sulfide Stress Cracking Damage Factor Calculation</small>
+                <small>SCCDF HIC / SOHIC-H2S Factor Calculation</small>
             </div>
         </div>
 
@@ -118,7 +118,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">H2S Content</label>
+                        <label class="form-label fw-bold">SteelSulfar</label>
                         <select class="form-select" @bind="model.H2SCode" @bind:after="RecalcEnvSeverity">
                             <option value="">Select</option>
                             @foreach (var opt in SulfidationService.H2SOptions)
@@ -147,7 +147,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Max Brinnell Hardness</label>
+                        <label class="form-label fw-bold">Steel Sulfar</label>
                         <select class="form-select" @bind="model.BrinnellCode" @bind:after="RecalcSvi">
                             <option value="">Select</option>
                             @foreach (var opt in SulfidationService.BrinnellOptions)
@@ -177,7 +177,7 @@
                 <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Result</h6>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label text-secondary fw-bold">Df — Sulfide Stress Cracking</label>
+                        <label class="form-label text-secondary fw-bold"> Df - SOHIC</label>
                         <input type="text" class="form-control fw-bold bg-warning-subtle text-danger"
                                value="@model.SulDf" readonly />
                     </div>
@@ -185,11 +185,11 @@
 
                 <!-- Buttons -->
                 <div class="staff-buttons mt-4 d-flex gap-2">
-                    <button type="button" class="btn btn-info text-white"
+                    <button type="button" class="btn btn-info text-white fw-bold"
                             @onclick="Calculate" disabled="@isCalculating">
                         @(isCalculating ? "Calculating..." : "Calculate")
                     </button>
-                    <button type="button" class="btn btn-success"
+                    <button type="button" class="btn btn-success fw-bold"
                             @onclick="Save" disabled="@isSaving">
                         @(isSaving ? "Saving..." : "Save")
                     </button>
