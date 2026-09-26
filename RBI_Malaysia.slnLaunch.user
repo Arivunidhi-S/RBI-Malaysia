@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "RBI_Malaysia.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\ReportRBISystem\\ReportRBISystem.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

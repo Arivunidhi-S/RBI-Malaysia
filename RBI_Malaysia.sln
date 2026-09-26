@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.37411.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RBI_Malaysia", "RBI_Malaysia.csproj", "{D0046376-3243-4A24-839C-1ADBE19FB460}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportRBISystem", "..\ReportRBISystem\ReportRBISystem.csproj", "{D1E7CAEA-9E8F-49C6-8327-C066DAD1CBAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D0046376-3243-4A24-839C-1ADBE19FB460}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0046376-3243-4A24-839C-1ADBE19FB460}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0046376-3243-4A24-839C-1ADBE19FB460}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E7CAEA-9E8F-49C6-8327-C066DAD1CBAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E7CAEA-9E8F-49C6-8327-C066DAD1CBAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E7CAEA-9E8F-49C6-8327-C066DAD1CBAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E7CAEA-9E8F-49C6-8327-C066DAD1CBAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

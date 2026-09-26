@@ -13,10 +13,16 @@
 <div class="staff-page">
     <div class="staff-card">
         
-        <div class="staff-card-header">
+        <div class="staff-card-header d-flex justify-content-between align-items-center">
             <div>
                 <h5 class="mb-0"><i class="bi bi-fire me-2 text-danger"></i> COF Flammable</h5>
                 <small>Flammable Component Consequence Area Calculation</small>
+            </div>
+            <div class="staff-buttons">
+                <NavLink class="btn btn-primary add-equipment-btn" href="cof-flammable-list">
+                    <i class="bi bi-card-list"></i>
+                    COFFlammableList
+                </NavLink>
             </div>
         </div>
 
@@ -350,7 +356,7 @@
             await JS.InvokeVoidAsync("alert", "Successfully Deleted");
             ClearForm();
         
-    }
+    }  
 
     private void ClearForm() {
         model = new();

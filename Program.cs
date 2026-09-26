@@ -47,6 +47,7 @@ builder.Services.AddScoped<ThinningService>();
 builder.Services.AddScoped<LiningDamageService>();
 builder.Services.AddScoped<ECDService>();
 builder.Services.AddScoped<CausticService>();
+builder.Services.AddScoped<AmineService>();
 builder.Services.AddScoped<SulfidationService>();
 builder.Services.AddScoped<CarbonateService>();
 

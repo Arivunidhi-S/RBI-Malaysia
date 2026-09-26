@@ -1127,6 +1127,133 @@ TOP MENU
         font-size: 12px;
     }
 }
+/* _content/RBI_Malaysia/Components/Pages/COFFlammableList.razor.rz.scp.css */
+.staff-page[b-97e5d6rped] {
+    padding: 0;
+}
+
+.staff-card[b-97e5d6rped] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-97e5d6rped] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-97e5d6rped],
+    .staff-card-header h6[b-97e5d6rped] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-97e5d6rped] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-97e5d6rped] {
+    padding: 20px;
+}
+
+.form-label[b-97e5d6rped] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-97e5d6rped] .staff-card .form-control,
+.staff-card .form-select[b-97e5d6rped] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-97e5d6rped] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-97e5d6rped] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-97e5d6rped] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-97e5d6rped] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-97e5d6rped] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-97e5d6rped] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-97e5d6rped] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-97e5d6rped] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-97e5d6rped] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-97e5d6rped] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-97e5d6rped] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-97e5d6rped] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-97e5d6rped] {
+        padding: 15px;
+    }
+
+    .staff-table[b-97e5d6rped] {
+        font-size: 12px;
+    }
+}
 /* _content/RBI_Malaysia/Components/Pages/COFNonFlammable.razor.rz.scp.css */
 .staff-page[b-mbax10v5ra] {
     padding: 0;
@@ -1251,6 +1378,133 @@ TOP MENU
     }
 
     .staff-table[b-mbax10v5ra] {
+        font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Pages/COFNonFlammableList.razor.rz.scp.css */
+.staff-page[b-7jj18fykyf] {
+    padding: 0;
+}
+
+.staff-card[b-7jj18fykyf] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-7jj18fykyf] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-7jj18fykyf],
+    .staff-card-header h6[b-7jj18fykyf] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-7jj18fykyf] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-7jj18fykyf] {
+    padding: 20px;
+}
+
+.form-label[b-7jj18fykyf] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-7jj18fykyf] .staff-card .form-control,
+.staff-card .form-select[b-7jj18fykyf] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-7jj18fykyf] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-7jj18fykyf] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-7jj18fykyf] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-7jj18fykyf] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-7jj18fykyf] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-7jj18fykyf] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-7jj18fykyf] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-7jj18fykyf] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-7jj18fykyf] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-7jj18fykyf] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-7jj18fykyf] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-7jj18fykyf] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-7jj18fykyf] {
+        padding: 15px;
+    }
+
+    .staff-table[b-7jj18fykyf] {
         font-size: 12px;
     }
 }
@@ -4994,4 +5248,893 @@ label[b-z823e84y30] {
         .form-buttons button[b-z823e84y30] {
             width: 100%;
         }
+}
+/* _content/RBI_Malaysia/Components/Reports/COFFlammableReport.razor.rz.scp.css */
+.staff-page[b-5kie4vlwkq] {
+    padding: 0;
+}
+
+.staff-card[b-5kie4vlwkq] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-5kie4vlwkq] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-5kie4vlwkq],
+    .staff-card-header h6[b-5kie4vlwkq] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-5kie4vlwkq] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-5kie4vlwkq] {
+    padding: 20px;
+}
+
+.form-label[b-5kie4vlwkq] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-5kie4vlwkq] .staff-card .form-control,
+.staff-card .form-select[b-5kie4vlwkq] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-5kie4vlwkq] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-5kie4vlwkq] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-5kie4vlwkq] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-5kie4vlwkq] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-5kie4vlwkq] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-5kie4vlwkq] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-5kie4vlwkq] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-5kie4vlwkq] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-5kie4vlwkq] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-5kie4vlwkq] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-5kie4vlwkq] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-5kie4vlwkq] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-5kie4vlwkq] {
+        padding: 15px;
+    }
+
+    .staff-table[b-5kie4vlwkq] {
+        font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Reports/COFNonFlammableReport.razor.rz.scp.css */
+.staff-page[b-7ftqjp9981] {
+    padding: 0;
+}
+
+.staff-card[b-7ftqjp9981] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-7ftqjp9981] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-7ftqjp9981],
+    .staff-card-header h6[b-7ftqjp9981] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-7ftqjp9981] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-7ftqjp9981] {
+    padding: 20px;
+}
+
+.form-label[b-7ftqjp9981] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-7ftqjp9981] .staff-card .form-control,
+.staff-card .form-select[b-7ftqjp9981] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-7ftqjp9981] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-7ftqjp9981] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-7ftqjp9981] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-7ftqjp9981] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-7ftqjp9981] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-7ftqjp9981] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-7ftqjp9981] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-7ftqjp9981] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-7ftqjp9981] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-7ftqjp9981] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-7ftqjp9981] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-7ftqjp9981] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-7ftqjp9981] {
+        padding: 15px;
+    }
+
+    .staff-table[b-7ftqjp9981] {
+        font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Reports/EquipmentDetailsReport.razor.rz.scp.css */
+.staff-page[b-jwz3rkxgkw] {
+    padding: 0;
+}
+
+.staff-card[b-jwz3rkxgkw] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-jwz3rkxgkw] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-jwz3rkxgkw],
+    .staff-card-header h6[b-jwz3rkxgkw] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-jwz3rkxgkw] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-jwz3rkxgkw] {
+    padding: 20px;
+}
+
+.form-label[b-jwz3rkxgkw] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-jwz3rkxgkw] .staff-card .form-control,
+.staff-card .form-select[b-jwz3rkxgkw] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-jwz3rkxgkw] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-jwz3rkxgkw] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-jwz3rkxgkw] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-jwz3rkxgkw] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-jwz3rkxgkw] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-jwz3rkxgkw] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-jwz3rkxgkw] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-jwz3rkxgkw] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-jwz3rkxgkw] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-jwz3rkxgkw] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-jwz3rkxgkw] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-jwz3rkxgkw] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-jwz3rkxgkw] {
+        padding: 15px;
+    }
+
+    .staff-table[b-jwz3rkxgkw] {
+        font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Reports/EquipmentReport.razor.rz.scp.css */
+.staff-page[b-jm3o5yxnnb] {
+    padding: 0;
+}
+
+.staff-card[b-jm3o5yxnnb] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-jm3o5yxnnb] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-jm3o5yxnnb],
+    .staff-card-header h6[b-jm3o5yxnnb] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-jm3o5yxnnb] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-jm3o5yxnnb] {
+    padding: 20px;
+}
+
+.form-label[b-jm3o5yxnnb] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-jm3o5yxnnb] .staff-card .form-control,
+.staff-card .form-select[b-jm3o5yxnnb] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-jm3o5yxnnb] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-jm3o5yxnnb] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-jm3o5yxnnb] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-jm3o5yxnnb] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-jm3o5yxnnb] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-jm3o5yxnnb] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-jm3o5yxnnb] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-jm3o5yxnnb] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-jm3o5yxnnb] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-jm3o5yxnnb] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-jm3o5yxnnb] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-jm3o5yxnnb] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-jm3o5yxnnb] {
+        padding: 15px;
+    }
+
+    .staff-table[b-jm3o5yxnnb] {
+        font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Reports/InspectionChart.razor.rz.scp.css */
+.staff-page[b-biy7d2yglv] {
+    padding: 0;
+}
+
+.staff-card[b-biy7d2yglv] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-biy7d2yglv] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-biy7d2yglv],
+    .staff-card-header h6[b-biy7d2yglv] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-biy7d2yglv] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-biy7d2yglv] {
+    padding: 20px;
+}
+
+.form-label[b-biy7d2yglv] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-biy7d2yglv] .staff-card .form-control,
+.staff-card .form-select[b-biy7d2yglv] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-biy7d2yglv] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-biy7d2yglv] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-biy7d2yglv] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-biy7d2yglv] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-biy7d2yglv] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-biy7d2yglv] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-biy7d2yglv] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-biy7d2yglv] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-biy7d2yglv] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-biy7d2yglv] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-biy7d2yglv] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-biy7d2yglv] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-biy7d2yglv] {
+        padding: 15px;
+    }
+
+    .staff-table[b-biy7d2yglv] {
+        font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Reports/InspectionDetailsReport.razor.rz.scp.css */
+.staff-page[b-b7xtbvs2sb] {
+    padding: 0;
+}
+
+.staff-card[b-b7xtbvs2sb] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-b7xtbvs2sb] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-b7xtbvs2sb],
+    .staff-card-header h6[b-b7xtbvs2sb] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-b7xtbvs2sb] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-b7xtbvs2sb] {
+    padding: 20px;
+}
+
+.form-label[b-b7xtbvs2sb] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-b7xtbvs2sb] .staff-card .form-control,
+.staff-card .form-select[b-b7xtbvs2sb] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-b7xtbvs2sb] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-b7xtbvs2sb] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-b7xtbvs2sb] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-b7xtbvs2sb] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-b7xtbvs2sb] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-b7xtbvs2sb] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-b7xtbvs2sb] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-b7xtbvs2sb] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-b7xtbvs2sb] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-b7xtbvs2sb] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-b7xtbvs2sb] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-b7xtbvs2sb] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-b7xtbvs2sb] {
+        padding: 15px;
+    }
+
+    .staff-table[b-b7xtbvs2sb] {
+        font-size: 12px;
+    }
+}
+/* _content/RBI_Malaysia/Components/Reports/POFList.razor.rz.scp.css */
+.staff-page[b-4cdgwonbup] {
+    padding: 0;
+}
+
+.staff-card[b-4cdgwonbup] {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.staff-card-header[b-4cdgwonbup] {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 20px;
+}
+
+    .staff-card-header h5[b-4cdgwonbup],
+    .staff-card-header h6[b-4cdgwonbup] {
+        font-weight: 600;
+        color: #263238;
+    }
+
+    .staff-card-header small[b-4cdgwonbup] {
+        color: #6c757d;
+    }
+
+.staff-card-body[b-4cdgwonbup] {
+    padding: 20px;
+}
+
+.form-label[b-4cdgwonbup] {
+    font-weight: 500;
+    color: #374151;
+}
+
+[b-4cdgwonbup] .staff-card .form-control,
+.staff-card .form-select[b-4cdgwonbup] {
+    min-height: 35px;
+    background-color: #f0f1f7;
+    border: 1px solid #cfd4e1;
+    border-radius: 3px;
+    color: #29466a;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+    [b-4cdgwonbup] .staff-card .form-control:focus,
+    .staff-card .form-select:focus[b-4cdgwonbup] {
+        background-color: #ffffff;
+        border-color: #6979ff;
+        box-shadow: 0 0 0 2px rgba(105, 121, 255, 0.15);
+    }
+
+.staff-table[b-4cdgwonbup] {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .staff-table thead th[b-4cdgwonbup] {
+        /* background: #f8f9fa;
+        color: #374151;*/
+        background: #24292d;
+        color: #ffffff;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+    }
+
+    .staff-table tbody td[b-4cdgwonbup] {
+        padding: 9px 12px;
+        vertical-align: middle;
+    }
+
+    .staff-table tbody tr:hover[b-4cdgwonbup] {
+        background: #f8fafc;
+    }
+
+.inspection-summary[b-4cdgwonbup] {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafafa;
+    min-height: 70px;
+}
+
+    .inspection-summary small[b-4cdgwonbup] {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 5px;
+    }
+
+    .inspection-summary strong[b-4cdgwonbup] {
+        display: block;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+.staff-buttons[b-4cdgwonbup] {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+    .staff-buttons .btn[b-4cdgwonbup] {
+        min-width: 75px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+
+@media (max-width: 768px) {
+
+    .staff-page[b-4cdgwonbup] {
+        padding: 10px;
+    }
+
+    .staff-card-body[b-4cdgwonbup] {
+        padding: 15px;
+    }
+
+    .staff-table[b-4cdgwonbup] {
+        font-size: 12px;
+    }
 }
