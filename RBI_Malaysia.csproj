@@ -14,6 +14,13 @@
 
   <ItemGroup>
     <Content Remove="Components\Pages\Amineqeqweqweqwe.razor" />
+    <Content Remove="Components\Reports\COFFlammableReport.razor" />
+    <Content Remove="Components\Reports\COFNonFlammableReport.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Components\Reports\COFFlammableReport.razor.css" />
+    <None Remove="Components\Reports\COFNonFlammableReport.razor.css" />
   </ItemGroup>
 
   <ItemGroup>

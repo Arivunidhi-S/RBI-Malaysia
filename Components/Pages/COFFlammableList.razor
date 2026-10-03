@@ -7,8 +7,7 @@
 @inject UserSession UserSession
 @inject IConfiguration Configuration
 @inject IJSRuntime JS
-@* @inject NavigationManager Navigation
- *@
+
 <PageTitle>COF — Flammable Records List</PageTitle>
 
 <div class="staff-page">
@@ -101,7 +100,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{ int i = 1; }
+                                @{
+                                    int i = 1;
+                                }
                                 @foreach (var row in rows)
                                 {
                                     var r = row;
@@ -147,7 +148,20 @@
         </div>
     </div>
 </div>
+<div id="popupModal" class="custom-modal">
+    <div class="custom-modal-content">
 
+        <span class="close-btn" onclick="closePopup()">
+            &times;
+        </span>
+        <iframe id="ReportFrame" style="width:100%; height:100%; border:1px solid #ddd;" title="COF Flammable Report">
+        </iframe>
+      @*   <iframe id="popupFrame"
+                src=""
+                frameborder="0"></iframe> *@
+
+    </div>
+</div>
 @code
 {
     private decimal selectedProcessArea, selectedEquipment, selectedComponent;
@@ -156,8 +170,8 @@
     private bool needsTableInit;
 
     private List<ProcessAreaModel> processAreas = new();
-    private List<EquipmentModel>   equipments   = new();
-    private List<ComponentModel>   components   = new();
+    private List<EquipmentModel> equipments = new();
+    private List<ComponentModel> components = new();
 
     private record Row(
         decimal ProcID, decimal EquID, decimal CompID,
@@ -242,9 +256,9 @@
                 ORDER BY pa.processarea, ea.EqupID, cd.CompNo";
 
             using var conn = new Microsoft.Data.SqlClient.SqlConnection(GetConn());
-            using var cmd  = new Microsoft.Data.SqlClient.SqlCommand(sql, conn);
+            using var cmd = new Microsoft.Data.SqlClient.SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@ProcID", selectedProcessArea);
-            cmd.Parameters.AddWithValue("@EquID",  selectedEquipment);
+            cmd.Parameters.AddWithValue("@EquID", selectedEquipment);
             cmd.Parameters.AddWithValue("@CompID", selectedComponent);
             cmd.Parameters.AddWithValue("@companyID", UserSession.CompanyID);
             await conn.OpenAsync();
@@ -302,7 +316,7 @@
         {
             string sql = "DELETE FROM COF_Flammable WHERE ProcID=@p AND EquID=@e AND CompID=@c";
             using var conn = new Microsoft.Data.SqlClient.SqlConnection(GetConn());
-            using var cmd  = new Microsoft.Data.SqlClient.SqlCommand(sql, conn);
+            using var cmd = new Microsoft.Data.SqlClient.SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@p", row.ProcID);
             cmd.Parameters.AddWithValue("@e", row.EquID);
             cmd.Parameters.AddWithValue("@c", row.CompID);
@@ -310,8 +324,14 @@
             await cmd.ExecuteNonQueryAsync();
 
             await JS.InvokeVoidAsync("Swal.fire",
-                new { title = "Deleted!", text = "Record has been deleted.", icon = "success",
-                      timer = 1800, showConfirmButton = false });
+                new
+                {
+                    title = "Deleted!",
+                    text = "Record has been deleted.",
+                    icon = "success",
+                    timer = 1800,
+                    showConfirmButton = false
+                });
             await LoadData();
         }
         catch (Exception ex)
@@ -323,8 +343,12 @@
 
     private async Task ReportView(Row row)
     {
-        string url = $"/cof-flame-report/{row.CompID}"; 
-        await JS.InvokeVoidAsync("open", url, "_blank");
+        string rUrl = Configuration["ApiSettings:ReportUrl"] ?? "";
+        string reportUrl = $"{rUrl}COFFlammableDetails?id={row.CompID}";
+        await JS.InvokeVoidAsync("showReportPopup", reportUrl);
+
+        // string url = $"/cof-flame-report/{row.CompID}";
+        // await JS.InvokeVoidAsync("open", url, "_blank");
     }
 
     private static string GetCatBadge(string? cat) => cat switch
@@ -334,7 +358,7 @@
         "C" => "bg-warning text-dark",
         "D" => "bg-orange text-dark",
         "E" => "bg-danger",
-        _   => "bg-secondary"
+        _ => "bg-secondary"
     };
 
     private string GetConn() =>

@@ -7,9 +7,6 @@
         public string CompanyID { get; set; } = "";
         public string CompanyName { get; set; } = "";
 
-        // =========================================================
-        // SESSION CHANGE EVENT
-        // =========================================================
         public event Action? OnChange;
 
         public bool IsLoggedIn
@@ -22,14 +19,7 @@
             }
         }
 
-        // =========================================================
-        // SET SESSION
-        // =========================================================
-        public void SetSession(
-            string userId,
-            string userName,
-            string companyId,
-            string companyName)
+        public void SetSession(string userId, string userName, string companyId, string companyName)
         {
             UserID = userId;
             UserName = userName;
@@ -39,9 +29,6 @@
             NotifyStateChanged();
         }
 
-        // =========================================================
-        // CLEAR SESSION
-        // =========================================================
         public void Clear()
         {
             UserID = "";
@@ -52,9 +39,6 @@
             NotifyStateChanged();
         }
 
-        // =========================================================
-        // NOTIFY
-        // =========================================================
         private void NotifyStateChanged()
         {
             OnChange?.Invoke();

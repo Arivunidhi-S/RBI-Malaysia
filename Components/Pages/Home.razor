@@ -2,11 +2,12 @@
 
 @using System.Data
 @using Microsoft.Data.SqlClient
+@using RBI_Malaysia.Models
 @using RBI_Malaysia.Services
 @using RBI_Malaysia.Components.Shared
 @using Microsoft.JSInterop
-
-
+@implements IDisposable
+@inject DashboardService DashboardService
 @inject UserSession UserSession
 @inject IJSRuntime JS
 
@@ -46,7 +47,14 @@
                     </div>
 
                     <div class="kpi-value">
-                        1,248
+                        @if (loading || dashboard == null)
+                        {
+                            <span>...</span>
+                        }
+                        else
+                        {
+                            @dashboard.TotalEquipment.ToString("N0")
+                        }
                     </div>
                 </div>
 
@@ -70,7 +78,7 @@
                     </div>
 
                     <div class="kpi-value danger">
-                        42
+                        @(dashboard2?.HighRisk ?? 0)
                     </div>
                 </div>
 
@@ -94,7 +102,7 @@
                     </div>
 
                     <div class="kpi-value warning">
-                        118
+                        @(dashboard2?.MediumRisk ?? 0)
                     </div>
                 </div>
 
@@ -118,7 +126,7 @@
                     </div>
 
                     <div class="kpi-value success">
-                        1088
+                        @(dashboard2?.LowRisk ?? 0)
                     </div>
                 </div>
 
@@ -149,7 +157,7 @@
 
                         <div class="chart-label">
                             <span>High</span>
-                            <strong>42</strong>
+                            <strong>  @(dashboard2?.HighRisk ?? 0)</strong>
                         </div>
 
                         <div class="chart-bar-container">
@@ -165,12 +173,12 @@
 
                         <div class="chart-label">
                             <span>Medium</span>
-                            <strong>118</strong>
+                            <strong>  @(dashboard2?.MediumRisk ?? 0)</strong>
                         </div>
 
                         <div class="chart-bar-container">
                             <div class="chart-bar medium-bar"
-                                 style="width: 11%;">
+                                 style="width: 4%;">
                             </div>
                         </div>
 
@@ -181,7 +189,7 @@
 
                         <div class="chart-label">
                             <span>Low</span>
-                            <strong>1088</strong>
+                            <strong>  @(dashboard2?.LowRisk ?? 0)</strong>
                         </div>
 
                         <div class="chart-bar-container">
@@ -444,3 +452,76 @@
     </div>
 
 </div>
+
+@code
+{
+
+  
+    private bool loading = false;
+    private DashboardModel? dashboard,dashboard2; // உங்கள் கிளாஸ் பெயர் எதுவோ அதை மாற்றிக்கொள்ளவும்
+
+    protected override async Task OnInitializedAsync()
+    {
+        // 1. UserSession இல் ஏதேனும் மாற்றம் நடந்தால் LoadDashboard இயங்க வேண்டும் என்று லிங்க் செய்கிறோம்
+        UserSession.OnChange += OnSessionChanged;
+
+        // 2. ஒருவேளை ஏற்கனவே CompanyID லோடு ஆகியிருந்தால், உடனே டேட்டாவை எடுக்கிறோம்
+        if (!string.IsNullOrWhiteSpace(UserSession.CompanyID))
+        {
+            await LoadDashboard();
+        }
+    }
+
+    // செஷனில் கம்பெனி ஐடி செட் ஆன உடனே இந்த மெத்தட் தானாக இயங்கும்
+    private async void OnSessionChanged()
+    {
+        await InvokeAsync(async () =>
+        {
+            if (!string.IsNullOrWhiteSpace(UserSession.CompanyID) && dashboard == null)
+            {
+                await LoadDashboard();
+                StateHasChanged(); // பக்கத்தை ரீ-ரெண்டர் செய்ய கட்டாயப்படுத்துகிறது
+            }
+        });
+    }
+
+    private async Task LoadDashboard()
+    {
+        // ஏற்கனவே டேட்டா லோடு ஆகியிருந்தாலோ அல்லது லோடிங் நடந்து கொண்டிருந்தாலோ திரும்ப இயக்க வேண்டாம்
+        if (loading || dashboard != null) return;
+
+        try
+        {
+            loading = true;
+
+            if (string.IsNullOrWhiteSpace(UserSession.CompanyID))
+            {
+                return;
+            }
+
+            if (!decimal.TryParse(UserSession.CompanyID, out decimal companyId))
+            {
+                return;
+            }
+
+            dashboard = await DashboardService.GetDashboardSummaryAsync(companyId);
+            dashboard2 = await DashboardService.GetDashboardSummaryAsync2(companyId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Dashboard loading failed: " + ex.Message);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    // பக்கம் அழியும்போது (Dispose) மெமரி லீக் (Memory Leak) ஏற்படாமல் இருக்க ஈவென்ட்டை நீக்குகிறோம்
+    public void Dispose()
+    {
+        UserSession.OnChange -= OnSessionChanged;
+    }
+}
+
+    

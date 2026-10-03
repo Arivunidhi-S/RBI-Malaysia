@@ -1,0 +1,406 @@
+﻿@page "/pof-cui"
+
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject CUIService CUIService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<PageTitle>POF - CUI (Corrosion Under Insulation)</PageTitle>
+
+<div class="staff-page">
+    @layout ECDFLayout
+    <div class="staff-card">
+
+        <div class="staff-card-header">
+            <div>
+                <h5 class="mb-0"><i class="bi bi-shield-slash me-2 text-danger"></i> POF — CUI Damage</h5>
+                <small>Corrosion Under Insulation Damage Factor Calculation</small>
+            </div>
+        </div>
+
+        <div class="staff-card-body">
+            <!-- வடிகட்டி பகுதி -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedProcessArea" @onchange="ProcessAreaChanged">
+                        <option value="0">-- Select Process Area --</option>
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">@item.ProcessArea</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged" disabled="@(selectedProcessArea <= 0)">
+                        <option value="0">-- Select Equipment --</option>
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">@item.EquPID</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged" disabled="@(selectedEquipment <= 0)">
+                        <option value="0">-- Select Component --</option>
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">@item.CompNo</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <EditForm Model="@model" OnValidSubmit="Calculate" FormName="CUIForm">
+                <DataAnnotationsValidator />
+
+                <h6 class="text-muted border-bottom pb-1 mb-3">Basic Inputs</h6>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Inspection Effectiveness</label>
+                        <select class="form-select" @bind="model.InsEff">
+                            <option value="">Select</option>
+                            <option value="A">Highly Effective</option>
+                            <option value="B">Usually Effective</option>
+                            <option value="C">Fairly Effective</option>
+                            <option value="D">Poorly Effective</option>
+                            <option value="E">In Effective</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">No. of Inspections</label>
+                        <select class="form-select" @bind="model.Nofins">
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Age-tk</label>
+                        <InputNumber class="form-control" @bind-Value="model.Agtk" @bind-Value:after="RecalcAge" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Inspection Date</label>
+                        <InputDate class="form-control" @bind-Value="model.InspectDate" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Comp/Coating Install Date</label>
+                        <InputDate class="form-control" @bind-Value="model.CmpInstalDate" @bind-Value:after="RecalcAge" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Calculation Date</label>
+                        <InputDate class="form-control" @bind-Value="model.CalcDate" @bind-Value:after="RecalcAge" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Coating Quality</label>
+                        <select class="form-select" @bind="model.CoatQualCode" @bind:after="RecalcAge">
+                            <option value="">Select</option>
+                            <option value="1">No Coating or Poor Quality</option>
+                            <option value="2">Medium Quality</option>
+                            <option value="3">High Quality</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Age_Coat (calculated)</label>
+                        <input type="text" class="form-control" value="@model.CUIagcoat" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Age (calculated)</label>
+                        <input type="text" class="form-control" value="@model.CUIage" readonly />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Corrosion Rate Factors</h6>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Fins (Insulation Type)</label>
+                        <select class="form-select" @bind="model.Fins" @bind:after="RecalcCr">
+                            <option value="">Select</option>
+                            <option value="1">None</option>
+                            <option value="0.75">Foamglass</option>
+                            <option value="1.0">Pearlite</option>
+                            <option value="1.25">Fiberglass</option>
+                            <option value="1.250">MineralWool</option>
+                            <option value="1.2500">CalciumSilicate</option>
+                            <option value="1.25000">Asbestos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Fcm (Complexity)</label>
+                        <select class="form-select" @bind="model.Fcm" @bind:after="RecalcCr">
+                            <option value="">Select</option>
+                            <option value="0.75">Below Average</option>
+                            <option value="1.0">Average</option>
+                            <option value="1.25">Above Average</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Fic (Inspection Coverage)</label>
+                        <select class="form-select" @bind="model.Fic" @bind:after="RecalcCr">
+                            <option value="">Select</option>
+                            <option value="1.25">Below Average</option>
+                            <option value="1.0">Average</option>
+                            <option value="0.75">Above Average</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Cr Driver</label>
+                        <select class="form-select" @bind="model.CrDriverCode" @bind:after="RecalcCr">
+                            <option value="">Select</option>
+                            <option value="marine">Marine/Cooling Tower Drift Area</option>
+                            <option value="temp">Temperature</option>
+                            <option value="arid">Arid/Dry</option>
+                            <option value="severe">Severe</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Fps</label>
+                        <select class="form-select" @bind="model.Fps" @bind:after="RecalcCr">
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Fip</label>
+                        <select class="form-select" @bind="model.Fip" @bind:after="RecalcCr">
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary fw-bold">Cr (calculated)</label>
+                        <input type="text" class="form-control" value="@model.Cr" readonly />
+                    </div>
+                </div>
+
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Results</h6>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary fw-bold">Art (calculated)</label>
+                        <input type="text" class="form-control" value="@model.CUIart" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary fw-bold">CUI Damage Factor (calculated)</label>
+                        <input type="text" class="form-control fw-bold text-danger" value="@model.CUIDf" readonly />
+                    </div>
+                </div>
+
+                <!-- பொத்தான்கள் -->
+                <div class="mt-4 d-flex gap-2">
+                    <button type="button" class="btn btn-info text-white fw-bold" @onclick="Calculate" disabled="@isCalculating">
+                        @(isCalculating ? "Calculating..." : "Calculate")
+                    </button>
+                    <button type="button" class="btn btn-success fw-bold" @onclick="Save" disabled="@isSaving">
+                        @(isSaving ? "Saving..." : "Save")
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="ClearForm">Clear</button>
+                    @if (hasExistingData)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="DeleteRecord">Delete</button>
+                    }
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private CUIModel model = new();
+    private decimal selectedProcessArea, selectedEquipment, selectedComponent;
+    private double componentOpTemp;
+
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel> equipments = new();
+    private List<ComponentModel> components = new();
+
+    private bool hasExistingData = false, isSaving = false, isCalculating = false;
+
+    protected override async Task OnInitializedAsync() => processAreas = await CUIService.GetProcessAreasAsync(UserSession.CompanyID);
+
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
+    {
+        selectedProcessArea = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var processAreaId))
+        {
+            selectedProcessArea = processAreaId;
+        }
+
+        selectedEquipment = 0;
+        selectedComponent = 0;
+        equipments.Clear();
+        components.Clear();
+        hasExistingData = false;
+
+        if (selectedProcessArea > 0)
+        {
+            try
+            {
+                equipments = await CUIService.GetEquipmentsByProcessAsync(selectedProcessArea);
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Equipment load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task EquipmentChanged(ChangeEventArgs e)
+    {
+        selectedEquipment = 0;
+        if (decimal.TryParse(e.Value?.ToString(), out var equipId))
+        {
+            selectedEquipment = equipId;
+        }
+
+        selectedComponent = 0;
+        components.Clear();
+        hasExistingData = false;
+
+        if (selectedEquipment > 0)
+        {
+            try
+            {
+                components = await CUIService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Component load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task ComponentChanged(ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value?.ToString(), out decimal id))
+        {
+            selectedComponent = id;
+            try
+            {
+                var existing = await CUIService.GetCUIRecordAsync(selectedProcessArea, selectedEquipment, id);
+                if (existing != null)
+                {
+                    model = existing;
+                    hasExistingData = true;
+                }
+                else
+                {
+                    model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = id };
+                    if (decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;
+                    hasExistingData = false;
+                }
+
+                var data = await CUIService.GetComponentDataAsync(selectedProcessArea, selectedEquipment, id);
+                if (data != null) componentOpTemp = data.Value.opTemp;
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Record load failed: {ex.Message}");
+            }
+        }
+    }
+
+    private void RecalcAge()
+    {
+        if (!string.IsNullOrEmpty(model.CoatQualCode) && model.CmpInstalDate != null && model.CalcDate != null && model.Agtk != null)
+        {
+            var (agecoat, age) = CUIService.ComputeAge(model.CoatQualCode, model.CmpInstalDate.Value, model.CalcDate.Value, model.Agtk.Value);
+            model.CUIagcoat = agecoat;
+            model.CUIage = age;
+        }
+    }
+
+    private async Task RecalcCr()
+    {
+        if (!string.IsNullOrEmpty(model.CrDriverCode) && model.Fins != null && model.Fcm != null && model.Fic != null && model.Fps != null && model.Fip != null)
+        {
+            try
+            {
+                model.Cr = await CUIService.ComputeCrAsync(model.CrDriverCode, componentOpTemp, model.Fins.Value, model.Fcm.Value, model.Fic.Value, model.Fps.Value, model.Fip.Value);
+            }
+            catch (Exception ex)
+            {
+                await JS.InvokeVoidAsync("alert", $"Cr calculation failed: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task Calculate()
+    {
+        isCalculating = true;
+        StateHasChanged();
+        try
+        {
+            model = await CUIService.CalculateCUIAsync(model);
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Calculate failed: {ex.Message}");
+        }
+        finally
+        {
+            isCalculating = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task Save()
+    {
+        isSaving = true;
+        StateHasChanged();
+        try
+        {
+            if (model.CompanyID == null && decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;
+            model = await CUIService.SaveCUIAsync(model);
+            hasExistingData = true;
+            await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "CUI Damage saved successfully.");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Save failed: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeleteRecord()
+    {
+        try
+        {
+            await CUIService.DeleteCUIAsync(model.ProcID, model.EquID, model.CompID);
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Record deleted successfully.");
+            ClearForm();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Delete failed: {ex.Message}");
+        }
+    }
+
+    private void ClearForm()
+    {
+        model = new();
+        selectedProcessArea = selectedEquipment = selectedComponent = 0;
+        equipments.Clear();
+        components.Clear();
+        hasExistingData = false;
+    }
+}

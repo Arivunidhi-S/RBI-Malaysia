@@ -7,65 +7,48 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @code {
-
     private bool hasChecked = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender || hasChecked)
-            return;
-
-        hasChecked = true;
-
+        // பக்கங்கள் மாறும் போதெல்லாம் லேட்டஸ்ட் டேட்டாவை உறுதி செய்ய '!firstRender' நிபந்தனையை நீக்குகிறோம்
         await CheckSession();
     }
 
     private async Task CheckSession()
     {
-        var authState =
-            await AuthenticationStateProvider
-                .GetAuthenticationStateAsync();
-
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
         // =====================================================
         // NOT AUTHENTICATED
         // =====================================================
-
         if (user.Identity?.IsAuthenticated != true)
         {
+            UserSession.Clear(); // மெமரியில் ஏதேனும் பழைய டேட்டா இருந்தால் காலி செய்கிறோம்
             Navigation.NavigateTo("/login", replace: true);
             return;
         }
 
-
         // =====================================================
-        // RESTORE UserSession AFTER REFRESH
+        // ALWAYS REFRESH UserSession FROM COOKIE CLAIMS
         // =====================================================
+        // பக்கம் மாறும்போது பழைய டேட்டா குழப்பம் வராமல் இருக்க, குக்கீயில் உள்ள தற்போதைய
+        // லாகின் பயனர் விபரங்களை எப்போதும் நேரடியாக செட் செய்கிறோம்.
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+        var userName = user.FindFirst(ClaimTypes.Name)?.Value ?? "";
+        var companyId = user.FindFirst("CompanyID")?.Value ?? "";
+        var companyName = user.FindFirst("CompanyName")?.Value ?? "";
 
-        if (!UserSession.IsLoggedIn)
+        // மெமரியில் உள்ள டேட்டாவும் குக்கீயில் உள்ள டேட்டாவும் மாறினால் மட்டுமே புதுப்பிக்கிறோம்
+        if (UserSession.UserID != userId || UserSession.CompanyID != companyId)
         {
-            var userId =
-                user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
-
-            var userName =
-                user.FindFirst(ClaimTypes.Name)?.Value ?? "";
-
-            var companyId =
-                user.FindFirst("CompanyID")?.Value ?? "";
-
-            var companyName =
-                user.FindFirst("CompanyName")?.Value ?? "";
-
-
             UserSession.SetSession(userId, userName, companyId, companyName);
         }
-
 
         // =====================================================
         // FINAL CHECK
         // =====================================================
-
         if (!UserSession.IsLoggedIn)
         {
             Navigation.NavigateTo("/login", replace: true);

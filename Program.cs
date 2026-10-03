@@ -35,6 +35,7 @@ builder.Services.AddAuthorization();
 // Application Services
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<UserSession>();
+builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<StaffService>();
 builder.Services.AddScoped<UserService>();
@@ -46,10 +47,13 @@ builder.Services.AddScoped<COFFlammableService>();
 builder.Services.AddScoped<ThinningService>();
 builder.Services.AddScoped<LiningDamageService>();
 builder.Services.AddScoped<ECDService>();
+builder.Services.AddScoped<CUIService>();
+builder.Services.AddScoped<POFExternalCLSCCService>();
 builder.Services.AddScoped<CausticService>();
 builder.Services.AddScoped<AmineService>();
 builder.Services.AddScoped<SulfidationService>();
 builder.Services.AddScoped<CarbonateService>();
+builder.Services.AddScoped<InspectionPlanService>();
 
 
 var app = builder.Build();

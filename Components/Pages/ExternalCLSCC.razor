@@ -1,0 +1,936 @@
+﻿@page "/pof-external-clscc"
+
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+
+@inject POFExternalCLSCCService ExternalCLSCCService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<PageTitle>POF - External CLSCC</PageTitle>
+
+<div class="staff-page">
+    @layout ECDFLayout
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="card staff-card mb-3">
+
+        <div class="card-header staff-card-header">
+            <i class="bi bi-shield-exclamation me-2"></i>
+            POF - External CLSCC
+        </div>
+
+    </div>
+
+
+    <EditForm Model="@model" OnValidSubmit="@SaveAsync">  
+
+
+        <DataAnnotationsValidator />
+      
+        <div class="row g-3">
+
+            <!-- ================================================= -->
+            <!-- LEFT -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-6">
+
+                <div class="card staff-card h-100">
+
+                    <div class="card-header staff-card-header">
+                        External CLSCC Details
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Inspection Date -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Inspection Date
+                            </label>
+
+                            <InputDate class="form-control"
+                                       @bind-Value="model.InspectDate" />
+
+                            <ValidationMessage For="@(() => model.InspectDate)" />
+
+                        </div>
+
+
+                        <!-- Inspection Effectiveness -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Inspection Effectiveness
+                            </label>
+
+                            <InputSelect class="form-select"
+                                         @bind-Value="model.InsEff">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="A">
+                                    Highly Effective
+                                </option>
+
+                                <option value="B">
+                                    Usually Effective
+                                </option>
+
+                                <option value="C">
+                                    Fairly Effective
+                                </option>
+
+                                <option value="D">
+                                    Poorly Effective
+                                </option>
+
+                                <option value="E">
+                                    In Effective
+                                </option>
+
+                            </InputSelect>
+
+                            <ValidationMessage For="@(() => model.InsEff)" />
+
+                        </div>
+
+
+                        <!-- Component / Coating Date -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Comp / Coating Installation Date
+                            </label>
+
+                            <InputDate class="form-control"
+                                       @bind-Value="model.CmpDt" />
+
+                            <ValidationMessage For="@(() => model.CmpDt)" />
+
+                        </div>
+
+
+                        <!-- Calculation Date -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Calculation Date
+                            </label>
+
+                            <InputDate class="form-control"
+                                       @bind-Value="model.CalDt" />
+
+                            <ValidationMessage For="@(() => model.CalDt)" />
+
+                        </div>
+
+
+                        <!-- Number of Inspection -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                No of Inspection
+                            </label>
+
+                            <InputSelect class="form-select"
+                                         @bind-Value="model.NofIns">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                @for (int i = 1; i <= 6; i++)
+                                {
+                                    <option value="@i">
+                                        @i
+                                    </option>
+                                }
+
+                            </InputSelect>
+
+                            <ValidationMessage For="@(() => model.NofIns)" />
+
+                        </div>
+
+
+                        <!-- Age-tk -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Age-tk
+                            </label>
+
+                            <InputNumber class="form-control"
+                                         @bind-Value="model.Agtk"
+                                         step="0.001" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- RIGHT -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-6">
+
+                <div class="card staff-card h-100">
+
+                    <div class="card-header staff-card-header">
+                        External CLSCC Calculation
+                    </div>
+
+                    <div class="card-body">
+
+
+                        <!-- Coating Quality -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Coating Quality
+                            </label>
+
+                            <InputSelect class="form-select"
+                                         @bind-Value="model.CoatQual"
+                                         @onchange="CoatingQualityChanged">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="1">
+                                    No Coating or Poor Quality
+                                </option>
+
+                                <option value="2">
+                                    Medium Quality
+                                </option>
+
+                                <option value="3">
+                                    High Quality
+                                </option>
+
+                            </InputSelect>
+
+                            <ValidationMessage For="@(() => model.CoatQual)" />
+
+                        </div>
+
+
+                        <!-- Age -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Age
+                            </label>
+
+                            <InputNumber class="form-control"
+                                         @bind-Value="model.Age"
+                                         readonly />
+
+                        </div>
+
+
+                        <!-- Area -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Area
+                            </label>
+
+                            <InputSelect class="form-select"
+                                         @bind-Value="model.CrDriver"
+                                         @onchange="AreaChanged">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="marine">
+                                    Marine / Cooling Tower Drift Area
+                                </option>
+
+                                <option value="temp">
+                                    Temperature
+                                </option>
+
+                                <option value="arid">
+                                    Arid / Dry
+                                </option>
+
+                                <option value="severe">
+                                    Severe
+                                </option>
+
+                            </InputSelect>
+
+                            <ValidationMessage For="@(() => model.CrDriver)" />
+
+                        </div>
+
+
+                        <!-- SVI -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                SVI
+                            </label>
+
+                            <InputText class="form-control"
+                                       @bind-Value="model.Svi"
+                                       readonly />
+
+                        </div>
+
+
+                        <!-- Df -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Df-ext-CLSCC
+                            </label>
+
+                            <InputNumber class="form-control"
+                                         @bind-Value="model.ExCLSDf"
+                                         readonly
+                                         step="0.001" />
+
+                        </div>
+
+
+                        <!-- Buttons -->
+
+                        <div class="d-flex gap-2 pt-2">
+
+                            <button type="button"
+                                    class="btn btn-warning"
+                                    @onclick="CalculateAsync">
+
+                                <i class="bi bi-calculator me-1"></i>
+
+                                Calculate
+
+                            </button>
+
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-save me-1"></i>
+
+                                @(model.ExCLSID == 0
+                                                                ? "Save"
+                                                                : "Update")
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="btn btn-danger"
+                                    @onclick="ClearForm">
+
+                                <i class="bi bi-x-lg me-1"></i>
+
+                                Clear
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </EditForm>
+
+
+    <!-- ===================================================== -->
+    <!-- LIST -->
+    <!-- ===================================================== -->
+
+    <div class="card staff-card mt-3">
+
+        <div class="card-header staff-card-header">
+            <i class="bi bi-list-ul me-2"></i>
+            External CLSCC List
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table staff-table table-hover mb-0">
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Inspection Date</th>
+                            <th>Effectiveness</th>
+                            <th>Coating</th>
+                            <th>Age</th>
+                            <th>Area</th>
+                            <th>SVI</th>
+                            <th>Df</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in records)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.ExCLSID
+                                </td>
+
+                                <td>
+                                    @item.InspectDate?.ToString("dd/MMM/yyyy")
+                                </td>
+
+                                <td>
+                                    @item.InsEff
+                                </td>
+
+                                <td>
+                                    @GetCoatingText(item.CoatQual)
+                                </td>
+
+                                <td>
+                                    @item.Age
+                                </td>
+
+                                <td>
+                                    @GetAreaText(item.CrDriver)
+                                </td>
+
+                                <td>
+                                    @item.Svi
+                                </td>
+
+                                <td>
+                                    @item.ExCLSDf.ToString("0.000")
+                                </td>
+
+                                <td>
+
+                                    <div class="d-flex gap-1">
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary"
+                                                @onclick="() => Edit(item)">
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger"
+                                                @onclick="() => DeleteAsync(item)">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                        @if (!records.Any())
+                        {
+                            <tr>
+                                <td colspan="9"
+                                    class="text-center text-muted py-4">
+
+                                    No External CLSCC records found.
+
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@code
+{
+    private decimal selectedProcessArea;
+    private decimal selectedEquipment;
+    private decimal selectedComponent;
+
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel> equipments = new();
+    private List<ComponentModel> components = new();
+
+    private POFExternalCLSCCModel model = new();
+
+    private List<POFExternalCLSCCModel> records = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+      //  await LoadRecords();
+    }
+
+
+    // =========================================================
+    // LOAD
+    // =========================================================
+
+    private async Task LoadRecords()
+    {
+        if (!decimal.TryParse(
+                UserSession.CompanyID,
+                out decimal companyId))
+        {
+            return;
+        }
+
+        records =
+            await ExternalCLSCCService
+                .GetListAsync(companyId);
+    }
+
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
+    {
+        selectedProcessArea = 0;
+
+        decimal.TryParse(
+            e.Value?.ToString(),
+            out selectedProcessArea);
+
+        selectedEquipment = 0;
+        selectedComponent = 0;
+
+        equipments.Clear();
+        components.Clear();
+
+        if (selectedProcessArea <= 0)
+            return;
+        // var serviceInstance = new POFExternalCLSCCService();
+        equipments =
+            await ExternalCLSCCService.GetEquipmentsAsync(selectedProcessArea);
+
+        model.ProcID = selectedProcessArea;
+        model.EquID = 0;
+        model.CompID = 0;
+    }
+
+    private async Task EquipmentChanged(ChangeEventArgs e)
+    {
+        selectedEquipment = 0;
+
+        decimal.TryParse(
+            e.Value?.ToString(),
+            out selectedEquipment);
+
+        selectedComponent = 0;
+        components.Clear();
+
+        if (selectedEquipment <= 0)
+            return;
+
+        components =
+            await ExternalCLSCCService.GetComponentsAsync(selectedEquipment);
+
+        model.EquID = selectedEquipment;
+        model.CompID = 0;
+    }
+
+    private void ComponentChanged(ChangeEventArgs e)
+    {
+        selectedComponent = 0;
+
+        decimal.TryParse(
+            e.Value?.ToString(),
+            out selectedComponent);
+
+        model.CompID = selectedComponent;
+    }
+
+    // =========================================================
+    // COATING QUALITY
+    // =========================================================
+
+    private void CoatingQualityChanged(
+        ChangeEventArgs e)
+    {
+        model.CoatQual =
+            e.Value?.ToString() ?? "";
+
+        if (model.CmpDt.HasValue &&
+            model.CalDt.HasValue &&
+            !string.IsNullOrWhiteSpace(
+                model.CoatQual))
+        {
+            model.Age =
+                ExternalCLSCCService
+                    .CalculateCoatingAge(
+                        model.CoatQual,
+                        model.CmpDt.Value,
+                        model.CalDt.Value);
+        }
+    }
+
+
+    // =========================================================
+    // AREA -> SVI
+    // =========================================================
+
+    private async Task AreaChanged(
+        ChangeEventArgs e)
+    {
+        model.CrDriver =
+            e.Value?.ToString() ?? "";
+
+        if (string.IsNullOrWhiteSpace(
+                model.CrDriver))
+        {
+            model.Svi = "";
+            return;
+        }
+
+        // Operating temperature must come
+        // from selected Component.
+        //
+        // This value is not present in the
+        // ExternalCLSCC table itself.
+
+        // Keep SVI blank until Component
+        // operating temperature is supplied.
+
+        model.Svi = "";
+    }
+
+
+    // =========================================================
+    // CALCULATE
+    // =========================================================
+
+    private async Task CalculateAsync()
+    {
+        if (model.NofIns == null ||
+            string.IsNullOrWhiteSpace(model.InsEff) ||
+            string.IsNullOrWhiteSpace(model.Svi))
+        {
+            await ShowError(
+                "Please check all the required fields.");
+
+            return;
+        }
+
+
+        try
+        {
+            model.ExCLSDf =
+                await ExternalCLSCCService
+                    .CalculateDfAsync(
+                        model.InsEff,
+                        model.NofIns.Value,
+                        model.Svi,
+                        model.Age);
+
+
+            await ShowSuccess(
+                "External CLSCC calculated successfully.");
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                ex.Message);
+        }
+    }
+
+
+    // =========================================================
+    // SAVE / UPDATE
+    // =========================================================
+
+    private async Task SaveAsync()
+    {
+        if (!decimal.TryParse(
+                UserSession.CompanyID,
+                out decimal companyId))
+        {
+            await ShowError(
+                "Company session not found.");
+
+            return;
+        }
+
+
+        if (!decimal.TryParse(
+                UserSession.UserID,
+                out decimal userId))
+        {
+            await ShowError(
+                "User session not found.");
+
+            return;
+        }
+
+
+        if (model.ExCLSDf <= 0)
+        {
+            await ShowError(
+                "Please calculate External CLSCC before saving.");
+
+            return;
+        }
+
+
+        try
+        {
+            model.CompanyID =
+                companyId;
+
+
+            string saveFlag =
+                model.ExCLSID == 0
+                    ? "N"
+                    : "U";
+
+
+            await ExternalCLSCCService
+                .SaveAsync(
+                    model,
+                    userId,
+                    saveFlag);
+
+
+            await LoadRecords();
+
+            await ShowSuccess(
+                saveFlag == "N"
+                    ? "External CLSCC value inserted successfully."
+                    : "External CLSCC value updated successfully.");
+
+
+            ClearForm();
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                ex.Message);
+        }
+    }
+
+
+    // =========================================================
+    // EDIT
+    // =========================================================
+
+    private void Edit(
+        POFExternalCLSCCModel item)
+    {
+        model =
+            new POFExternalCLSCCModel
+            {
+                ExCLSID = item.ExCLSID,
+                ProcID = item.ProcID,
+                EquID = item.EquID,
+                CompID = item.CompID,
+                Agtk = item.Agtk,
+                InsEff = item.InsEff,
+                CmpDt = item.CmpDt,
+                CalDt = item.CalDt,
+                NofIns = item.NofIns,
+                InspectDate = item.InspectDate,
+                CoatQual = item.CoatQual,
+                Age = item.Age,
+                CrDriver = item.CrDriver,
+                Svi = item.Svi,
+                ExCLSDf = item.ExCLSDf,
+                CompanyID = item.CompanyID
+            };
+    }
+
+
+    // =========================================================
+    // DELETE
+    // =========================================================
+
+    private async Task DeleteAsync(
+        POFExternalCLSCCModel item)
+    {
+        bool confirmed =
+            await JS.InvokeAsync<bool>(
+                "confirm",
+                "Are you sure you want to delete this External CLSCC record?");
+
+        if (!confirmed)
+            return;
+
+
+        if (!decimal.TryParse(
+                UserSession.UserID,
+                out decimal userId))
+        {
+            await ShowError(
+                "User session not found.");
+
+            return;
+        }
+
+
+        try
+        {
+            await ExternalCLSCCService
+                .DeleteAsync(
+                    item.ExCLSID,
+                    userId);
+
+
+            await LoadRecords();
+
+
+            if (model.ExCLSID ==
+                item.ExCLSID)
+            {
+                ClearForm();
+            }
+
+
+            await ShowSuccess(
+                "External CLSCC deleted successfully.");
+        }
+        catch (Exception ex)
+        {
+            await ShowError(
+                ex.Message);
+        }
+    }
+
+
+    // =========================================================
+    // CLEAR
+    // =========================================================
+
+    private void ClearForm()
+    {
+        model =
+            new POFExternalCLSCCModel();
+    }
+
+
+    // =========================================================
+    // DISPLAY TEXT
+    // =========================================================
+
+    private string GetCoatingText(
+        string value)
+    {
+        return value switch
+        {
+            "1" => "No Coating / Poor",
+            "2" => "Medium Quality",
+            "3" => "High Quality",
+            _ => value
+        };
+    }
+
+
+    private string GetAreaText(
+        string value)
+    {
+        return value switch
+        {
+            "marine" =>
+                "Marine / Cooling Tower Drift Area",
+
+            "temp" =>
+                "Temperature",
+
+            "arid" =>
+                "Arid / Dry",
+
+            "severe" =>
+                "Severe",
+
+            _ => value
+        };
+    }
+
+
+    // =========================================================
+    // SWEETALERT
+    // =========================================================
+
+    private async Task ShowSuccess(
+        string message)
+    {
+        await JS.InvokeVoidAsync(
+            "Swal.fire",
+            new
+            {
+                toast = true,
+                position = "top-end",
+                icon = "success",
+                title = message,
+                showConfirmButton = false,
+                timer = 3000,
+                timerProgressBar = true
+            });
+    }
+
+
+    private async Task ShowError(
+        string message)
+    {
+        await JS.InvokeVoidAsync(
+            "Swal.fire",
+            new
+            {
+                toast = true,
+                position = "top-end",
+                icon = "error",
+                title = message,
+                showConfirmButton = false,
+                timer = 3000,
+                timerProgressBar = true
+            });
+    }
+}
+

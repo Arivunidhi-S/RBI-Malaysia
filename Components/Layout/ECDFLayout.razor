@@ -1,0 +1,21 @@
+﻿
+@inherits LayoutComponentBase
+@layout MainLayout
+@inject NavigationManager Nav
+
+<div class="staff-layout-container">
+    <!-- உங்களுடைய தனி மெனு பகுதி -->
+    <nav class="staff-Menu">
+        <ul>
+            <li><a class="nav-link @(Nav.Uri.Contains("externaldamage") ? "active" : "")" href="/externaldamage">External Corrosion Damage</a></li>
+            <li><a class="nav-link @(Nav.Uri.Contains("cui") ? "active" : "")" href="/pof-cui">Corrosion Under Insulation</a></li>
+            <li><a class="nav-link @(Nav.Uri.Contains("clscc") ? "active" : "")" href="/pof-external-clscc">External CLSCC</a></li>
+            <li><a class="nav-link @(Nav.Uri.Contains("cui-clscc") ? "active" : "")" href="/login">External CUI CLSCC</a></li>
+        </ul>
+    </nav>
+
+    <!-- பக்கங்களின் உள்ளடக்கங்கள் (Page Content) தோன்றும் இடம் -->
+    <div class="staff-page-content">
+        @Body
+    </div>
+</div>

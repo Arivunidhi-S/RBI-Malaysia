@@ -346,8 +346,32 @@
             </button>
         </div>
         <div class="staff-card-body">
+
+            @if (hasLoadedGrid && inspections.Count > 0)
+            {
+                <!-- Search + Page size controls -->
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small">Show</span>
+                        <select class="form-select form-select-sm" style="width:80px"
+                                value="@pageSize" @onchange="OnPageSizeChanged">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span class="text-muted small">records</span>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control form-control-sm" style="width:220px"
+                               placeholder="Search..." value="@searchText"
+                               @oninput="OnSearchInput" />
+                    </div>
+                </div>
+            }
+
             <div class="table-responsive" @key="tableRenderKey">
-                <table id="inspectionTable" class="table table-hover staff-table mb-0">
+                <table class="table table-hover staff-table mb-0">
                     <thead>
                         <tr>
                             <th>Edit</th>
@@ -364,7 +388,6 @@
                             <th>LongCR</th>
                             <th>DefaultSCR</th>
                             <th>DefaultLCR</th>
-                            @*  <th>uCR</th> *@
                             <th>RemainLife</th>
                             <th>Delete</th>
                         </tr>
@@ -384,15 +407,13 @@
                             <tr>
                                 <td colspan="16" class="text-center py-5 text-muted">
                                     <i class="bi bi-funnel fs-3 d-block mb-2"></i>
-                                    Please select
-                                    <strong>Process Area</strong>,
-                                    <strong>Equipment</strong> and
-                                    <strong>Component</strong>
+                                    Please select <strong>Process Area</strong>,
+                                    <strong>Equipment</strong> and <strong>Component</strong>
                                     to load inspection details.
                                 </td>
                             </tr>
                         }
-                        else if (inspections.Count == 0)
+                        else if (!PagedRows.Any())
                         {
                             <tr>
                                 <td colspan="16" class="text-center py-4 text-muted">
@@ -402,16 +423,11 @@
                         }
                         else
                         {
-                            @* var rowNo = 0; *@
-                            @foreach (var item in inspections)
+                            @foreach (var item in PagedRows)
                             {
-                                @*  rowNo++; *@
-
                                 <tr>
-
                                     <td>
-                                        @* @rowNo *@ 
-                                                                                                                        <div class="btn-group btn-group-sm">
+                                        <div class="btn-group btn-group-sm">
                                             <button type="button" style="width:40px" class="btn btn-outline-primary" title="Edit" @onclick="() => EditInspection(item)">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
@@ -421,81 +437,73 @@
                                     <td>@item.ComponentName</td>
                                     <td>@item.InspectionPointNo</td>
                                     <td>@FormatDate(item.InspecDate)</td>
-                                    <td>@FormatDecimal(item.ReadingValue) </td>
-                                    <td>
-                                        @FormatDate(item.PreviousDate)
-                                    </td>
-
-                                    <td>
-                                        @FormatDecimal(item.PreviousValue)
-                                    </td>
-
-                                    <td>
-                                        @FormatDate(item.InitialDate)
-                                    </td>
-
-                                    <td>
-                                        @FormatDecimal(item.InitialValue)
-                                    </td>
-
-                                    <td>
-                                        @FormatDecimal(item.ShortCRrate)
-                                    </td>
-
-                                    <td>
-                                        @FormatDecimal(item.LongCRrate)
-                                    </td>
-
-                                    <td>
-                                        @FormatDecimal(item.DefaultsCR)
-                                    </td>
-
-                                    <td>
-                                        @FormatDecimal(item.DefaultLCR)
-                                    </td>
-
-                                    @*  <td>
-                                        @FormatDecimal(item.UCR)
-                                    </td> *@
-
-                                    <td>
-                                        @FormatDecimal(item.RemainingLife)
-                                    </td>
-
+                                    <td>@FormatDecimal(item.ReadingValue)</td>
+                                    <td>@FormatDate(item.PreviousDate)</td>
+                                    <td>@FormatDecimal(item.PreviousValue)</td>
+                                    <td>@FormatDate(item.InitialDate)</td>
+                                    <td>@FormatDecimal(item.InitialValue)</td>
+                                    <td>@FormatDecimal(item.ShortCRrate)</td>
+                                    <td>@FormatDecimal(item.LongCRrate)</td>
+                                    <td>@FormatDecimal(item.DefaultsCR)</td>
+                                    <td>@FormatDecimal(item.DefaultLCR)</td>
+                                    <td>@FormatDecimal(item.RemainingLife)</td>
                                     <td class="text-center">
-
                                         <div class="btn-group btn-group-sm">
-
-
                                             <button type="button" style="width:40px"
-                                                    class="btn btn-outline-danger"
-                                                    title="Delete"
+                                                    class="btn btn-outline-danger" title="Delete"
                                                     @onclick="() => ConfirmDelete(item)">
-
                                                 <i class="bi bi-trash"></i>
-
                                             </button>
-
                                         </div>
-
                                     </td>
-
                                 </tr>
                             }
                         }
-
                     </tbody>
-
                 </table>
             </div>
 
-        </div>
+            @if (hasLoadedGrid && TotalPages > 1)
+            {
+                <!-- Pagination controls -->
+                <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">
+                    <div class="text-muted small">
+                        Showing @(Math.Min((currentPage - 1) * pageSize + 1, FilteredRows.Count()))
+                        to @(Math.Min(currentPage * pageSize, FilteredRows.Count()))
+                        of @FilteredRows.Count() records
+                        @(FilteredRows.Count() != inspections.Count ? $"(filtered from {inspections.Count} total)" : "")
+                    </div>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                <button class="page-link" @onclick="() => GoToPage(1)">«</button>
+                            </li>
+                            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                <button class="page-link" @onclick="() => GoToPage(currentPage - 1)">‹</button>
+                            </li>
+                            @foreach (var p in GetPageNumbers())
+                            {
+                                var pg = p;
+                                <li class="page-item @(pg == currentPage ? "active" : "")">
+                                    <button class="page-link" @onclick="() => GoToPage(pg)">@pg</button>
+                                </li>
+                            }
+                            <li class="page-item @(currentPage == TotalPages ? "disabled" : "")">
+                                <button class="page-link" @onclick="() => GoToPage(currentPage + 1)">›</button>
+                            </li>
+                            <li class="page-item @(currentPage == TotalPages ? "disabled" : "")">
+                                <button class="page-link" @onclick="() => GoToPage(TotalPages)">»</button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            }
 
-    </div>
+        </div>
 
 </div>
 
-
+</div>
 @code {
 
     // =========================================================
@@ -542,8 +550,21 @@
     private bool showCalculation;
 
     private bool hasLoadedGrid;
-    private bool needsDataTableInit;
     private int tableRenderKey;
+
+    // ---- Blazor-native pagination & search ----
+    private string searchText = "";
+    private int pageSize = 10;
+    private int currentPage = 1;
+    private IEnumerable<InspectionModel> FilteredRows =>
+        string.IsNullOrWhiteSpace(searchText)
+            ? inspections
+            : inspections.Where(i =>
+                (i.EquipmentName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (i.ComponentName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (i.InspectionPointNo?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false));
+    private int TotalPages => (int)Math.Ceiling(FilteredRows.Count() / (double)pageSize);
+    private IEnumerable<InspectionModel> PagedRows => FilteredRows.Skip((currentPage - 1) * pageSize).Take(pageSize);
 
     private InspectionModel? lastInspection;
 
@@ -575,24 +596,6 @@
     }
 
 
-    // =========================================================
-    // DATATABLE INIT
-    //
-    // jQuery DataTables must be (re)initialized AFTER Blazor has
-    // rendered the <tr> rows into the DOM — never right inside
-    // LoadData()/LoadLastInspection() itself, since the render
-    // hasn't happened yet at that point. We set needsDataTableInit
-    // in those methods, then consume it here.
-    // =========================================================
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (needsDataTableInit)
-        {
-            needsDataTableInit = false;
-            await JS.InvokeVoidAsync("inspectionTable.initialize");
-        }
-    }
 
 
     // =========================================================
@@ -1062,7 +1065,8 @@
                     selectedComponent);
 
             hasLoadedGrid = true;
-            needsDataTableInit = true;
+            currentPage = 1;
+            searchText = "";
             tableRenderKey++;
             await LoadCalculation();
         }
@@ -1106,7 +1110,8 @@
                     selectedEquipment,
                     selectedComponent);
             hasLoadedGrid = true;
-            needsDataTableInit = true;
+            currentPage = 1;
+            searchText = "";
             tableRenderKey++;
 
             //showCalculation = inspections != null;
@@ -1295,5 +1300,34 @@
                 "connString")
             ?? throw new InvalidOperationException(
                 "Connection string 'connString' was not found.");
+    }
+
+    // =========================================================
+    // BLAZOR-NATIVE PAGINATION HELPERS
+    // =========================================================
+
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        searchText = e.Value?.ToString() ?? "";
+        currentPage = 1;
+    }
+
+    private void OnPageSizeChanged(ChangeEventArgs e)
+    {
+        pageSize = int.TryParse(e.Value?.ToString(), out var v) ? v : 10;
+        currentPage = 1;
+    }
+
+    private void GoToPage(int page)
+    {
+        if (page < 1 || page > TotalPages) return;
+        currentPage = page;
+    }
+
+    private IEnumerable<int> GetPageNumbers()
+    {
+        int start = Math.Max(1, currentPage - 2);
+        int end   = Math.Min(TotalPages, currentPage + 2);
+        for (int i = start; i <= end; i++) yield return i;
     }
 }

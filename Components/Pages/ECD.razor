@@ -8,11 +8,12 @@
 @inject ThinningService ThinningService
 @inject UserSession UserSession
 @inject IJSRuntime JS
-
+@inject NavigationManager Nav
 
 <PageTitle>POF - External Corrosion Damage</PageTitle>
 
 <div class="staff-page">
+    @layout ECDFLayout
     <div class="staff-card">
 
         <div class="staff-card-header d-flex justify-content-between align-items-center">

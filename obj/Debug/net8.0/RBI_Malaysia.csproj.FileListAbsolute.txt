@@ -126,5 +126,7 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\refint\RBI_Malays
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.pdb
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\RBI_Malaysia.genruntimeconfig.cache
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\ref\RBI_Malaysia.dll
-C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Reports\COFFlammableReport.razor.rz.scp.css
-C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Reports\COFNonFlammableReport.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Layout\ECDFLayout.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\CUI.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\InspectionPlan.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Debug\net8.0\scopedcss\Components\Pages\ExternalCLSCC.razor.rz.scp.css
