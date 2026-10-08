@@ -1,0 +1,17 @@
+wwwroot\app.css
+wwwroot\bootstrap\bootstrap.min.css
+wwwroot\bootstrap\bootstrap.min.css.map
+wwwroot\favicon.png
+wwwroot\js\dashboard.js
+wwwroot\js\dttbl.js
+wwwroot\js\site.js
+wwwroot\js\sweetalert2-helper.js
+wwwroot\js\validation.js
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\wwwroot\app.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\wwwroot\bootstrap\bootstrap.min.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\wwwroot\bootstrap\bootstrap.min.css.map
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\wwwroot\js\dashboard.js
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\wwwroot\js\dttbl.js
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\wwwroot\js\site.js
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\wwwroot\js\sweetalert2-helper.js
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\wwwroot\js\validation.js

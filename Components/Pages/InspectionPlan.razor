@@ -1,759 +1,444 @@
 ﻿@page "/inspection-plan"
 
+@using RBI_Malaysia.Models
 @using RBI_Malaysia.Services
-
-@inject InspectionPlanService InspectionPlanService
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject InspectionPlanService PlanService
 @inject UserSession UserSession
 @inject IJSRuntime JS
+
 
 <PageTitle>Inspection Plan</PageTitle>
 
 <div class="staff-page">
-
-    <!-- ===================================================== -->
-    <!-- HEADER -->
-    <!-- ===================================================== -->
-
-    <div class="card staff-card mb-3">
-
-        <div class="staff-card-header
-                    d-flex
-                    justify-content-between
-                    align-items-center">
-
-            <div>
-                <i class="bi bi-clipboard-check me-2"></i>
-                Inspection Plan
-            </div>
-
-            <button type="button"
-                    class="btn btn-light btn-sm"
-                    @onclick="ClearForm">
-
-                <i class="bi bi-plus-lg me-1"></i>
-                New Plan
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- FORM -->
-    <!-- ===================================================== -->
-
-    <div class="card staff-card mb-3">
+    <div class="staff-card">
 
         <div class="staff-card-header">
-            <i class="bi bi-diagram-3 me-2"></i>
-            Inspection Plan Details
+            <div>
+                <h5 class="mb-0">
+                    <i class="bi bi-clipboard2-check me-2 text-success"></i>Inspection Plan
+                </h5>
+                <small>View and manage Inspection Plan records per Damage Mechanism</small>
+            </div>
         </div>
 
         <div class="staff-card-body">
 
-            <EditForm Model="@plan"
-                      OnValidSubmit="@SavePlan">
-
-                <DataAnnotationsValidator />
-
-                <!-- ========================================= -->
-                <!-- COMPANY -->
-                <!-- ========================================= -->
-
-                <div class="row g-3">
-
-                    <!-- ===================================== -->
-                    <!-- PROCESS AREA -->
-                    <!-- ===================================== -->
-
-                    <div class="col-lg-3 col-md-6">
-
-                        <label class="form-label">
-                            Process Area
-                        </label>
-
-                     @*    <InputSelect class="form-select"
-                                     @bind-Value="selectedProcessArea"
-                                     @onchange="ProcessAreaChanged"> *@
-
-                                          <select class="form-select"
-                            value="@selectedProcessArea"
-                            @onchange="ProcessAreaChanged">
-
-                            <option value="0">
-                                Select Process Area
-                            </option>
-
-                            @foreach (var item in processAreas)
-                            {
-                                <option value="@item.Id">
-                                    @item.Name
-                                </option>
-                            }
-                              </select>
-                       @*  </InputSelect> *@
-
-                    </div>
-
-
-                    <!-- ===================================== -->
-                    <!-- EQUIPMENT -->
-                    <!-- ===================================== -->
-
-                    <div class="col-lg-3 col-md-6">
-
-                        <label class="form-label">
-                            Equipment
-                        </label>
-
-                        <select class="form-select"
-                                value="@selectedEquipment"
-                                @onchange="EquipmentChanged"
-                                disabled="@(selectedProcessArea <= 0)">
-
-                            <option value="0">
-                                Select Equipment
-                            </option>
-
-                            @foreach (var item in equipments)
-                            {
-                                <option value="@item.Id">
-                                    @item.EquipType
-                                </option>
-                            }
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- ===================================== -->
-                    <!-- COMPONENT -->
-                    <!-- ===================================== -->
-
-                    <div class="col-lg-3 col-md-6">
-
-                        <label class="form-label">
-                            Component
-                        </label>
-
-
-
-                        <select class="form-select"
-                                @bind="@selectedComponent"
-                                @bind:after="ComponentChanged"
-                                disabled="@(selectedEquipment <= 0)">
-                            <!-- இங்கிருக்கும் அடைப்புக்குறிகளைக் கவனிக்கவும் -->
-
-                            <option value="0">
-                                Select Component
-                            </option>
-
-                            @foreach (var item in components)
-                            {
-                                <option value="@item.Id">
-                                    @item.Name
-                                </option>
-                            }
-
-                        </select>
-
-
-                    </div>
-
+            <!-- Cascading Filters -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area</label>
+                    <select class="form-select" value="@selectedProcessArea" @onchange="ProcessAreaChanged">
+                        <option value="0">-- Select Process Area --</option>
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">@item.ProcessArea</option>
+                        }
+                    </select>
                 </div>
-
-
-                <hr class="my-4" />
-
-
-                <!-- ================================================= -->
-                <!-- INSPECTION PLAN -->
-                <!-- ================================================= -->
-
-                <div class="row g-3">
-
-                    <!-- Damage Fact -->
-
-                   @*  <div class="col-lg-4 col-md-6"> *@
-@* 
-                        <label class="form-label">
-                            Damage Mechanism
-                        </label> *@
-
-                        <InputText class="form-control" hidden
-                                   @bind-Value="plan.DamageFact"
-                                   placeholder="Enter damage mechanism" />
-
-                  @*   </div> *@
-
-
-                    <!-- Inspection Category -->
-
-                    <div class="col-lg-4 col-md-6">
-
-                        <label class="form-label">
-                            Inspection Category
-                        </label>
-
-                        <InputSelect class="form-select"
-                                     @bind-Value="plan.InspectCate">
-
-                            <option value="">
-                                Select Category
-                            </option>
-
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D">D</option>
-                            <option value="E">E</option>
-
-                        </InputSelect>
-
-                    </div>
-
-
-                    <!-- Inspection Date -->
-
-                    <div class="col-lg-4 col-md-6">
-
-                        <label class="form-label">
-                            Inspection Date
-                        </label>
-
-                        <InputDate class="form-control"
-                                   @bind-Value="plan.InspectDate" />
-
-                    </div>
-
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment</label>
+                    <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged"
+                            disabled="@(selectedProcessArea <= 0)">
+                        <option value="0">-- Select Equipment --</option>
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">@item.EquPID</option>
+                        }
+                    </select>
                 </div>
-
-
-                <!-- ================================================= -->
-                <!-- BUTTONS -->
-                <!-- ================================================= -->
-
-                <div class="staff-buttons mt-4">
-
-                    <button type="submit"
-                            class="btn btn-primary">
-
-                        <i class="bi bi-save me-1"></i>
-
-                        @(isEdit ? "Update" : "Save")
-
-                    </button>
-
-
-                    <button type="button"
-                            class="btn btn-secondary"
-                            @onclick="ClearForm">
-
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>
-
-                        Clear
-
-                    </button>
-
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component</label>
+                    <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged"
+                            disabled="@(selectedEquipment <= 0)">
+                        <option value="0">-- Select Component --</option>
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">@item.CompNo</option>
+                        }
+                    </select>
                 </div>
-
-            </EditForm>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- GRID -->
-    <!-- ===================================================== -->
-    @if (selectedComponent > 0)
-    {
-        <div class="card staff-card">
-
-            <div class="staff-card-header
-                            d-flex
-                            justify-content-between
-                            align-items-center">
-
-                <span>
-                    <i class="bi bi-table me-2"></i>
-                    Inspection Plan List
-                </span>
-
-                <span class="badge bg-primary">
-                    @inspectionPlans.Count
-                </span>
-
             </div>
 
+            <!-- Add / Edit Form -->
+            <div class="border rounded p-3 mb-4 bg-light">
+                <h6 class="fw-bold mb-3 text-primary">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    @(isEditing ? "Edit Inspection Plan" : "Add Inspection Plan")
+                </h6>
+                <EditForm Model="@form" OnValidSubmit="SaveForm" FormName="InspectionPlanForm">
+                    <DataAnnotationsValidator />
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Damage Mechanism <span class="text-danger">*</span></label>
+                            <select class="form-select" @bind="form.DamageFact" @bind:after="OnDamageOrCateChanged"
+                                    disabled="@isEditing">
+                                <option value="">Select</option>
+                                @foreach (var d in InspectionPlanService.DamageFactorOptions)
+                                {
+                                    <option value="@d">@d</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">Insp. Category <span class="text-danger">*</span></label>
+                            <select class="form-select" @bind="form.InspectCate" @bind:after="OnDamageOrCateChanged">
+                                <option value="">Select</option>
+                                <option value="A">A — Highly Effective</option>
+                                <option value="B">B — Usually Effective</option>
+                                <option value="C">C — Fairly Effective</option>
+                                <option value="D">D — Poorly Effective</option>
+                                <option value="E">E — In Effective</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">Inspection Date</label>
+                            <InputDate class="form-control" @bind-Value="form.InspectDate" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label text-secondary fw-bold">Effectiveness</label>
+                            <input type="text" class="form-control" value="@form.InsEffCate" readonly />
+                        </div>
 
-            <div class="staff-card-body p-0">
+                        <!-- Intrusive / Non-Intrusive -->
+                        <div class="col-12">
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label class="form-label text-secondary fw-bold">Intrusive Inspection</label>
+                                    <textarea class="form-control" rows="2" readonly>@form.IntrInsp</textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-secondary fw-bold">Non-Intrusive Inspection</label>
+                                    <textarea class="form-control" rows="2" readonly>@form.NonIntrInsp</textarea>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="table-responsive">
+                        <div class="staff-buttons col-12 d-flex gap-2">
+                            <button type="submit" class="btn btn-success fw-bold" disabled="@isSaving">
+                                @(isSaving ? "Saving..." : (isEditing ? "Update" : "Save"))
+                            </button>
+                            @if (isEditing)
+                            {
+                                <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-secondary" @onclick="ClearForm">Clear</button>
+                            }
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
 
-                    <table class="table table-hover
-                                      align-middle
-                                      mb-0
-                                      staff-table">
+            <!-- Records List -->
+            @if (isLoading)
+            {
+                <p class="text-muted"><i class="bi bi-hourglass-split me-1"></i> Loading...</p>
+            }
+            else if (rows.Count == 0 && selectedProcessArea > 0)
+            {
+                <p class="text-muted">No Inspection Plan records found for the selected filter.</p>
+            }
+            else if (rows.Count > 0)
+            {
+                <!-- Search + page size -->
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small">Show</span>
+                        <select class="form-select form-select-sm" style="width:80px"
+                                value="@pageSize" @onchange="OnPageSizeChanged">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                        <span class="text-muted small">records</span>
+                    </div>
+                    <input type="text" class="form-control form-control-sm" style="width:220px"
+                           placeholder="Search..." value="@searchText" @oninput="OnSearchInput" />
+                </div>
 
-                        <thead>
-
+                <div class="table-responsive" @key="renderKey">
+                    <table class="table table-hover staff-table mb-0">
+                        <thead class="table-light">
                             <tr>
-
-                                <th>
-                                    #
-                                </th>
-
-                                <th>
-                                    Damage Mechanism
-                                </th>
-
-                                <th>
-                                    Category
-                                </th>
-
-                                <th>
-                                    Inspection Date
-                                </th>
-
-                                <th style="width:120px">
-                                    Action
-                                </th>
-
+                                <th>#</th>
+                                <th>Process Area</th>
+                                <th>Equipment</th>
+                                <th>Component</th>
+                                <th>Damage Mechanism</th>
+                                <th>Insp. Category</th>
+                                <th>Effectiveness</th>
+                                <th>Inspect Date</th>
+                                <th>Intrusive Inspection</th>
+                                <th>Non-Intrusive Inspection</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                             </tr>
-
                         </thead>
-
                         <tbody>
-
-                            @foreach (var item in inspectionPlans)
+                            @{ int i = (currentPage - 1) * pageSize + 1; }
+                            @foreach (var row in PagedRows)
                             {
+                                var r = row;
                                 <tr>
-
+                                    <td>@i</td>
+                                    <td>@r.ProcessArea</td>
+                                    <td>@r.EquipmentName</td>
+                                    <td>@r.ComponentName</td>
+                                    <td><span class="badge bg-primary">@r.DamageFact</span></td>
+                                    <td class="fw-bold">@r.InspectCate</td>
+                                    <td>@r.InsEffCate</td>
+                                    <td>@r.InspectDate?.ToString("dd-MMM-yyyy")</td>
+                                    <td style="white-space:pre-wrap;max-width:200px;font-size:12px">@r.IntrInsp</td>
+                                    <td style="white-space:pre-wrap;max-width:200px;font-size:12px">@r.NonIntrInsp</td>
                                     <td>
-                                        @item.InspectID
+                                        <button class="btn btn-sm btn-outline-primary" style="width:40px" @onclick="() => EditRow(r)">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
                                     </td>
-
                                     <td>
-                                        @item.DamageFact
+                                        <button class="btn btn-sm btn-danger" style="width:40px" @onclick="() => DeleteRow(r)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </td>
-
-                                    <td>
-                                        @item.InspectCate
-                                    </td>
-
-                                    <td>
-                                        @(item.InspectDate
-                                                                        ?.ToString("dd/MM/yyyy"))
-                            </td>
-
-                                    <td>
-
-                                        <div class="d-flex gap-1">
-
-                                            <button type="button"
-                                                    class="btn btn-sm
-                                                                   btn-outline-primary"
-                                                    title="Edit"
-                                                    @onclick="() => EditPlan(item)">
-
-                                                <i class="bi bi-pencil"></i>
-
-                                            </button>
-
-                                            <button type="button"
-                                                    class="btn btn-sm
-                                                                   btn-outline-danger"
-                                                    title="Delete"
-                                                    @onclick="() => DeletePlan(item)">
-
-                                                <i class="bi bi-trash"></i>
-
-                                            </button>
-
-                                        </div>
-
-                                    </td>
-
                                 </tr>
-                                                }
-
-                            @if (!inspectionPlans.Any())
-                            {
-                                <tr>
-
-                                    <td colspan="5"
-                                        class="text-center
-                                                       text-muted
-                                                       py-4">
-
-                                        <i class="bi bi-clipboard-x
-                                                          fs-3 d-block mb-2"></i>
-
-                                        No inspection plan found.
-
-                                    </td>
-
-                                </tr>
+                                i++;
                             }
-
                         </tbody>
-
                     </table>
-
                 </div>
 
-            </div>
+                @if (TotalPages > 1)
+                {
+                    <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">
+                        <div class="text-muted small">
+                            Showing @(Math.Min((currentPage-1)*pageSize+1, FilteredRows.Count()))
+                            to @(Math.Min(currentPage*pageSize, FilteredRows.Count()))
+                            of @FilteredRows.Count() records
+                        </div>
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item @(currentPage==1?"disabled":"")">
+                                    <button class="page-link" @onclick="()=>GoToPage(1)">«</button>
+                                </li>
+                                <li class="page-item @(currentPage==1?"disabled":"")">
+                                    <button class="page-link" @onclick="()=>GoToPage(currentPage-1)">‹</button>
+                                </li>
+                                @foreach (var p in GetPageNumbers())
+                                {
+                                    var pg = p;
+                                    <li class="page-item @(pg==currentPage?"active":"")">
+                                        <button class="page-link" @onclick="()=>GoToPage(pg)">@pg</button>
+                                    </li>
+                                }
+                                <li class="page-item @(currentPage==TotalPages?"disabled":"")">
+                                    <button class="page-link" @onclick="()=>GoToPage(currentPage+1)">›</button>
+                                </li>
+                                <li class="page-item @(currentPage==TotalPages?"disabled":"")">
+                                    <button class="page-link" @onclick="()=>GoToPage(TotalPages)">»</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            }
 
         </div>
-    }
-
+    </div>
 </div>
 
+@code
+{
+    private InspectionPlanModel form = new();
+    private decimal selectedProcessArea, selectedEquipment, selectedComponent;
 
-@code {
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel>   equipments   = new();
+    private List<ComponentModel>   components   = new();
+    private List<InspectionPlanModel> rows       = new();
 
-    private InspectionPlanModel plan = new();
+    private bool isLoading, isSaving, isEditing;
+    private int renderKey;
 
-    private List<Insplan_ProcessAreaModel> processAreas = new();
-    private List<Insplan_EquipmentModel> equipments = new();
-    private List<Insplan_ComponentModel> components = new();
+    // Pagination & Search
+    private string searchText = "";
+    private int pageSize = 10, currentPage = 1;
 
-    private List<InspectionPlanModel> inspectionPlans = new();
+    private IEnumerable<InspectionPlanModel> FilteredRows =>
+        string.IsNullOrWhiteSpace(searchText)
+            ? rows
+            : rows.Where(r =>
+                (r.DamageFact?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (r.ComponentName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (r.EquipmentName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (r.InsEffCate?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false));
 
-    private decimal selectedCompany = 0;
-    private decimal selectedProcessArea = 0;
-    private decimal selectedEquipment = 0;
-    private decimal selectedComponent = 0;
-
-    private bool isEdit = false;
-
-
-    // =========================================================
-    // INITIALIZE
-    // =========================================================
+    private int TotalPages => (int)Math.Ceiling(FilteredRows.Count() / (double)pageSize);
+    private IEnumerable<InspectionPlanModel> PagedRows =>
+        FilteredRows.Skip((currentPage - 1) * pageSize).Take(pageSize);
 
     protected override async Task OnInitializedAsync()
     {
-        await Load();
+        processAreas = await PlanService.GetProcessAreasAsync(UserSession.CompanyID);
     }
-
-
-    // =========================================================
-    // COMPANY
-    // =========================================================
-
-    private async Task Load()
-    {
-        // உங்கள் existing CompanyService-ல் இருக்கும்
-        // company loading method-ஐ இங்கே பயன்படுத்தலாம்.
-
-        // Example:
-        //
-        // companies = await CompanyService.GetCompaniesAsync();
-        processAreas = await InspectionPlanService.GetProcessAreasAsync(Convert.ToDecimal(UserSession.CompanyID));
-    }
-
-
-    // =========================================================
-    // PROCESS AREA
-    // =========================================================
 
     private async Task ProcessAreaChanged(ChangeEventArgs e)
     {
-        // if (!decimal.TryParse(
-        //         e.Value?.ToString(),
-        //         out selectedProcessArea))
-        // {
-        //     selectedProcessArea = 0;
-        // }
-
-        // // கீழே உள்ள levels clear
-        // selectedEquipment = 0;
-        // selectedComponent = 0;
-
-        // equipments.Clear();
-        // components.Clear();
-
-        // inspectionPlans.Clear();
-
-        // plan.ProcID = selectedProcessArea;
-        // plan.EquID = 0;
-        // plan.CompID = 0;
-
         selectedProcessArea = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
         selectedEquipment = 0; selectedComponent = 0;
-        equipments.Clear(); components.Clear();
-
-        if (selectedProcessArea > 0)     
-
-        equipments =
-            await InspectionPlanService
-                .GetEquipmentsAsync(selectedProcessArea);
+        equipments.Clear(); components.Clear(); rows.Clear();
+        if (selectedProcessArea > 0)
+            equipments = await PlanService.GetEquipmentsByProcessAsync(selectedProcessArea);
+        await LoadData();
     }
-
-
-    // =========================================================
-    // EQUIPMENT
-    // =========================================================
-
-    // private async Task EquipmentChanged(ChangeEventArgs e) // ChangeEventArgs சேர்க்கப்பட்டுள்ளது
-    // {
-    //     // 1. பயனர் தேர்ந்தெடுத்த புதிய மதிப்பை மாறியில் ஏற்றுகிறோம்
-    //     if (e.Value != null)
-    //     {
-    //         selectedEquipment = Convert.ToDecimal(e.Value);
-    //     }
-
-    //     selectedComponent = 0;
-    //     components.Clear();
-    //     inspectionPlans.Clear();
-
-    //     plan.EquID = selectedEquipment;
-    //     plan.CompID = 0;
-
-    //     if (selectedEquipment <= 0)
-    //     {
-    //         StateHasChanged();
-    //         return;
-    //     }
-
-    //     // இப்பொழுது சரியான ID அனுப்பப்படுவதால் Component லோட் ஆகும்
-    //     components = await InspectionPlanService.GetComponentsAsync(selectedEquipment);
-
-    //     StateHasChanged();
-    // }
-
 
     private async Task EquipmentChanged(ChangeEventArgs e)
     {
-
-        selectedEquipment = Convert.ToDecimal(e.Value);
-
+        selectedEquipment = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
         selectedComponent = 0;
-
-        components.Clear();
-
-        // Load Component ONLY
-
+        components.Clear(); rows.Clear();
         if (selectedEquipment > 0)
-        {
-            try
-            {
-                components = await InspectionPlanService.GetComponentsAsync(selectedEquipment);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Component loading failed: " + ex.Message);
-                //await ShowError("Component loading failed.\n\n" + ex.Message);
-            }
-        }
+            components = await PlanService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
+        await LoadData();
     }
 
-
-    private async Task ComponentChanged()
+    private async Task ComponentChanged(ChangeEventArgs e)
     {
-        inspectionPlans.Clear();
+        selectedComponent = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
+        // Auto-set form IDs for new record
+        form.ProcID = selectedProcessArea; form.EquID = selectedEquipment; form.CompID = selectedComponent;
+        await LoadData();
+    }
 
-        plan.ProcID = selectedProcessArea;
-        plan.EquID = selectedEquipment;
-        plan.CompID = selectedComponent;
+    private async Task LoadData()
+    {
+        if (selectedProcessArea <= 0) { rows.Clear(); return; }
+        isLoading = true; StateHasChanged();
+        try
+        {
+            rows = await PlanService.GetInspectionPlansAsync(selectedProcessArea, selectedEquipment, selectedComponent);
+            currentPage = 1; searchText = ""; renderKey++;
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire", new { title = "Error!", text = ex.Message, icon = "error" });
+        }
+        finally { isLoading = false; StateHasChanged(); }
+    }
 
+    // Auto-lookup InspectEffect when Damage Mechanism or Category changes
+    private async Task OnDamageOrCateChanged()
+    {
+        if (string.IsNullOrEmpty(form.DamageFact) || string.IsNullOrEmpty(form.InspectCate)) return;
+        try
+        {
+            var (eff, intr, nonIntr) = await PlanService.GetInspectEffectAsync(form.DamageFact, form.InspectCate);
+            form.InsEffCate = eff; form.IntrInsp = intr; form.NonIntrInsp = nonIntr;
+        }
+        catch { }
+    }
+
+    private async Task SaveForm()
+    {
         if (selectedComponent <= 0)
         {
-            StateHasChanged();
+            await JS.InvokeVoidAsync("Swal.fire", new { title = "Warning", text = "Please select a Component first.", icon = "warning" });
             return;
         }
-
-        inspectionPlans = await InspectionPlanService.GetInspectionPlansAsync(
-            selectedProcessArea,
-            selectedEquipment,
-            selectedComponent);
-
-        StateHasChanged();
+        isSaving = true; StateHasChanged();
+        try
+        {
+            form.ProcID = selectedProcessArea; form.EquID = selectedEquipment; form.CompID = selectedComponent;
+            await PlanService.SaveInspectionPlanAsync(form);
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Saved!", text = "Inspection Plan saved successfully.", icon = "success",
+                      timer = 2000, showConfirmButton = false });
+            CancelEdit();
+            await LoadData();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire", new { title = "Save Error", text = ex.Message, icon = "error" });
+        }
+        finally { isSaving = false; StateHasChanged(); }
     }
 
-    // =========================================================
-    // SAVE
-    // =========================================================
-
-    private async Task SavePlan()
+    private void EditRow(InspectionPlanModel row)
     {
-        if (selectedProcessArea <= 0)
+        form = new InspectionPlanModel
         {
-            await JS.InvokeVoidAsync(
-                "Swal.fire",
-                new
-                {
-                    icon = "warning",
-                    title = "Select Process Area",
-                    text = "Please select Process Area."
-                });
-
-            return;
-        }
-
-        if (selectedEquipment <= 0)
-        {
-            await JS.InvokeVoidAsync(
-                "Swal.fire",
-                new
-                {
-                    icon = "warning",
-                    title = "Select Equipment",
-                    text = "Please select Equipment."
-                });
-
-            return;
-        }
-
-        if (selectedComponent <= 0)
-        {
-            await JS.InvokeVoidAsync(
-                "Swal.fire",
-                new
-                {
-                    icon = "warning",
-                    title = "Select Component",
-                    text = "Please select Component."
-                });
-
-            return;
-        }
-
-        string saveFlag = isEdit ? "U" : "N";
-
-        await InspectionPlanService.SaveInspectionPlanAsync(
-            selectedProcessArea,
-            selectedEquipment,
-            selectedComponent,
-            plan.DamageFact,
-            plan.InspectCate,
-            plan.InspectDate ?? DateTime.Now,
-            saveFlag);
-
-        await JS.InvokeVoidAsync(
-            "Swal.fire",
-            new
-            {
-                icon = "success",
-                title = isEdit ? "Updated!" : "Saved!",
-                text = isEdit
-                    ? "Inspection Plan updated successfully."
-                    : "Inspection Plan saved successfully.",
-                timer = 3000,
-                showConfirmButton = false
-            });
-
-        inspectionPlans =
-            await InspectionPlanService
-                .GetInspectionPlansAsync(
-                    selectedProcessArea,
-                    selectedEquipment,
-                    selectedComponent);
-
-        ClearPlanFields();
-    }
-
-
-    // =========================================================
-    // EDIT
-    // =========================================================
-
-    private void EditPlan(InspectionPlanModel item)
-    {
-        plan = new InspectionPlanModel
-        {
-            InspectID = item.InspectID,
-            ProcID = item.ProcID,
-            EquID = item.EquID,
-            CompID = item.CompID,
-            DamageFact = item.DamageFact,
-            InspectCate = item.InspectCate,
-            InspectDate = item.InspectDate
+            InspectID   = row.InspectID,
+            ProcID      = row.ProcID,
+            EquID       = row.EquID,
+            CompID      = row.CompID,
+            DamageFact  = row.DamageFact,
+            InspectCate = row.InspectCate,
+            InspectDate = row.InspectDate,
+            InsEffCate  = row.InsEffCate,
+            IntrInsp    = row.IntrInsp,
+            NonIntrInsp = row.NonIntrInsp,
         };
-
-        isEdit = true;
+        isEditing = true;
     }
 
-
-    // =========================================================
-    // DELETE
-    // =========================================================
-
-    private async Task DeletePlan(InspectionPlanModel item)
+    private async Task DeleteRow(InspectionPlanModel row)
     {
-        // உங்கள் தற்போதைய InspectionPlan table/SP-ல்
-        // DELETE logic கொடுக்கப்படவில்லை.
-        //
-        // அதனால் இங்கே delete செய்யாமல்
-        // confirmation மட்டும் காட்டுகிறோம்.
+        // bool confirm = await JS.InvokeAsync<bool>("Swal.fire", new
+        // {
+        //     title = "Delete Record?",
+        //     text = $"{row.DamageFact} Inspection Plan for {row.ComponentName} will be deleted.",
+        //     icon = "warning",
+        //     showCancelButton = true,
+        //     confirmButtonColor = "#d33",
+        //     cancelButtonColor = "#6c757d",
+        //     confirmButtonText = "Yes, delete it!",
+        //     cancelButtonText = "Cancel"
+        // }).ContinueWith(t => t.Result.GetProperty("isConfirmed").GetBoolean());
 
-        bool result = await JS.InvokeAsync<bool>(
-            "confirm",
-            "Delete this Inspection Plan?");
+        bool confirmed =
+         await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete this {row.DamageFact} Inspection Plan for {row.ComponentName}?");
 
-        if (!result)
-            return;
 
-        await JS.InvokeVoidAsync(
-            "Swal.fire",
-            new
-            {
-                icon = "info",
-                title = "Delete SP Required",
-                text = "Delete stored procedure is not yet defined."
-            });
+        if (!confirmed) return;
+        try
+        {
+            await PlanService.DeleteInspectionPlanAsync(row.InspectID);
+            await JS.InvokeVoidAsync("Swal.fire",
+                new { title = "Deleted!", text = "Record has been deleted.", icon = "success",
+                      timer = 1800, showConfirmButton = false });
+            await LoadData();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("Swal.fire", new { title = "Delete Error", text = ex.Message, icon = "error" });
+        }
     }
 
-
-    // =========================================================
-    // CLEAR
-    // =========================================================
+    private void CancelEdit()
+    {
+        isEditing = false;
+        ClearForm();
+    }
 
     private void ClearForm()
     {
-        selectedProcessArea = 0;
-        selectedEquipment = 0;
-        selectedComponent = 0;
-
-        equipments.Clear();
-        components.Clear();
-        inspectionPlans.Clear();
-
-        ClearPlanFields();
-
-        isEdit = false;
-    }
-
-
-    private void ClearPlanFields()
-    {
-        plan = new InspectionPlanModel
+        form = new InspectionPlanModel
         {
             ProcID = selectedProcessArea,
-            EquID = selectedEquipment,
+            EquID  = selectedEquipment,
             CompID = selectedComponent
         };
-
-        isEdit = false;
     }
 
-
-    // =========================================================
-    // COMPANY MODEL
-    // =========================================================
-
-    private List<CompanyItem> companies = new();
-
-    private class CompanyItem
+    private void OnSearchInput(ChangeEventArgs e) { searchText = e.Value?.ToString() ?? ""; currentPage = 1; }
+    private void OnPageSizeChanged(ChangeEventArgs e) { pageSize = int.TryParse(e.Value?.ToString(), out var v) ? v : 10; currentPage = 1; }
+    private void GoToPage(int page) { if (page >= 1 && page <= TotalPages) currentPage = page; }
+    private IEnumerable<int> GetPageNumbers()
     {
-        public decimal Id { get; set; }
-
-        public string Name { get; set; } = "";
+        int start = Math.Max(1, currentPage - 2);
+        int end = Math.Min(TotalPages, currentPage + 2);
+        for (int i = start; i <= end; i++) yield return i;
     }
 }

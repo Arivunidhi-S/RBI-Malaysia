@@ -121,10 +121,12 @@ C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Compo
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Pages\SOHIC-HF.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Pages\Sulfidation.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Pages\ThinningList.razor.rz.scp.css
-C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Reports\COFFlammableReport.razor.rz.scp.css
-C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Reports\COFNonFlammableReport.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Reports\EquipmentDetailsReport.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Reports\EquipmentReport.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Reports\InspectionChart.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Reports\InspectionDetailsReport.razor.rz.scp.css
 C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Reports\POFList.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Layout\ECDFLayout.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Pages\CUI.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Pages\ExternalCLSCC.razor.rz.scp.css
+C:\Users\Arivunithi\source\repos\RBI-Malaysia\obj\Release\net8.0\scopedcss\Components\Pages\InspectionPlan.razor.rz.scp.css

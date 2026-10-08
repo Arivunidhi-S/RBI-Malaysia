@@ -75,8 +75,8 @@
                 <div class="col-md-3">
                     <select class="form-select"
                             @bind="@selectedComponent"
-                            @bind:after="ComponentChanged"
                             disabled="@string.IsNullOrWhiteSpace(selectedEquipment)">
+                        @*  @bind:after="ComponentChanged" *@
 
                         <option value="">
                             -- Select Component --
@@ -90,6 +90,18 @@
                         }
 
                     </select>
+                </div>
+                <div class="col-md-3 d-flex justify-content-between align-items-center">
+                    <div class="staff-buttons">
+                        <button type="button" class="btn btn-danger fw-bold" @onclick="ComponentChanged">
+                            <i class="bi bi-file-earmark-pdf-fill"></i>
+                            PDF View
+                        </button>
+                        <button type="button" class="btn btn-success fw-bold" @onclick="Exceldownload">
+                            <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                            Excel Download
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -201,7 +213,15 @@
         await JS.InvokeVoidAsync("showReport", reportUrl);
     }
 
+    public async Task Exceldownload()
+    {
+        if (selectedProcessArea <= 0)
+            return;
+        string rUrl = Configuration["ApiSettings:ReportUrl"] ?? "";
+        string reportUrl = $"{rUrl}InspectionDetails?id={selectedComponent}&format=excel";
 
+        await JS.InvokeVoidAsync("showReport", reportUrl);
+    }
 
 
 }

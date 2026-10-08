@@ -1,0 +1,279 @@
+/* =====================================================
+   LOGIN PAGE
+   ===================================================== */
+
+.login-page[b-gauanoolyw] {
+    min-height: 100vh;
+    width: 100%;
+    /*background: linear-gradient( 135deg, #071b2f 0%, #0b3152 50%, #0e4b6f 100% );*/
+    background: linear-gradient(90deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
+}
+
+
+/* =====================================================
+   LOGIN CARD
+   ===================================================== */
+
+.login-card[b-gauanoolyw] {
+    width: 100%;
+    max-width: 410px;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.30);
+}
+
+
+/* =====================================================
+   LOGO
+   ===================================================== */
+
+.logo-box[b-gauanoolyw] {
+    width: 90px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*background: #0876a8;*/
+    background: linear-gradient(90deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
+    color: white;
+    border-radius: 12px;
+}
+
+.logo-main[b-gauanoolyw] {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.logo-sub[b-gauanoolyw] {
+    margin-top: 5px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.login-title[b-gauanoolyw] {
+    margin: 0;
+    color: #172b4d;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.login-subtitle[b-gauanoolyw] {
+    margin-top: 8px;
+    margin-bottom: 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   BOOTSTRAP INPUT
+   ===================================================== */
+
+.login-card .input-group[b-gauanoolyw] {
+    width: 100%;
+}
+
+.login-card .input-group-text[b-gauanoolyw] {
+    width: 46px;
+    padding-left:22px;
+    justify-content: center;
+    border-color: #ced4da;
+    color: #64748b;
+    background-color: #ffffff;
+}
+
+    .login-card .input-group-text i[b-gauanoolyw] {
+        font-size: 16px;
+    }
+
+
+/* =====================================================
+   INPUT
+   ===================================================== */
+
+.login-card .form-control[b-gauanoolyw] {
+    height: 48px;
+    border-color: #ced4da;
+    font-size: 15px;
+    box-shadow: none;
+}
+
+[b-gauanoolyw] .login-card .form-control:focus {
+    border-color: #0876a8;
+    box-shadow: 0 0 0 0.20rem rgba(8, 118, 168, 0.15);
+}
+
+    .login-card .form-control[b-gauanoolyw]::placeholder {
+        color: #6c757d;
+        opacity: 1;
+    }
+
+
+/* =====================================================
+   PASSWORD BUTTON
+   ===================================================== */
+
+.password-button[b-gauanoolyw] {
+    width: 48px;
+    border-color: #ced4da !important;
+    color: #64748b;
+    background-color: #ffffff;
+}
+
+    .password-button:hover[b-gauanoolyw] {
+        color: #0876a8;
+        background-color: #ffffff;
+        border-color: #0876a8 !important;
+    }
+
+    .password-button:focus[b-gauanoolyw] {
+        box-shadow: none;
+    }
+
+
+/* =====================================================
+   LABEL
+   ===================================================== */
+
+.login-card .form-label[b-gauanoolyw] {
+    color: #334155;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   VALIDATION
+   ===================================================== */
+
+.login-card .validation-message[b-gauanoolyw] {
+    display: block;
+    margin-top: 5px;
+    color: #dc3545;
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   LOGIN BUTTON
+   ===================================================== */
+
+.login-button[b-gauanoolyw] {
+    height: 50px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    /*background-color: #0876a8;*/
+    background: linear-gradient(180deg, rgba(12, 35, 102, 1) 0%, rgba(12, 35, 102, 1) 0%, rgba(58, 5, 73, 1) 100%);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+    .login-button:hover[b-gauanoolyw] {
+        background-color: #075f88;
+        color: white;
+    }
+
+    .login-button:focus[b-gauanoolyw] {
+        background-color: #0876a8;
+        color: white;
+        box-shadow: 0 0 0 0.20rem rgba(8, 118, 168, 0.20);
+    }
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.login-footer[b-gauanoolyw] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.footer-line[b-gauanoolyw] {
+    flex: 1;
+    height: 1px;
+    background-color: #dee2e6;
+}
+
+.login-footer span[b-gauanoolyw] {
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   COPYRIGHT
+   ===================================================== */
+
+.copyright[b-gauanoolyw] {
+    margin-top: 12px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 576px) {
+
+    .login-page .container-fluid[b-gauanoolyw] {
+        padding: 15px;
+    }
+
+    .login-card[b-gauanoolyw] {
+        max-width: 100%;
+        padding: 32px 25px;
+    }
+
+    .login-title[b-gauanoolyw] {
+        font-size: 25px;
+    }
+
+    .login-subtitle[b-gauanoolyw] {
+        font-size: 13px;
+    }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 400px) {
+
+    .login-page .container-fluid[b-gauanoolyw] {
+        padding: 8px;
+    }
+
+    .login-card[b-gauanoolyw] {
+        padding: 28px 20px;
+        border-radius: 18px;
+    }
+
+    .logo-box[b-gauanoolyw] {
+        width: 85px;
+        height: 68px;
+    }
+
+    .login-title[b-gauanoolyw] {
+        font-size: 24px;
+    }
+
+    .login-subtitle[b-gauanoolyw] {
+        font-size: 12px;
+    }
+}

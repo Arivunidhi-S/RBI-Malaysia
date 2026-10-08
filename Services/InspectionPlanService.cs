@@ -1,292 +1,227 @@
-﻿using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using RBI_Malaysia.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace RBI_Malaysia.Services
 {
     public class InspectionPlanService
     {
-        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
 
         public InspectionPlanService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _connectionString = configuration.GetConnectionString("connString")
+                ?? throw new InvalidOperationException("Connection string 'connString' not found.");
         }
 
-        private SqlConnection GetConnection()
+        // Damage Factor options — all damage mechanisms that feed InspectionPlan
+        public static readonly List<string> DamageFactorOptions = new()
         {
-            string connectionString =
-                _configuration.GetConnectionString("connString")
-                ?? throw new InvalidOperationException(
-                    "connString connection string not found.");
+            "Thinning", "Caustic", "Amine", "Sulfide", "H2S", "Carbonate",
+            "PTA", "CLSCC", "HSC-HF", "HIC/SOHIC-HF", "CUI", "ECD"
+        };
 
-            return new SqlConnection(connectionString);
-        }
+        // =================================================================
+        // 1. CASCADING DROPDOWNS
+        // =================================================================
 
-        // =========================================================
-        // PROCESS AREA
-        // =========================================================
-        public async Task<List<Insplan_ProcessAreaModel>> GetProcessAreasAsync(
-            decimal companyId)
+        public async Task<List<ProcessAreaModel>> GetProcessAreasAsync(string companyId)
         {
-            var list = new List<Insplan_ProcessAreaModel>();
-
-            await using SqlConnection conn = GetConnection();
+            var list = new List<ProcessAreaModel>();
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(
+                "SELECT [ProcessAreaID],[processarea] FROM [Tbl_ProcessArea] WHERE deleted=0 AND CompanyID=@cid ORDER BY [processareaid]", conn);
+            cmd.Parameters.Add("@cid", SqlDbType.Decimal).Value = companyId;
             await conn.OpenAsync();
-
-            // உங்கள் existing ProcessArea table/SP பெயர்
-            // project-ல் ஏற்கனவே இருக்கும் SP-ஐ இங்கே பயன்படுத்தவும்.
-            string query = "SELECT [ProcessAreaID], [processarea] FROM [Tbl_ProcessArea] WHERE deleted = 0 and CompanyID=@companyid ORDER BY [processareaid]";
-            await using SqlCommand cmd =
-                new SqlCommand(query, conn);
-
-            //cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@companyid", companyId);
-
-            await using SqlDataReader reader =
-                await cmd.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                list.Add(new Insplan_ProcessAreaModel
-                {
-                    Id = Convert.ToDecimal(reader["ProcessAreaID"]),
-                    Name = reader["processarea"]?.ToString() ?? ""
-                });
-            }
-
+            using var rd = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+            while (rd.HasRows && await rd.ReadAsync())
+                list.Add(new ProcessAreaModel { ProcessAreaID = rd.GetDecimal(0), ProcessArea = rd.IsDBNull(1) ? "" : rd.GetString(1) });
             return list;
         }
 
-        // =========================================================
-        // EQUIPMENT
-        // =========================================================
-        // EQUIPMENT FIX
-        public async Task<List<Insplan_EquipmentModel>> GetEquipmentsAsync(decimal processAreaId)
+        public async Task<List<EquipmentModel>> GetEquipmentsByProcessAsync(decimal processAreaId)
         {
-            var list = new List<Insplan_EquipmentModel>();
-
-            await using SqlConnection conn = GetConnection();
+            var list = new List<EquipmentModel>();
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(
+                "SELECT EquAutoID,EqupID,EqupType FROM Tbl_EquipmentAsset WHERE ProcessAreaID=@pid AND deleted=0", conn);
+            cmd.Parameters.Add("@pid", SqlDbType.Decimal).Value = processAreaId;
             await conn.OpenAsync();
-            string query = "SELECT EquAutoID, EqupID, EqupType FROM Tbl_EquipmentAsset WHERE ProcessAreaID = @ProcID AND deleted = 0";
-
-            await using SqlCommand cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@ProcID", processAreaId);
-
-            await using SqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                list.Add(new Insplan_EquipmentModel
-                {
-                    // EqupID-ஐ Id-ஆக மாற்றியுள்ளோம் (Query-ல் EquipID இல்லை, EqupID தான் உள்ளது)
-                    Id = Convert.ToDecimal(reader["EquAutoID"]),
-                    EquipType = reader["EqupID"]?.ToString() ?? ""
-                });
-            }
-
+            using var rd = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+            while (rd.HasRows && await rd.ReadAsync())
+                list.Add(new EquipmentModel { EquAutoID = rd.GetDecimal(0), EquPID = $"{rd.GetString(1)} - {rd.GetString(2)}" });
             return list;
         }
 
-        // COMPONENT FIX
-        public async Task<List<Insplan_ComponentModel>> GetComponentsAsync(decimal equipmentId)
+        public async Task<List<ComponentModel>> GetComponentsByEquipmentAsync(string equipmentId)
         {
-            var list = new List<Insplan_ComponentModel>();
-
-            await using SqlConnection conn = GetConnection();
+            var list = new List<ComponentModel>();
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(
+                "SELECT compautoid,CompNo,compname FROM Tbl_EquipmentComponentDetails WHERE EqupID=@eid AND deleted=0", conn);
+            cmd.Parameters.Add("@eid", SqlDbType.NVarChar, 20).Value = equipmentId ?? "";
             await conn.OpenAsync();
-            string query = "SELECT compautoid, CompNo, compname FROM Tbl_EquipmentComponentDetails WHERE EqupID = @EquID AND deleted = 0";
-
-            await using SqlCommand cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@EquID", equipmentId.ToString());          
-
-            await using SqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                list.Add(new Insplan_ComponentModel
-                {
-                    Id = reader["compautoid"] == DBNull.Value
-                        ? 0
-                        : Convert.ToDecimal(reader["compautoid"]),
-
-                    //CompNo = reader["CompNo"]?.ToString() ?? "",
-
-                    Name = reader["compname"]?.ToString() ?? ""
-                });
-            }
-
-           // return components;
+            using var rd = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+            while (rd.HasRows && await rd.ReadAsync())
+                list.Add(new ComponentModel { CompAutoID = rd.GetDecimal(0), CompNo = $"{rd.GetString(1)} - {rd.GetString(2)}" });
             return list;
         }
 
+        // =================================================================
+        // 2. LOAD LIST — filtered by Process Area / Equipment / Component
+        // =================================================================
 
-        // =========================================================
-        // SAVE / INSERT / UPDATE
-        // Existing SP: sp_InspectEffectPlan_Save
-        // =========================================================
-        public async Task SaveInspectionPlanAsync(
-            decimal processAreaId,
-            decimal equipmentId,
-            decimal componentId,
-            string damageFact,
-            string inspectCate,
-            DateTime inspectDate,
-            string saveFlag)
-        {
-            await using SqlConnection conn = GetConnection();
-            await conn.OpenAsync();
-
-            await using SqlCommand cmd =
-                new SqlCommand("sp_InspectEffectPlan_Save", conn);
-
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue(
-                "@ProcessareaIDp", processAreaId);
-
-            cmd.Parameters.AddWithValue(
-                "@EqupIDp", equipmentId);
-
-            cmd.Parameters.AddWithValue(
-                "@CompIDp", componentId);
-
-            cmd.Parameters.AddWithValue(
-                "@DamageFactp", damageFact ?? "");
-
-            cmd.Parameters.AddWithValue(
-                "@InspectCatep", inspectCate ?? "");
-
-            cmd.Parameters.AddWithValue(
-                "@InspectDatep", inspectDate);
-
-            cmd.Parameters.AddWithValue(
-                "@saveflagp", saveFlag ?? "N");
-
-            await cmd.ExecuteNonQueryAsync();
-        }
-
-        // =========================================================
-        // GET INSPECTION PLANS
-        // =========================================================
-        public async Task<List<InspectionPlanModel>>
-            GetInspectionPlansAsync(
-                decimal processAreaId,
-                decimal equipmentId,
-                decimal componentId)
+        public async Task<List<InspectionPlanModel>> GetInspectionPlansAsync(
+            decimal procId, decimal equId, decimal compId)
         {
             var list = new List<InspectionPlanModel>();
+            string sql = @"
+                SELECT ip.InspectID, ip.ProcID, ip.EquID, ip.CompID,
+                       ip.DamageFact, ip.InspectCate, ip.InspectDate,
+                       ie.InsEffCate, ie.IntrInsp, ie.NonIntrInsp,
+                       pa.processarea,
+                       ea.EqupID + ' - ' + ea.EqupType AS EquipName,
+                       cd.CompNo  + ' - ' + cd.compname  AS CompName
+                FROM InspectionPlan ip
+                LEFT JOIN InspectEffect ie
+                    ON ie.DamageFactor = ip.DamageFact AND ie.InsCate = ip.InspectCate
+                LEFT JOIN Tbl_ProcessArea               pa ON pa.ProcessAreaID = ip.ProcID
+                LEFT JOIN Tbl_EquipmentAsset            ea ON ea.EquAutoID     = ip.EquID
+                LEFT JOIN Tbl_EquipmentComponentDetails cd ON cd.compautoid    = ip.CompID
+                WHERE (@ProcID = 0 OR ip.ProcID = @ProcID)
+                  AND (@EquID  = 0 OR ip.EquID  = @EquID)
+                  AND (@CompID = 0 OR ip.CompID = @CompID)
+                ORDER BY pa.processarea, ea.EqupID, cd.CompNo, ip.DamageFact";
 
-            await using SqlConnection conn = GetConnection();
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@ProcID", procId);
+            cmd.Parameters.AddWithValue("@EquID", equId);
+            cmd.Parameters.AddWithValue("@CompID", compId);
             await conn.OpenAsync();
-
-            await using SqlCommand cmd =
-                new SqlCommand(
-                    @"SELECT
-                        InspectID,
-                        ProcID,
-                        EquID,
-                        CompID,
-                        DamageFact,
-                        InspectCate,
-                        InspectDate
-                      FROM InspectionPlan
-                      WHERE ProcID = @ProcID
-                        AND EquID = @EquID
-                        AND CompID = @CompID
-                      ORDER BY InspectID DESC",
-                    conn);
-
-            cmd.CommandType = CommandType.Text;
-
-            cmd.Parameters.AddWithValue("@ProcID", processAreaId);
-            cmd.Parameters.AddWithValue("@EquID", equipmentId);
-            cmd.Parameters.AddWithValue("@CompID", componentId);
-
-            await using SqlDataReader reader =
-                await cmd.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
+            using var rd = await cmd.ExecuteReaderAsync();
+            while (await rd.ReadAsync())
             {
+                string? S(string c) => rd[c] == DBNull.Value ? null : rd[c].ToString()?.Trim();
+                DateTime? Dt(string c) => rd[c] == DBNull.Value ? null : Convert.ToDateTime(rd[c]);
+
                 list.Add(new InspectionPlanModel
                 {
-                    InspectID = Convert.ToDecimal(
-                        reader["InspectID"]),
-
-                    ProcID = Convert.ToDecimal(
-                        reader["ProcID"]),
-
-                    EquID = Convert.ToDecimal(
-                        reader["EquID"]),
-
-                    CompID = Convert.ToDecimal(
-                        reader["CompID"]),
-
-                    DamageFact =
-                        reader["DamageFact"]?.ToString() ?? "",
-
-                    InspectCate =
-                        reader["InspectCate"]?.ToString() ?? "",
-
-                    InspectDate =
-                        reader["InspectDate"] == DBNull.Value
-                            ? null
-                            : Convert.ToDateTime(
-                                reader["InspectDate"])
+                    InspectID = Convert.ToDecimal(rd["InspectID"]),
+                    ProcID = Convert.ToDecimal(rd["ProcID"]),
+                    EquID = Convert.ToDecimal(rd["EquID"]),
+                    CompID = Convert.ToDecimal(rd["CompID"]),
+                    DamageFact = S("DamageFact"),
+                    InspectCate = S("InspectCate"),
+                    InspectDate = Dt("InspectDate"),
+                    InsEffCate = S("InsEffCate"),
+                    IntrInsp = S("IntrInsp"),
+                    NonIntrInsp = S("NonIntrInsp"),
+                    ProcessArea = S("processarea"),
+                    EquipmentName = S("EquipName"),
+                    ComponentName = S("CompName"),
                 });
             }
-
             return list;
         }
-    }
 
-    // =============================================================
-    // PROCESS AREA MODEL
-    // =============================================================
-    public class Insplan_ProcessAreaModel
-    {
-        public decimal Id { get; set; }
+        // =================================================================
+        // 3. LOOKUP — InspectEffect recommendation when DamageFact + InspectCate change
+        // =================================================================
 
-        public string Name { get; set; } = "";
-    }
+        public async Task<(string insEffCate, string intrInsp, string nonIntrInsp)> GetInspectEffectAsync(
+            string damageFactor, string inspectCate)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(
+                "SELECT InsEffCate, IntrInsp, NonIntrInsp FROM InspectEffect WHERE DamageFactor=@df AND InsCate=@ic", conn);
+            cmd.Parameters.AddWithValue("@df", damageFactor);
+            cmd.Parameters.AddWithValue("@ic", inspectCate);
+            await conn.OpenAsync();
+            using var rd = await cmd.ExecuteReaderAsync();
+            if (await rd.ReadAsync())
+            {
+                string S(string c) => rd[c] == DBNull.Value ? "" : rd[c].ToString()?.Trim() ?? "";
+                return (S("InsEffCate"), S("IntrInsp"), S("NonIntrInsp"));
+            }
+            return ("", "", "");
+        }
 
-    // =============================================================
-    // EQUIPMENT MODEL
-    // =============================================================
-    public class Insplan_EquipmentModel
-    {
-        public decimal Id { get; set; }
+        // =================================================================
+        // 4. SAVE (INSERT or UPDATE)
+        // =================================================================
 
-        public string EquipType { get; set; } = "";
-    }
+        public async Task<InspectionPlanModel> SaveInspectionPlanAsync(InspectionPlanModel m)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            await conn.OpenAsync();
 
-    // =============================================================
-    // COMPONENT MODEL
-    // =============================================================
-    public class Insplan_ComponentModel
-    {
-        public decimal Id { get; set; }
+            // Check existing by ProcID + EquID + CompID + DamageFact (compound key)
+            int count = Convert.ToInt32(await new SqlCommand(
+                "SELECT COUNT(1) FROM InspectionPlan WHERE ProcID=@p AND EquID=@e AND CompID=@c AND DamageFact=@df",
+                conn)
+            {
+                Parameters =
+                {
+                    new("@p",  m.ProcID ?? 0),
+                    new("@e",  m.EquID ?? 0),
+                    new("@c",  m.CompID ?? 0),
+                    new("@df", m.DamageFact ?? "")
+                }
+            }.ExecuteScalarAsync());
 
-        public string Name { get; set; } = "";
-    }
+            using var cmd = new SqlCommand { Connection = conn };
 
-    // =============================================================
-    // INSPECTION PLAN MODEL
-    // =============================================================
-    public class InspectionPlanModel
-    {
-        public decimal InspectID { get; set; }
+            if (count > 0)
+            {
+                cmd.CommandText = @"
+UPDATE InspectionPlan SET
+InspectCate=@InspectCate, InspectDate=@InspectDate
+WHERE ProcID=@ProcID AND EquID=@EquID AND CompID=@CompID AND DamageFact=@DamageFact";
+            }
+            else
+            {
+                cmd.CommandText = @"
+INSERT INTO InspectionPlan (ProcID, EquID, CompID, DamageFact, InspectCate, InspectDate)
+VALUES (@ProcID, @EquID, @CompID, @DamageFact, @InspectCate, @InspectDate)";
+            }
 
-        public decimal ProcID { get; set; }
+            cmd.Parameters.AddWithValue("@ProcID",      m.ProcID ?? 0);
+            cmd.Parameters.AddWithValue("@EquID",       m.EquID ?? 0);
+            cmd.Parameters.AddWithValue("@CompID",      m.CompID ?? 0);
+            cmd.Parameters.AddWithValue("@DamageFact",  (object?)m.DamageFact ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@InspectCate", (object?)m.InspectCate ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@InspectDate", (object?)m.InspectDate ?? DBNull.Value);
 
-        public decimal EquID { get; set; }
+            await cmd.ExecuteNonQueryAsync();
 
-        public decimal CompID { get; set; }
+            // Refresh the InspectEffect lookup fields after save
+            if (!string.IsNullOrEmpty(m.DamageFact) && !string.IsNullOrEmpty(m.InspectCate))
+            {
+                var (eff, intr, nonIntr) = await GetInspectEffectAsync(m.DamageFact, m.InspectCate);
+                m.InsEffCate = eff;
+                m.IntrInsp   = intr;
+                m.NonIntrInsp = nonIntr;
+            }
+            return m;
+        }
 
-        public string DamageFact { get; set; } = "";
+        // =================================================================
+        // 5. DELETE
+        // =================================================================
 
-        public string InspectCate { get; set; } = "";
-
-        public DateTime? InspectDate { get; set; }
+        public async Task<bool> DeleteInspectionPlanAsync(decimal inspectId)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(
+                "DELETE FROM InspectionPlan WHERE InspectID=@id", conn);
+            cmd.Parameters.AddWithValue("@id", inspectId);
+            await conn.OpenAsync();
+            return await cmd.ExecuteNonQueryAsync() > 0;
+        }
     }
 }

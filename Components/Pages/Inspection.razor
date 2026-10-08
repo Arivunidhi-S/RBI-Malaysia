@@ -92,7 +92,7 @@
                         @foreach (var item in equipments)
                         {
                             <option value="@item.EqupID">
-                                @item.EquipmentName
+                                @item.EquipmentName -  @item.EqupType
                             </option>
                         }
 
@@ -812,6 +812,7 @@
             new SqlCommand(
                 @"SELECT
                       EquAutoID,
+                        EquPID,
                       EqupType
                   FROM Tbl_EquipmentAsset
                   WHERE Deleted = 0
@@ -842,8 +843,14 @@
                             ? ""
                             : reader["EquAutoID"]
                                 .ToString(),
-
                     EquipmentName =
+                        reader["EquPID"] ==
+                        DBNull.Value
+                            ? ""
+                            : reader["EquPID"]
+                                .ToString(),
+
+                    EqupType =
                         reader["EqupType"] ==
                         DBNull.Value
                             ? ""

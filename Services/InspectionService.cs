@@ -863,6 +863,8 @@ public class InspectionEquipment
     public string? EqupID { get; set; }
 
     public string? EquipmentName { get; set; }
+
+    public string? EqupType { get; set; }
 }
 
 

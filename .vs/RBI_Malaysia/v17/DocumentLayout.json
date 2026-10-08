@@ -3,20 +3,34 @@
   "WorkspaceRootPath": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\layout\\ecdflayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\layout\\ecdflayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\reports\\inspectiondetailsreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\reports\\inspectiondetailsreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\reports\\equipmentreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\reports\\equipmentreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\externalclscc.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\externalclscc.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\reports\\poflist.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\reports\\poflist.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\cui.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\cui.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\cofflammable.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\cofflammable.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\rbi_malaysia.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:rbi_malaysia.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|c:\\users\\arivunithi\\source\\repos\\rbi-malaysia\\components\\pages\\inspectionplan.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D0046376-3243-4A24-839C-1ADBE19FB460}|RBI_Malaysia.csproj|solutionrelative:components\\pages\\inspectionplan.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1E7CAEA-9E8F-49C6-8327-C066DAD1CBAB}|..\\ReportRBISystem\\ReportRBISystem.csproj|c:\\users\\arivunithi\\source\\repos\\reportrbisystem\\controllers\\rbireportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1E7CAEA-9E8F-49C6-8327-C066DAD1CBAB}|..\\ReportRBISystem\\ReportRBISystem.csproj|c:\\users\\arivunithi\\source\\repos\\reportrbisystem\\models\\reporthelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,54 +49,101 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ECDFLayout.razor",
-              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Layout\\ECDFLayout.razor",
-              "RelativeDocumentMoniker": "Components\\Layout\\ECDFLayout.razor",
-              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Layout\\ECDFLayout.razor",
-              "RelativeToolTip": "Components\\Layout\\ECDFLayout.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Title": "InspectionDetailsReport.razor",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Reports\\InspectionDetailsReport.razor",
+              "RelativeDocumentMoniker": "Components\\Reports\\InspectionDetailsReport.razor",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Reports\\InspectionDetailsReport.razor",
+              "RelativeToolTip": "Components\\Reports\\InspectionDetailsReport.razor",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAFEAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-10-03T10:24:57.846Z",
+              "WhenOpened": "2026-10-08T09:22:43.608Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "NavMenu.razor",
-              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Layout\\NavMenu.razor",
-              "RelativeDocumentMoniker": "Components\\Layout\\NavMenu.razor",
-              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Layout\\NavMenu.razor",
-              "RelativeToolTip": "Components\\Layout\\NavMenu.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "EquipmentReport.razor",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Reports\\EquipmentReport.razor",
+              "RelativeDocumentMoniker": "Components\\Reports\\EquipmentReport.razor",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Reports\\EquipmentReport.razor",
+              "RelativeToolTip": "Components\\Reports\\EquipmentReport.razor",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAIwGMAAABYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-10-03T10:24:55.823Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CUI.razor",
-              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\CUI.razor",
-              "RelativeDocumentMoniker": "Components\\Pages\\CUI.razor",
-              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\CUI.razor",
-              "RelativeToolTip": "Components\\Pages\\CUI.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-10-03T10:22:02.776Z",
+              "WhenOpened": "2026-10-08T09:16:44.128Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ExternalCLSCC.razor",
-              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\ExternalCLSCC.razor",
-              "RelativeDocumentMoniker": "Components\\Pages\\ExternalCLSCC.razor",
-              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\ExternalCLSCC.razor",
-              "RelativeToolTip": "Components\\Pages\\ExternalCLSCC.razor",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Title": "POFList.razor",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Reports\\POFList.razor",
+              "RelativeDocumentMoniker": "Components\\Reports\\POFList.razor",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Reports\\POFList.razor",
+              "RelativeToolTip": "Components\\Reports\\POFList.razor",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAQwHEAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-10-03T10:19:18.57Z",
+              "WhenOpened": "2026-10-08T08:56:51.748Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "COFFlammable.razor",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\COFFlammable.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\COFFlammable.razor",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\COFFlammable.razor",
+              "RelativeToolTip": "Components\\Pages\\COFFlammable.razor",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAAALcAAAB7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-10-08T08:57:14.147Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "RBI_Malaysia",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\RBI_Malaysia.csproj",
+              "RelativeDocumentMoniker": "RBI_Malaysia.csproj",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\RBI_Malaysia.csproj",
+              "RelativeToolTip": "RBI_Malaysia.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-10-08T08:11:55.792Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ReportHelper.cs",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\ReportRBISystem\\Models\\ReportHelper.cs",
+              "RelativeDocumentMoniker": "..\\ReportRBISystem\\Models\\ReportHelper.cs",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\ReportRBISystem\\Models\\ReportHelper.cs",
+              "RelativeToolTip": "..\\ReportRBISystem\\Models\\ReportHelper.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAQwGkAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-08T07:45:27.317Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RBIReportController.cs",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\ReportRBISystem\\Controllers\\RBIReportController.cs",
+              "RelativeDocumentMoniker": "..\\ReportRBISystem\\Controllers\\RBIReportController.cs",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\ReportRBISystem\\Controllers\\RBIReportController.cs",
+              "RelativeToolTip": "..\\ReportRBISystem\\Controllers\\RBIReportController.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAgwBsAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-08T07:44:20.93Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "InspectionPlan.razor",
+              "DocumentMoniker": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\InspectionPlan.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\InspectionPlan.razor",
+              "ToolTip": "C:\\Users\\Arivunithi\\source\\repos\\RBI-Malaysia\\Components\\Pages\\InspectionPlan.razor",
+              "RelativeToolTip": "Components\\Pages\\InspectionPlan.razor",
+              "ViewState": "AgIAAKkAAAAAAAAAAADwv8wAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-10-07T11:46:19.375Z"
             }
           ]
         }
