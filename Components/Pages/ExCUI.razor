@@ -1,0 +1,364 @@
+@page "/externalcuiclscc"
+
+@using RBI_Malaysia.Models
+@using RBI_Malaysia.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject ECDService ECDService
+@inject ExCUIService ExCUIService
+@inject UserSession UserSession
+@inject IJSRuntime JS
+
+<PageTitle>POF - External CUI CLSCC</PageTitle>
+
+<div class="staff-page">
+    @layout ECDFLayout
+    <div class="staff-card">
+
+        <div class="staff-card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0"><i class="bi bi-snow me-2 text-secondary"></i> POF — External CUI CLSCC</h5>
+                <small>External CUI CLSCC Damage Factor (Df-ext-CUI)</small>
+            </div>
+        </div>
+
+        <div class="staff-card-body">
+
+            @if (!string.IsNullOrEmpty(statusMessage))
+            {
+                <div class="alert @statusClass py-2">@statusMessage</div>
+            }
+
+            <!-- வடிகட்டி பகுதி -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Process Area <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedProcessArea" @onchange="ProcessAreaChanged">
+                        <option value="0">-- Select Process Area --</option>
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ProcessAreaID">@item.ProcessArea</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Equipment <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedEquipment" @onchange="EquipmentChanged" disabled="@(selectedProcessArea <= 0)">
+                        <option value="0">-- Select Equipment --</option>
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EquAutoID">@item.EquPID</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Component <span class="text-danger">*</span></label>
+                    <select class="form-select" value="@selectedComponent" @onchange="ComponentChanged" disabled="@(selectedEquipment <= 0)">
+                        <option value="0">-- Select Component --</option>
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.CompAutoID">@item.CompNo</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <h6 class="text-muted border-bottom pb-1 mb-3">Inspection Details</h6>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Inspection Date</label>
+                    <InputDate class="form-control" @bind-Value="model.InspectDate" @bind-Value:after="InspectDateChanged" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Inspection Effectiveness</label>
+                    <select class="form-select" @bind="model.InsEff">
+                        <option value="">Select</option>
+                        @foreach (var x in ExCLSLookups.InspectionEffectiveness)
+                        {
+                            <option value="@x.Code">@x.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">No of Inspection</label>
+                    <select class="form-select" @bind="model.Nofins">
+                        <option value="">Select</option>
+                        @for (int i = 1; i <= 6; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-secondary fw-bold">Age-tk (calculated)</label>
+                    <InputNumber class="form-control" @bind-Value="model.Agtk" />
+                </div>
+            </div>
+
+            <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Coating</h6>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Comp/Coating Instal Date</label>
+                    <InputDate class="form-control" @bind-Value="model.CmpInstalDate" @bind-Value:after="RecalcAge" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Calculation Date</label>
+                    <InputDate class="form-control" @bind-Value="model.CalcDate" @bind-Value:after="RecalcAge" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Coating Quality</label>
+                    <select class="form-select" @bind="model.CoatQualCode" @bind:after="RecalcAge">
+                        <option value="">Select</option>
+                        @foreach (var x in ExCLSLookups.CoatQualities)
+                        {
+                            <option value="@x.Code">@x.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-secondary fw-bold">Age (calculated)</label>
+                    <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.Age" readonly />
+                </div>
+            </div>
+
+            <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Environment & Insulation</h6>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Area</label>
+                    <select class="form-select" @bind="model.CrDriverCode" @bind:after="RecalcSvi">
+                        <option value="">Select</option>
+                        @foreach (var x in ExCLSLookups.Areas) { <option value="@x.Code">@x.Text</option> }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Piping Complexity</label>
+                    <select class="form-select" @bind="model.PipCode" @bind:after="RecalcSvi">
+                        <option value="">Select</option>
+                        @foreach (var x in ExCLSLookups.Pip) { <option value="@x.Code">@x.Text</option> }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Insulation Condition</label>
+                    <select class="form-select" @bind="model.InsConCode" @bind:after="RecalcSvi">
+                        <option value="">Select</option>
+                        @foreach (var x in ExCLSLookups.InsCon) { <option value="@x.Code">@x.Text</option> }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Chloride Free Insulation</label>
+                    <select class="form-select" @bind="model.ChlrFreeCode" @bind:after="RecalcSvi">
+                        <option value="">Select</option>
+                        @foreach (var x in ExCLSLookups.Chloride) { <option value="@x.Code">@x.Text</option> }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary fw-bold">Svi (calculated)</label>
+                    <input type="text" class="form-control bg-warning-subtle text-danger" value="@model.Svi" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary fw-bold">Df-ext-CUI (calculated)</label>
+                    <input type="text" class="form-control fw-bold bg-warning-subtle text-danger" value="@model.Df" readonly />
+                </div>
+            </div>
+
+           @*  <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Results</h6>
+            <div class="row g-3">
+               
+            </div> *@
+
+            <!-- பொத்தான்கள் -->
+            <div class="staff-buttons mt-4 d-flex gap-2">
+                <button type="button" class="btn btn-info text-white fw-bold" @onclick="Calculate" disabled="@isCalculating">
+                    @(isCalculating ? "Calculating..." : "Calculate")
+                </button>
+                <button type="button" class="btn btn-success fw-bold" @onclick="Save" disabled="@(isSaving || model.Df == null)">
+                    @(isSaving ? "Saving..." : (hasExistingData ? "Update" : "Save"))
+                </button>
+                <button type="button" class="btn btn-secondary" @onclick="ClearForm">Clear</button>
+                @if (hasExistingData)
+                {
+                    <button type="button" class="btn btn-danger" @onclick="DeleteRecord">Delete</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private ExCUIModel model = new();
+    private decimal selectedProcessArea, selectedEquipment, selectedComponent;
+
+    private List<ProcessAreaModel> processAreas = new();
+    private List<EquipmentModel> equipments = new();
+    private List<ComponentModel> components = new();
+
+    private bool hasExistingData, isSaving, isCalculating;
+    private string? statusMessage, statusClass;
+
+    [SupplyParameterFromQuery] public decimal Proc { get; set; }
+    [SupplyParameterFromQuery] public decimal Equ { get; set; }
+    [SupplyParameterFromQuery] public decimal Comp { get; set; }
+
+    protected override async Task OnInitializedAsync()
+        => processAreas = await ECDService.GetProcessAreasAsync(UserSession.CompanyID);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Proc > 0 && Equ > 0 && Comp > 0 && selectedComponent != Comp)
+        {
+            selectedProcessArea = Proc;
+            selectedEquipment = Equ;
+            equipments = await ECDService.GetEquipmentsByProcessAsync(Proc);
+            components = await ECDService.GetComponentsByEquipmentAsync(Equ.ToString());
+            await LoadComponent(Comp);
+        }
+    }
+
+    private void SetStatus(string? msg, bool error = true)
+    {
+        statusMessage = msg;
+        statusClass = error ? "alert-danger" : "alert-success";
+    }
+
+    // ---------- Cascade ----------
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
+    {
+        decimal.TryParse(e.Value?.ToString(), out selectedProcessArea);
+        selectedEquipment = selectedComponent = 0;
+        equipments.Clear(); components.Clear();
+        ResetModel();
+
+        if (selectedProcessArea > 0)
+        {
+            try { equipments = await ECDService.GetEquipmentsByProcessAsync(selectedProcessArea); }
+            catch (Exception ex) { SetStatus($"Equipment load failed: {ex.Message}"); }
+        }
+    }
+
+    private async Task EquipmentChanged(ChangeEventArgs e)
+    {
+        decimal.TryParse(e.Value?.ToString(), out selectedEquipment);
+        selectedComponent = 0;
+        components.Clear();
+        ResetModel();
+
+        if (selectedEquipment > 0)
+        {
+            try { components = await ECDService.GetComponentsByEquipmentAsync(selectedEquipment.ToString()); }
+            catch (Exception ex) { SetStatus($"Component load failed: {ex.Message}"); }
+        }
+    }
+
+    private async Task ComponentChanged(ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value?.ToString(), out var id) && id > 0)
+            await LoadComponent(id);
+    }
+
+    private async Task LoadComponent(decimal id)
+    {
+        selectedComponent = id;
+        try
+        {
+            var existing = await ExCUIService.GetRecordAsync(selectedProcessArea, selectedEquipment, id);
+            if (existing != null) { model = existing; hasExistingData = true; }
+            else { ResetModel(); model.CompID = id; }
+            SetStatus(null);
+        }
+        catch (Exception ex) { SetStatus($"Record load failed: {ex.Message}"); }
+    }
+
+    private void ResetModel()
+    {
+        model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = selectedComponent };
+        if (decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;   // CompanyID bug pattern
+        hasExistingData = false;
+    }
+
+    // ---------- Auto-fill ----------
+    private bool HasSelection => selectedProcessArea > 0 && selectedEquipment > 0 && selectedComponent > 0;
+
+    private async Task InspectDateChanged()
+    {
+        if (!HasSelection) { SetStatus("Please select Process Area, Equipment and Component"); return; }
+        if (model.InspectDate is null) return;
+        try
+        {
+            model.Agtk = await ExCUIService.GetAgeTkAsync(model.InspectDate.Value.Year, selectedProcessArea, selectedEquipment);
+            SetStatus(null);
+        }
+        catch (Exception ex) { SetStatus($"Age-tk failed: {ex.Message}"); }
+    }
+
+    private void RecalcAge() => ExCUIService.ComputeCoatAge(model);
+
+    // Area / Pip / InsCon / ChlrFree - ethu maarinaalum Svi recompute
+    private async Task RecalcSvi()
+    {
+        model.Svi = null;
+        if (string.IsNullOrEmpty(model.CrDriverCode)) return;   // legacy sviload() Area + OPTemp mattum use pannum
+        if (!HasSelection) { SetStatus("Please select Process Area, Equipment and Component"); return; }
+
+        try
+        {
+            model.Svi = await ExCUIService.GetSviAsync(selectedComponent, model.CrDriverCode);
+            SetStatus(null);
+        }
+        catch (Exception ex) { SetStatus($"Svi load failed: {ex.Message}"); }
+    }
+
+    // ---------- Actions ----------
+    private bool RequiredForCalc() =>
+        HasSelection && !string.IsNullOrEmpty(model.InsEff) && model.Age != null
+        && !string.IsNullOrEmpty(model.Svi) && model.Nofins != null;
+
+    private async Task Calculate()
+    {
+        if (!RequiredForCalc()) { SetStatus("Please check all the fields"); return; }
+        isCalculating = true;
+        try { model = await ExCUIService.CalculateAsync(model); SetStatus(null); }
+        catch (Exception ex) { SetStatus($"Calculate failed: {ex.Message}"); }
+        finally { isCalculating = false; }
+    }
+
+    private async Task Save()
+    {
+        if (!RequiredForCalc() || model.Agtk == null || model.InspectDate == null
+            || model.CalcDate == null || model.CmpInstalDate == null || model.Df == null)
+        { SetStatus("Please check all the fields"); return; }
+
+        isSaving = true;
+        try
+        {
+            if (model.CompanyID == null && decimal.TryParse(UserSession.CompanyID, out var cid)) model.CompanyID = cid;
+            bool wasUpdate = hasExistingData;
+            model = await ExCUIService.SaveAsync(model, UserSession.UserID);   // UserSession property name check pannunga
+            hasExistingData = true;
+            SetStatus(null);
+            await JS.InvokeVoidAsync("sweetAlert.success", wasUpdate ? "Updated!" : "Saved!", "External CUI CLSCC saved successfully.");
+        }
+        catch (Exception ex) { SetStatus($"Save failed: {ex.Message}"); }
+        finally { isSaving = false; }
+    }
+
+    private async Task DeleteRecord()
+    {
+        try
+        {
+            await ExCUIService.DeleteAsync(model.ExCUIID, UserSession.UserID);
+            await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!", "Record deleted successfully.");
+            ClearForm();
+        }
+        catch (Exception ex) { SetStatus($"Delete failed: {ex.Message}"); }
+    }
+
+    private void ClearForm()
+    {
+        model = new();
+        selectedProcessArea = selectedEquipment = selectedComponent = 0;
+        equipments.Clear(); components.Clear();
+        hasExistingData = false;
+        SetStatus(null);
+    }
+}

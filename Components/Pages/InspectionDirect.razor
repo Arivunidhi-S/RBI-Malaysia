@@ -1,0 +1,1033 @@
+@page "/inspection-direct"
+@using System.ComponentModel.DataAnnotations
+@using RBI_Malaysia.Services
+@using RBI_Malaysia.Components.Shared
+@using Microsoft.JSInterop
+
+@inject InspectionDirectService Service
+@inject UserSession UserSession
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<PageTitle>Inspection</PageTitle>
+
+<div class="staff-page">
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="staff-card">
+
+        <div class="staff-card-header">
+            <div>
+
+                <h5 class="mb-0">
+                    <i class="bi bi-tools"></i> Inspection
+                </h5>
+
+                <small>
+                    Inspection Component Details
+                </small>
+            </div>
+        </div>
+
+
+        <div class="staff-card-body">
+
+            <!-- ================================================= -->
+            <!-- FILTER -->
+            <!-- ================================================= -->
+
+            <div class="row g-3">
+
+                <!-- PROCESS AREA -->
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Process Area
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <select class="form-select"
+                            value="@selectedProcessArea"
+                            @onchange="ProcessAreaChanged">
+
+                        <option value="0">
+                            -- Select Process Area --
+                        </option>
+
+                        @foreach (var item in processAreas)
+                        {
+                            <option value="@item.ID">
+                                @item.ProcessArea
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <!-- EQUIPMENT -->
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Equipment
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <select class="form-select"
+                            value="@selectedEquipment"
+                            @onchange="EquipmentChanged"
+                            disabled="@(selectedProcessArea <= 0)">
+
+                        <option value="">
+                            -- Select Equipment --
+                        </option>
+
+                        @foreach (var item in equipments)
+                        {
+                            <option value="@item.EqupID">
+                                @item.EquipmentName -  @item.EqupType
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <!-- COMPONENT -->
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Component
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <select class="form-select"
+                            value="@selectedComponent"
+                            @onchange="ComponentChanged"
+                            disabled="@string.IsNullOrWhiteSpace(selectedEquipment)">
+
+                        <option value="">
+                            -- Select Component --
+                        </option>
+
+                        @foreach (var item in components)
+                        {
+                            <option value="@item.ComponentNo">
+                                @item.ComponentName
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- INSPECTION ENTRY -->
+            <!-- ================================================= -->
+
+            <EditForm Model="@inspection"
+                      OnValidSubmit="SaveInspection"
+                      FormName="InspectionForm">
+
+                <DataAnnotationsValidator />
+
+                <div class="row g-3 mt-1">
+
+                    <!-- INSPECTION POINT -->
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Inspection Point No
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="inspection.InspectionPointNo" />
+
+                    </div>
+
+
+                    <!-- DATE -->
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Inspection Date
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <InputDate class="form-control"
+                                   @bind-Value="inspection.InspecDate" />
+
+                    </div>
+
+
+                    <!-- READING -->
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Reading Value
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <InputNumber class="form-control"
+                                     @bind-Value="inspection.ReadingValue" />
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- BUTTONS -->
+                <!-- ================================================= -->
+
+                <div class="staff-buttons mt-4 d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            disabled="@isSaving">
+
+                        @if (isSaving)
+                        {
+                            <span class="spinner-border spinner-border-sm me-1"></span>
+                            <span>Saving...</span>
+                        }
+                        else
+                        {
+                            <span>
+                                @(inspection.InspecAutoID > 0
+                                                            ? "Update"
+                                                            : "Save")
+                        </span>
+                                                }
+
+                    </button>
+
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            @onclick="ClearForm">
+
+                        Clear
+
+                    </button>
+
+
+
+
+                </div>
+
+            </EditForm>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- CALCULATION RESULT -->
+    <!-- ===================================================== -->
+    @if (showCalculation)
+    {
+        <div class="staff-card mt-3">
+
+            <div class="staff-card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-calculator"></i>   Calculation Result of <b>Inspection Point No :</b> <strong class="text-danger"> @lastInspection?.InspectionPointNo </strong>
+                </h6>
+            </div>
+
+            <div class="staff-card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-2">
+                        <div class="inspection-summary" style="background-color:#EAE3FF">
+                            <small>Default CR Rate</small>
+                            <strong>
+                                @FormatDecimal(lastInspection?.Defaultvalue)
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="inspection-summary" style="background-color:#FFF1E5">
+                            <small>Short CR</small>
+                            <strong>
+                                @FormatDecimal(lastInspection?.ShortCRrate)
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="inspection-summary" style="background-color:#E5FFE7">
+                            <small>Long CR</small>
+                            <strong>
+                                @FormatDecimal(lastInspection?.LongCRrate)
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="inspection-summary" style="background-color:#E5F0FF">
+                            <small>uCR</small>
+                            <strong>
+                                @FormatDecimal(lastInspection?.UCR)
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="inspection-summary" style="background-color:#FFFFE5">
+                            <small>Remaining Life</small>
+                            <strong>
+                                @Convert.ToInt32(lastInspection?.RemainingLife)
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="inspection-summary" style="background-color:#FFE5FF">
+                            <small>Current Thickness</small>
+                            <strong>
+                                @FormatDecimal(lastInspection?.CurrentThickness)
+                            </strong>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- ===================================================== -->
+    <!-- GRID -->
+    <!-- ===================================================== -->
+
+    <div class="staff-card mt-3">
+        <div class="staff-card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="mb-0">
+                    <i class="bi bi-card-checklist"></i> Inspection Details
+                </h6>
+                <small>
+                    Total Records: @inspections.Count
+                </small>
+            </div>
+            <div class="staff-buttons mt-4 d-flex gap-2">
+                <button type="button" class="btn btn-info text-white" @onclick="LoadLastInspection"
+                        disabled="@(selectedProcessArea <= 0 || string.IsNullOrWhiteSpace(selectedEquipment) || string.IsNullOrWhiteSpace(selectedComponent))">
+                    Last Inspection Value
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-primary" @onclick="RefreshInspection"
+                        disabled="@(selectedProcessArea <= 0 || string.IsNullOrWhiteSpace(selectedEquipment) || string.IsNullOrWhiteSpace(selectedComponent) || isLoading)">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Refresh
+                </button>
+            </div>
+        </div>
+        <div class="staff-card-body">
+
+            @if (hasLoadedGrid && inspections.Count > 0)
+            {
+                <!-- Search + Page size controls -->
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small">Show</span>
+                        <select class="form-select form-select-sm" style="width:80px"
+                                value="@pageSize" @onchange="OnPageSizeChanged">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span class="text-muted small">records</span>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control form-control-sm" style="width:220px"
+                               placeholder="Search..." value="@searchText"
+                               @oninput="OnSearchInput" />
+                    </div>
+                </div>
+            }
+
+            <div class="table-responsive" @key="tableRenderKey">
+                <table class="table table-hover staff-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Edit</th>
+                            <th>Equipment</th>
+                            <th>Component</th>
+                            <th>InspecPoint</th>
+                            <th>InspecDate</th>
+                            <th>InspecValue</th>
+                            <th>PrevDate</th>
+                            <th>PrevValue</th>
+                            <th>InitialDate</th>
+                            <th>InitialValue</th>
+                            <th>RemainLife</th>
+                            <th>ShortCR</th>
+                            <th>LongCR</th>
+                            <th>uCR</th>
+                            @*  <th>DefaultLCR</th> *@
+
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (isLoading)
+                        {
+                            <tr>
+                                <td colspan="15" class="text-center py-4">
+                                    <div class="spinner-border text-primary"></div>
+                                    <div class="mt-2">Loading...</div>
+                                </td>
+                            </tr>
+                        }
+                        else if (!hasLoadedGrid)
+                        {
+                            <tr>
+                                <td colspan="15" class="text-center py-5 text-muted">
+                                    <i class="bi bi-funnel fs-3 d-block mb-2"></i>
+                                    Please select <strong>Process Area</strong>,
+                                    <strong>Equipment</strong> and <strong>Component</strong>
+                                    to load inspection details.
+                                </td>
+                            </tr>
+                        }
+                        else if (!PagedRows.Any())
+                        {
+                            <tr>
+                                <td colspan="15" class="text-center py-4 text-muted">
+                                    No inspection records found.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in PagedRows)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" style="width:40px" class="btn btn-outline-primary" title="Edit" @onclick="() => EditInspection(item)">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>@item.EquipmentName</td>
+                                    <td>@item.ComponentName</td>
+                                    <td>@item.InspectionPointNo</td>
+                                    <td>@FormatDate(item.InspecDate)</td>
+                                    <td style="background-color:#FFE5FF">@FormatDecimal(item.ReadingValue)</td>
+                                    <td>@FormatDate(item.PreviousDate)</td>
+                                    <td>@FormatDecimal(item.PreviousValue)</td>
+                                    <td>@FormatDate(item.InitialDate)</td>
+                                    <td>@FormatDecimal(item.InitialValue)</td>
+                                    @*   <td>@FormatDecimal(item.RemainingLife)</td> *@
+                                    <td style="background-color:#FFFFE5">@(Convert.ToInt32(item.RemainingLife))</td>
+                                    <td style="background-color:#FFF1E5">@FormatDecimal(item.ShortCRrate)</td>
+                                    <td style="background-color:#E5FFE7">@FormatDecimal(item.LongCRrate)</td>
+                                    <td style="background-color:#E5F0FF">@FormatDecimal(item.UCR)</td>
+                                    @*   <td>@FormatDecimal(item.DefaultLCR)</td> *@
+
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" style="width:40px"
+                                                    class="btn btn-outline-danger" title="Delete"
+                                                    @onclick="() => ConfirmDelete(item)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (hasLoadedGrid && TotalPages > 1)
+            {
+                <!-- Pagination controls -->
+                <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">
+                    <div class="text-muted small">
+                        Showing @(Math.Min((currentPage - 1) * pageSize + 1, FilteredRows.Count()))
+                        to @(Math.Min(currentPage * pageSize, FilteredRows.Count()))
+                        of @FilteredRows.Count() records
+                        @(FilteredRows.Count() != inspections.Count ? $"(filtered from {inspections.Count} total)" : "")
+                    </div>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                <button class="page-link" @onclick="() => GoToPage(1)">«</button>
+                            </li>
+                            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                <button class="page-link" @onclick="() => GoToPage(currentPage - 1)">‹</button>
+                            </li>
+                            @foreach (var p in GetPageNumbers())
+                            {
+                                var pg = p;
+                                <li class="page-item @(pg == currentPage ? "active" : "")">
+                                    <button class="page-link" @onclick="() => GoToPage(pg)">@pg</button>
+                                </li>
+                            }
+                            <li class="page-item @(currentPage == TotalPages ? "disabled" : "")">
+                                <button class="page-link" @onclick="() => GoToPage(currentPage + 1)">›</button>
+                            </li>
+                            <li class="page-item @(currentPage == TotalPages ? "disabled" : "")">
+                                <button class="page-link" @onclick="() => GoToPage(TotalPages)">»</button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+@code {
+
+    // =========================================================
+    // DATA
+    // =========================================================
+
+    private List<InspectionModel> inspections = new();
+    private List<InspectionProcessArea> processAreas = new();
+    private List<InspectionEquipment> equipments = new();
+    private List<InspectionComponent> components = new();
+
+    // =========================================================
+    // FORM
+    // =========================================================
+
+    private InspectionModel inspection = new()
+    {
+        InspecDate = DateTime.Today
+    };
+
+    // =========================================================
+    // FILTER
+    // =========================================================
+
+    private decimal selectedProcessArea = 0;
+    private string? selectedEquipment;
+    private string? selectedComponent;
+
+    private bool HasAllFilters =>
+        selectedProcessArea > 0 &&
+        !string.IsNullOrWhiteSpace(selectedEquipment) &&
+        !string.IsNullOrWhiteSpace(selectedComponent);
+
+    // =========================================================
+    // SESSION  (TryParse - Convert இல்ல)
+    // =========================================================
+
+    private int CompanyId =>
+        int.TryParse(Convert.ToString(UserSession.CompanyID), out var v) ? v : 0;
+
+    private int UserId =>
+        int.TryParse(Convert.ToString(UserSession.UserID), out var v) ? v : 0;
+
+    // =========================================================
+    // STATE
+    // =========================================================
+
+    private bool isLoading;
+    private bool isSaving;
+    private bool showCalculation;
+    private bool hasLoadedGrid;
+    private int tableRenderKey;
+
+    private InspectionModel? lastInspection;
+
+    // ---- Blazor-native pagination & search ----
+    private string searchText = "";
+    private int pageSize = 10;
+    private int currentPage = 1;
+
+    private IEnumerable<InspectionModel> FilteredRows =>
+        string.IsNullOrWhiteSpace(searchText)
+            ? inspections
+            : inspections.Where(i =>
+                (i.EquipmentName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (i.ComponentName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (i.InspectionPointNo?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false));
+
+    private int TotalPages => (int)Math.Ceiling(FilteredRows.Count() / (double)pageSize);
+
+    private IEnumerable<InspectionModel> PagedRows =>
+        FilteredRows.Skip((currentPage - 1) * pageSize).Take(pageSize);
+
+    // =========================================================
+    // INITIAL LOAD  -  Process Area master மட்டும்
+    // =========================================================
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CompanyId <= 0)
+        {
+            await ShowWarning("Company not found. Please login again.");
+            return;
+        }
+
+        try
+        {
+            processAreas = await Service.GetProcessAreasAsync(CompanyId);
+            inspections.Clear();
+            hasLoadedGrid = false;
+        }
+        catch (Exception ex)
+        {
+            await ShowError("Process Area loading failed.\n\n" + ex.Message);
+        }
+    }
+
+    // =========================================================
+    // PROCESS AREA CHANGED  -  Equipment மட்டும் load
+    // =========================================================
+
+    private async Task ProcessAreaChanged(ChangeEventArgs e)
+    {
+        selectedProcessArea = 0;
+
+        if (decimal.TryParse(e.Value?.ToString(), out var processAreaId))
+            selectedProcessArea = processAreaId;
+
+        selectedEquipment = null;
+        selectedComponent = null;
+
+        equipments.Clear();
+        components.Clear();
+        inspections.Clear();
+        hasLoadedGrid = false;
+        ClearCalculation();
+
+        if (selectedProcessArea > 0)
+        {
+            try
+            {
+                equipments = await Service.GetEquipmentsAsync(selectedProcessArea);
+            }
+            catch (Exception ex)
+            {
+                await ShowError("Equipment loading failed.\n\n" + ex.Message);
+            }
+        }
+    }
+
+    // =========================================================
+    // EQUIPMENT CHANGED  -  Component மட்டும் load
+    // =========================================================
+
+    private async Task EquipmentChanged(ChangeEventArgs e)
+    {
+        selectedEquipment = e.Value?.ToString();
+        selectedComponent = null;
+
+        components.Clear();
+        inspections.Clear();
+        hasLoadedGrid = false;
+        ClearCalculation();
+
+        if (!string.IsNullOrWhiteSpace(selectedEquipment))
+        {
+            try
+            {
+                components = await Service.GetComponentsAsync(selectedEquipment);
+            }
+            catch (Exception ex)
+            {
+                await ShowError("Component loading failed.\n\n" + ex.Message);
+            }
+        }
+    }
+
+    // =========================================================
+    // COMPONENT CHANGED  -  இங்கே தான் grid load ஆகும்
+    // =========================================================
+
+    private async Task ComponentChanged(ChangeEventArgs e)
+    {
+        selectedComponent = e.Value?.ToString();
+
+        inspections.Clear();
+        hasLoadedGrid = false;
+        ClearCalculation();
+
+        if (string.IsNullOrWhiteSpace(selectedComponent))
+            return;
+
+        await LoadData();
+    }
+
+    // =========================================================
+    // REFRESH
+    // =========================================================
+
+    private async Task RefreshInspection()
+    {
+        if (!HasAllFilters)
+            return;
+
+        await LoadData();
+    }
+
+    // =========================================================
+    // SAVE / UPDATE
+    // =========================================================
+
+    private async Task SaveInspection()
+    {
+        if (selectedProcessArea <= 0)
+        {
+            await ShowWarning("Please select Process Area.");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(selectedEquipment))
+        {
+            await ShowWarning("Please select Equipment.");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(selectedComponent))
+        {
+            await ShowWarning("Please select Component.");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(inspection.InspectionPointNo))
+        {
+            await ShowWarning("Please enter Inspection Point No.");
+            return;
+        }
+        if (!inspection.InspecDate.HasValue)
+        {
+            await ShowWarning("Please select Inspection Date.");
+            return;
+        }
+        if (!inspection.ReadingValue.HasValue)
+        {
+            await ShowWarning("Please enter Reading Value.");
+            return;
+        }
+        if (CompanyId <= 0)
+        {
+            await ShowWarning("Company not found. Please login again.");
+            return;
+        }
+
+        inspection.ProcessAreaID = selectedProcessArea;
+        inspection.EqupID = selectedEquipment;
+        inspection.ComponentNo = selectedComponent;
+
+        try
+        {
+            isSaving = true;
+
+            InspectionResult result = inspection.InspecAutoID > 0
+                ? await Service.UpdateInspectionAsync(inspection, CompanyId, UserId)
+                : await Service.InsertInspectionAsync(inspection, CompanyId, UserId);
+
+            if (result.Success)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Saved!", "Inspection saved successfully.");
+                await LoadData();
+                ClearEntryOnly();
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("sweetAlert.error", "Error!",
+                    result.Message ?? "Unable to save inspection.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    // =========================================================
+    // EDIT
+    // =========================================================
+
+    private void EditInspection(InspectionModel item)
+    {
+        inspection = new InspectionModel
+        {
+            InspecAutoID = item.InspecAutoID,
+            ProcessAreaID = item.ProcessAreaID,
+            EqupID = item.EqupID,
+            ComponentNo = item.ComponentNo,
+            InspectionPointNo = item.InspectionPointNo,
+            InspecDate = item.InspecDate,
+            ReadingValue = item.ReadingValue
+        };
+
+        selectedProcessArea = item.ProcessAreaID;
+        selectedEquipment = item.EqupID;
+        selectedComponent = item.ComponentNo;
+
+        showCalculation = true;
+        lastInspection = item;
+
+        StateHasChanged();
+    }
+
+    // =========================================================
+    // DELETE
+    // =========================================================
+
+    private async Task ConfirmDelete(InspectionModel item)
+    {
+        bool confirmed =
+            await JS.InvokeAsync<bool>(
+                "sweetAlert.confirmDelete",
+                "Are you sure?",
+                item.InspectionPointNo,
+                item.InspecDate?.ToString("dd-MM-yyyy"));
+
+        if (!confirmed)
+            return;
+
+        try
+        {
+            var result = await Service.DeleteInspectionAsync(
+                item.InspecAutoID, CompanyId, UserId);
+
+            if (result.Success)
+            {
+                await JS.InvokeVoidAsync("sweetAlert.success", "Deleted!",
+                    "Inspection deleted successfully.");
+
+                await LoadData();
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("sweetAlert.error", "Error!",
+                    result.Message ?? "Unable to delete inspection.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("sweetAlert.error", "Error!", ex.Message);
+        }
+    }
+
+    // =========================================================
+    // GRID LOAD
+    // Component select / Refresh / Save / Delete-க்கு அப்புறம் மட்டும்
+    // =========================================================
+
+    private async Task LoadData()
+    {
+        if (!HasAllFilters)
+            return;
+
+        try
+        {
+            isLoading = true;
+            hasLoadedGrid = false;
+
+            inspections.Clear();
+
+            inspections = await Service.GetInspectionAsync(
+                CompanyId,
+                selectedProcessArea,
+                selectedEquipment,
+                selectedComponent);
+
+            hasLoadedGrid = true;
+            currentPage = 1;
+            searchText = "";
+            tableRenderKey++;
+
+            await LoadCalculation();
+        }
+        catch (Exception ex)
+        {
+            inspections.Clear();
+            hasLoadedGrid = true;
+
+            await ShowError("Inspection data loading failed.\n\n" + ex.Message);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    // =========================================================
+    // LAST INSPECTION VALUE
+    // =========================================================
+
+    private async Task LoadLastInspection()
+    {
+        if (!HasAllFilters)
+        {
+            lastInspection = null;
+            showCalculation = false;
+            return;
+        }
+
+        try
+        {
+            isLoading = true;
+            hasLoadedGrid = false;
+
+            inspections.Clear();
+
+            inspections = await Service.GetLastInspectionAsync(
+                CompanyId,
+                selectedEquipment!,
+                selectedComponent!);
+
+            hasLoadedGrid = true;
+            currentPage = 1;
+            searchText = "";
+            tableRenderKey++;
+
+            await LoadCalculation();
+        }
+        catch (Exception ex)
+        {
+            lastInspection = null;
+            showCalculation = false;
+
+            await ShowError("Last Inspection loading failed.\n\n" + ex.Message);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    // =========================================================
+    // CALCULATION CARD
+    // =========================================================
+
+    private async Task LoadCalculation()
+    {
+        if (!HasAllFilters)
+        {
+            lastInspection = null;
+            showCalculation = false;
+            return;
+        }
+
+        try
+        {
+            lastInspection = await Service.GetInspectionCalculationAsync(
+                selectedProcessArea,
+                selectedEquipment!,
+                selectedComponent!);
+
+            showCalculation = lastInspection != null;
+        }
+        catch (Exception ex)
+        {
+            lastInspection = null;
+            showCalculation = false;
+
+            await ShowError("Calculation loading failed.\n\n" + ex.Message);
+        }
+    }
+
+    // =========================================================
+    // CLEAR
+    // =========================================================
+
+    private void ClearForm()
+    {
+        inspection = new InspectionModel { InspecDate = DateTime.Today };
+
+        selectedProcessArea = 0;
+        selectedEquipment = null;
+        selectedComponent = null;
+
+        equipments.Clear();
+        components.Clear();
+        inspections.Clear();
+
+        hasLoadedGrid = false;
+
+        ClearCalculation();
+
+        StateHasChanged();
+    }
+
+    private void ClearEntryOnly()
+    {
+        inspection = new InspectionModel { InspecDate = DateTime.Today };
+    }
+
+    private void ClearCalculation()
+    {
+        showCalculation = false;
+        lastInspection = null;
+    }
+
+    // =========================================================
+    // FORMAT
+    // =========================================================
+
+    private static string FormatDate(DateTime? value) =>
+        value.HasValue ? value.Value.ToString("dd-MM-yyyy") : "-";
+
+    private static string FormatDecimal(decimal? value) =>
+        value.HasValue ? value.Value.ToString("0.000") : "-";
+
+    // =========================================================
+    // SWEET ALERT
+    // =========================================================
+
+    private async Task ShowSuccess(string message) =>
+        await JS.InvokeVoidAsync("inspectionSuccess", message);
+
+    private async Task ShowWarning(string message) =>
+        await JS.InvokeVoidAsync("inspectionWarning", message);
+
+    private async Task ShowError(string message) =>
+        await JS.InvokeVoidAsync("inspectionError", message);
+
+    // =========================================================
+    // BLAZOR-NATIVE PAGINATION HELPERS
+    // =========================================================
+
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        searchText = e.Value?.ToString() ?? "";
+        currentPage = 1;
+    }
+
+    private void OnPageSizeChanged(ChangeEventArgs e)
+    {
+        pageSize = int.TryParse(e.Value?.ToString(), out var v) ? v : 10;
+        currentPage = 1;
+    }
+
+    private void GoToPage(int page)
+    {
+        if (page < 1 || page > TotalPages) return;
+        currentPage = page;
+    }
+
+    private IEnumerable<int> GetPageNumbers()
+    {
+        int start = Math.Max(1, currentPage - 2);
+        int end = Math.Min(TotalPages, currentPage + 2);
+        for (int i = start; i <= end; i++) yield return i;
+    }
+}

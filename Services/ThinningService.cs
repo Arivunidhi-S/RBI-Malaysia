@@ -196,11 +196,21 @@ namespace RBI_Malaysia.Services
             double crbm = shortCr;
             double tbm = constThick;
             double trdi = trd;
-            double tcm = trdi - tbm; // cladding measured thickness
-            double agerc = crcm == 0 ? 0 : tcm / crcm; // age_rc = tcm / Cr,cm (0 when no cladding corrosion)
+
+            //double tcm = trdi - tbm; // cladding measured thickness
+            //double agerc = crcm == 0 ? 0 : tcm / crcm; // age_rc = tcm / Cr,cm (0 when no cladding corrosion)
+            //double art = crbm * (age - agerc) / SafeDiv1(trdi);
+            //art = Math.Round(art, 2);
+            //m.Art = Convert.ToDecimal(art);
+
+            bool isClad = clad.Equals("Clad", StringComparison.OrdinalIgnoreCase)
+          || clad.Equals("Yes", StringComparison.OrdinalIgnoreCase);
+
+            double tcm = trdi - tbm;
+            double agerc = (isClad && crcm > 0) ? Math.Max(tcm / crcm, 0) : 0;   // clad இல்லையெனில் 0
             double art = crbm * (age - agerc) / SafeDiv1(trdi);
-            art = Math.Round(art, 2);
-            m.Art = Convert.ToDecimal(art);
+
+            m.Art = Convert.ToDecimal(Math.Round(art, 2));   // display / save மட்டும்
 
             // ---------- 3. Flow stress & Strength Ratio Parameter ----------
             double ys = Convert.ToDouble(m.YS ?? 0);

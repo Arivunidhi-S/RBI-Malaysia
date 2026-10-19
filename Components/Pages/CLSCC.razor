@@ -1,34 +1,30 @@
-﻿@page "/pof-scc-clscc"
+@page "/pof-scc-clscc"
+@layout StaffLayout
 
 @using RBI_Malaysia.Models
 @using RBI_Malaysia.Services
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
-@inject CarbonateService CarbonateService
+@inject ClsccService ClsService
 @inject UserSession UserSession
 @inject IJSRuntime JS
-@inject NavigationManager Nav
 
-
-<PageTitle>POF — CLSCC</PageTitle>
+<PageTitle>POF — SCC CLSCC Cracking</PageTitle>
 
 <div class="staff-page">
-
-    <!-- SCC Top Navigation Menu -->
-    @layout StaffLayout
     <div class="staff-card">
         <div class="staff-card-header">
             <div>
                 <h5 class="mb-0">
-                    <i class="bi bi-water me-2 text-info"></i> SCC — CLSCC
+                    <i class="bi bi-droplet-half me-2 text-warning"></i> SCC — CLSCC Cracking
                 </h5>
-                <small>SCCDF CLSCC Factor Calculation</small>
+                <small>SCCDF Chloride Stress Corrosion Cracking (CLSCC) Damage Factor Calculation</small>
             </div>
         </div>
 
         <div class="staff-card-body">
 
-            <!-- Cascading Filters -->
+            <!-- Cascading Filters (replaces cboProcessArea / cboEquipment / cboComponent) -->
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Process Area <span class="text-danger">*</span></label>
@@ -64,19 +60,18 @@
                 </div>
             </div>
 
-            <!-- Input Form -->
-            <EditForm Model="@model" OnValidSubmit="Calculate" FormName="CarbonateForm">
+            <EditForm Model="@model" FormName="ClsccForm">
                 <DataAnnotationsValidator />
 
                 <h6 class="text-muted border-bottom pb-1 mb-3">Basic Inputs</h6>
                 <div class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Age <span class="text-danger">*</span></label>
-                        <InputNumber class="form-control" @bind-Value="model.CO3Age" />
+                        <InputNumber class="form-control" @bind-Value="model.ClsAge" />
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Inspection Effectiveness <span class="text-danger">*</span></label>
-                        <select class="form-select" @bind="model.CO3InsEff">
+                        <select class="form-select" @bind="model.ClsInsEff">
                             <option value="">Select</option>
                             <option value="A">A — Highly Effective</option>
                             <option value="B">B — Usually Effective</option>
@@ -87,14 +82,12 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">No. of Inspections <span class="text-danger">*</span></label>
-                        <select class="form-select" @bind="model.CO3nofIns">
+                        <select class="form-select" @bind="model.ClsNofIns">
                             <option value="">Select</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
+                            @for (int i = 1; i <= 6; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -103,38 +96,45 @@
                     </div>
                 </div>
 
-                <!-- Step 1: pH + CO3 → Svi -->
-                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Susceptibility (STEP 1)</h6>
-                <div class="row g-3 align-items-end">
+                <!-- pH + Chloride + component operating temperature -> Svi -->
+                <h6 class="text-muted border-bottom pb-1 mb-3 mt-4">Susceptibility & Svi</h6>
+                <div class="row g-3">
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">pH of Water</label>
-                        <select class="form-select" @bind="model.PHwaterCode" @bind:after="RecalcSvi">
+                        <label class="form-label fw-bold">pH</label>
+                        <select class="form-select" @bind="model.PHCode" @bind:after="OnPhChanged">
                             <option value="">Select</option>
-                            @foreach (var opt in CarbonateService.PHOptions)
+                            @foreach (var opt in ClsService.PHOptions)
                             {
                                 <option value="@opt.Code">@opt.Label</option>
                             }
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Chloride(ppm)</label>
-                        <select class="form-select" @bind="model.CO3Code" @bind:after="RecalcSvi">
+                        <label class="form-label fw-bold">Chloride (ppm)</label>
+                        <select class="form-select" @bind="model.ChlorideCode" @bind:after="OnChlorideChanged">
                             <option value="">Select</option>
-                            @foreach (var opt in CarbonateService.CO3Options)
+                            @foreach (var opt in ClsService.ChlorideOptions)
                             {
                                 <option value="@opt.Code">@opt.Label</option>
                             }
                         </select>
+                        @if (opTemp is not null && !string.IsNullOrEmpty(model.PHCode))
+                        {
+                            <small class="text-muted">
+                                Operating temp @opTemp.Value.ToString("0.##") → table temp @ClsccService.TempBucket(model.PHCode, opTemp.Value)
+                            </small>
+                        }
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label text-secondary fw-bold">Svi (auto)</label>
-                        <input type="text" class="form-control fw-bold text-primary bg-warning-subtle" value="@model.CO3Svi" readonly />
+                        <label class="form-label text-secondary fw-bold">Susceptibility / Svi (auto)</label>
+                        <input type="text" class="form-control fw-bold bg-warning-subtle text-primary"
+                               value="@model.ClsSvi" readonly />
                     </div>
-                    <div class="col-md-3 pb-1">
+                    <div class="col-md-3 d-flex align-items-end pb-1">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="knownCrack"
+                            <input class="form-check-input" type="checkbox" id="clsKnownCrack"
                                    checked="@model.KnownCrack" @onchange="OnKnownCrackChanged" />
-                            <label class="form-check-label fw-bold text-danger" for="knownCrack">
+                            <label class="form-check-label fw-bold text-danger" for="clsKnownCrack">
                                 Known Cracking Present<br />
                                 <small class="text-muted fw-normal">(overrides Svi to "High")</small>
                             </label>
@@ -147,17 +147,18 @@
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label text-secondary fw-bold">Df — CLSCC</label>
-                        <input type="text" class="form-control fw-bold text-info bg-warning-subtle" value="@model.CO3Df" readonly />
+                        <input type="text" class="form-control fw-bold bg-warning-subtle text-danger"
+                               value="@model.ClsDf" readonly />
                     </div>
                 </div>
 
-                <!-- Buttons -->
+                <!-- Buttons: separate Calculate / Save (legacy btn_CLS_Calc / btn_CLS_Save) -->
                 <div class="staff-buttons mt-4 d-flex gap-2">
-                    <button type="button" class="btn btn-info text-white fw-bold"
+                    <button type="button" class="btn btn-info text-white"
                             @onclick="Calculate" disabled="@isCalculating">
                         @(isCalculating ? "Calculating..." : "Calculate")
                     </button>
-                    <button type="button" class="btn btn-success fw-bold"
+                    <button type="button" class="btn btn-success"
                             @onclick="Save" disabled="@isSaving">
                         @(isSaving ? "Saving..." : "Save")
                     </button>
@@ -168,13 +169,14 @@
                     }
                 </div>
             </EditForm>
+
         </div>
     </div>
 </div>
 
 @code
 {
-    private CarbonateModel model = new();
+    private ClsccModel model = new();
     private decimal selectedProcessArea, selectedEquipment, selectedComponent;
 
     private List<ProcessAreaModel> processAreas = new();
@@ -182,18 +184,19 @@
     private List<ComponentModel>   components   = new();
 
     private bool hasExistingData, isSaving, isCalculating;
+    private double? opTemp;
 
     protected override async Task OnInitializedAsync() =>
-        processAreas = await CarbonateService.GetProcessAreasAsync(UserSession.CompanyID);
+        processAreas = await ClsService.GetProcessAreasAsync(UserSession.CompanyID);
 
     private async Task ProcessAreaChanged(ChangeEventArgs e)
     {
         selectedProcessArea = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
         selectedEquipment = 0; selectedComponent = 0;
         equipments.Clear(); components.Clear();
-        hasExistingData = false;
+        model = new(); hasExistingData = false; opTemp = null;
         if (selectedProcessArea > 0)
-            equipments = await CarbonateService.GetEquipmentsByProcessAsync(selectedProcessArea);
+            equipments = await ClsService.GetEquipmentsByProcessAsync(selectedProcessArea);
     }
 
     private async Task EquipmentChanged(ChangeEventArgs e)
@@ -201,9 +204,9 @@
         selectedEquipment = decimal.TryParse(e.Value?.ToString(), out var v) ? v : 0;
         selectedComponent = 0;
         components.Clear();
-        hasExistingData = false;
+        model = new(); hasExistingData = false; opTemp = null;
         if (selectedEquipment > 0)
-            components = await CarbonateService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
+            components = await ClsService.GetComponentsByEquipmentAsync(selectedEquipment.ToString());
     }
 
     private async Task ComponentChanged(ChangeEventArgs e)
@@ -212,54 +215,64 @@
         selectedComponent = id;
         try
         {
-            var existing = await CarbonateService.GetCarbonateRecordAsync(selectedProcessArea, selectedEquipment, id);
+            opTemp = await ClsService.GetOpTempAsync(id);
+            var existing = await ClsService.GetClsRecordAsync(selectedProcessArea, selectedEquipment, id);
             if (existing != null) { model = existing; hasExistingData = true; }
-            else { model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = id }; hasExistingData = false; }
+            else
+            {
+                model = new() { ProcID = selectedProcessArea, EquID = selectedEquipment, CompID = id };
+                hasExistingData = false;
+            }
         }
         catch (Exception ex)
         {
-            await JS.InvokeVoidAsync("Swal.fire", new { title = "Load Error", text = ex.Message, icon = "error" });
+            await ShowError("Load Error", ex.Message);
         }
     }
 
-    // pH or CO3 changed → auto-compute Svi via Ref_CO3
+    // Legacy only recalculated Svi when Chloride changed (and unchecked "known cracking");
+    // pH changes now recalculate too once both are selected.
+    private async Task OnChlorideChanged()
+    {
+        model.KnownCrack = false;
+        await RecalcSvi();
+    }
+
+    private Task OnPhChanged() => RecalcSvi();
+
+    // pH + Chloride + operating temperature -> Svi
     private async Task RecalcSvi()
     {
-        if (string.IsNullOrEmpty(model.PHwaterCode) || string.IsNullOrEmpty(model.CO3Code)) return;
-        if (model.KnownCrack) return;
+        if (string.IsNullOrEmpty(model.PHCode) || string.IsNullOrEmpty(model.ChlorideCode)) return;
+        if (model.KnownCrack) return;   // override in effect
+        if (selectedComponent <= 0) { await ShowError("Select Component", "Please select a component first."); return; }
         try
         {
-            model.CO3Svi = await CarbonateService.ComputeSviAsync(model.CO3Code, model.PHwaterCode);
-            model.PHwater = CarbonateService.PHOptions.Find(o => o.Code == model.PHwaterCode).Label;
-            model.CO3     = CarbonateService.CO3Options.Find(o => o.Code == model.CO3Code).Label;
+            model.ClsSvi   = await ClsService.ComputeSviAsync(model.PHCode, model.ChlorideCode, selectedComponent);
+            model.ClsDf    = string.Empty;   // result is stale once Svi changes
+            model.PH       = ClsService.PHOptions.Find(o => o.Code == model.PHCode)?.Label ?? "";
+            model.Chloride = ClsService.ChlorideOptions.Find(o => o.Code == model.ChlorideCode)?.Label ?? "";
         }
         catch (Exception ex)
         {
-            await JS.InvokeVoidAsync("Swal.fire", new { title = "Error", text = ex.Message, icon = "error" });
+            await ShowError("Error", ex.Message);
         }
     }
 
+    // Known cracking checkbox (legacy chk_CLS_known_CheckedChanged)
     private async Task OnKnownCrackChanged(ChangeEventArgs e)
     {
-        model.KnownCrack = (bool)(e.Value ?? false);
-        if (model.KnownCrack)
-        {
-            model.CO3Svi = "High";
-        }
-        else
-        {
-            await RecalcSvi();
-        }
+        model.KnownCrack = e.Value is bool b && b;
+        model.ClsDf = string.Empty;
+        if (model.KnownCrack) model.ClsSvi = "High";
+        else await RecalcSvi();
     }
 
     private async Task Calculate()
     {
         isCalculating = true; StateHasChanged();
-        try { model = await CarbonateService.CalculateCarbonateAsync(model); }
-        catch (Exception ex)
-        {
-            await JS.InvokeVoidAsync("Swal.fire", new { title = "Calculate Error", text = ex.Message, icon = "error" });
-        }
+        try { model = await ClsService.CalculateClsAsync(model); }
+        catch (Exception ex) { await ShowError("Calculate Error", ex.Message); }
         finally { isCalculating = false; StateHasChanged(); }
     }
 
@@ -268,47 +281,28 @@
         isSaving = true; StateHasChanged();
         try
         {
-            model = await CarbonateService.SaveCarbonateAsync(model);
+            model = await ClsService.SaveClsAsync(model);
             hasExistingData = true;
             await JS.InvokeVoidAsync("Swal.fire",
-                new { title = "Saved!", text = "Carbonate Cracking record saved successfully.", icon = "success", timer = 2000, showConfirmButton = false });
+                new { title = "Saved!", text = "CLSCC record saved successfully.", icon = "success", timer = 2000, showConfirmButton = false });
         }
-        catch (Exception ex)
-        {
-            await JS.InvokeVoidAsync("Swal.fire", new { title = "Save Error", text = ex.Message, icon = "error" });
-        }
+        catch (Exception ex) { await ShowError("Save Error", ex.Message); }
         finally { isSaving = false; StateHasChanged(); }
     }
 
     private async Task DeleteRecord()
     {
-        // bool confirm = await JS.InvokeAsync<bool>("Swal.fire", new
-        // {
-        //     title = "Delete Record?",
-        //     text = "This Carbonate Cracking record will be permanently deleted.",
-        //     icon = "warning",
-        //     showCancelButton = true,
-        //     confirmButtonColor = "#d33",
-        //     cancelButtonColor = "#6c757d",
-        //     confirmButtonText = "Yes, delete it!",
-        //     cancelButtonText = "Cancel"
-        // }).ContinueWith(t => t.Result.GetProperty("isConfirmed").GetBoolean());
-
-        bool confirmed =
-            await JS.InvokeAsync<bool>("sweetAlert.confirmDelete", "Are you sure?", $"Do you want to delete this Carbonate Cracking record?");
-
+        bool confirmed = await JS.InvokeAsync<bool>("sweetAlert.confirmDelete",
+            "Are you sure?", "Do you want to delete this CLSCC record?");
         if (!confirmed) return;
         try
         {
-            await CarbonateService.DeleteCarbonateAsync(model.ProcID, model.EquID, model.CompID);
+            await ClsService.DeleteClsAsync(model.ProcID, model.EquID, model.CompID);
             await JS.InvokeVoidAsync("Swal.fire",
                 new { title = "Deleted!", text = "Record has been deleted.", icon = "success", timer = 1800, showConfirmButton = false });
             ClearForm();
         }
-        catch (Exception ex)
-        {
-            await JS.InvokeVoidAsync("Swal.fire", new { title = "Delete Error", text = ex.Message, icon = "error" });
-        }
+        catch (Exception ex) { await ShowError("Delete Error", ex.Message); }
     }
 
     private void ClearForm()
@@ -316,6 +310,9 @@
         model = new();
         selectedProcessArea = selectedEquipment = selectedComponent = 0;
         equipments.Clear(); components.Clear();
-        hasExistingData = false;
+        hasExistingData = false; opTemp = null;
     }
+
+    private Task ShowError(string title, string text) =>
+        JS.InvokeVoidAsync("Swal.fire", new { title, text, icon = "error" }).AsTask();
 }

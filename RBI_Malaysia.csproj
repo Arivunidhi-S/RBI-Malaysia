@@ -9,16 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\InspectionService.cs" />
     <Compile Remove="Services\ValidationBase.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Components\Pages\Amineqeqweqweqwe.razor" />
+    <Content Remove="Components\Pages\Hic.razor" />
+    <Content Remove="Components\Pages\HSC-HF.razor" />
+    <Content Remove="Components\Pages\Inspection.razor" />
+    <Content Remove="Components\Pages\PTA.razor" />
+    <Content Remove="Components\Pages\SOHIC-HF.razor" />
     <Content Remove="Components\Reports\COFFlammableReport.razor" />
     <Content Remove="Components\Reports\COFNonFlammableReport.razor" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Components\Pages\Inspection.razor.css" />
+    <None Remove="Components\Pages\PTA.razor.css" />
+    <None Remove="Components\Pages\SOHIC-HF.razor.css" />
     <None Remove="Components\Reports\COFFlammableReport.razor.css" />
     <None Remove="Components\Reports\COFNonFlammableReport.razor.css" />
   </ItemGroup>
